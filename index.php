@@ -44,7 +44,7 @@ $server_out="khlive.mooo.com";
 $port="8000";
 $lang="";
 $timer="60";
-$version="0.99";
+$version="1.0";
 
 include ("./lang.php");
 
