@@ -1,0 +1,10 @@
+#users database structure
+#index		item
+0		username
+1		password (salt--hash) 8char min
+2		Full Name
+3		congregation name linked
+4		rights (user/manager/admin/root)
+5		pin
+6		type (voip/web/all)
+7		time last login
