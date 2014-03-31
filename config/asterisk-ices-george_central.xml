@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<ices>
+    <background>0</background>
+    <logpath>/var/log/ices</logpath>
+    <logfile>ices.log</logfile>
+    <loglevel>2</loglevel>
+    <consolelog>0</consolelog>
+    <stream>
+        <metadata>
+            <name>George Central Meeting </name>
+            <genre>Live calls</genre>
+            <description>Stream from George Central Meeting</description>
+            <url>http://khlive.mooo.com:8000/stream-george_central.ogg</url>
+        </metadata>
+        <input>
+            <module>stdinpcm</module>
+            <param name="rate">8000</param>
+            <param name="channels">1</param>
+            <param name="metadata">0</param>
+            <param name="metadatafilename">test</param>
+        </input>
+        <instance>
+            <hostname>localhost</hostname>
+            <port>8000</port>
+            <password>1234</password>
+            <mount>/stream-george_central.ogg</mount>
+            <yp>0</yp>
+            <encode>  
+                <quality>0</quality>
+                <samplerate>8000</samplerate>
+                <channels>1</channels>
+            </encode>
+            <downmix>0</downmix>
+        </instance>
+    </stream>
+</ices>

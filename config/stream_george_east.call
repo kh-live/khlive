@@ -1,0 +1,6 @@
+Channel: Local/ices_george_east@test-menu
+MaxRetries: 0
+WaitTime: 60
+Context: test-menu
+Extension: meet_me_george_east
+Priority: 1

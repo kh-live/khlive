@@ -1,0 +1,10 @@
+Options +FollowSymlinks
+RewriteEngine on
+RewriteRule ^([^/.]+)/?$ index.php?page=$1 [QSA]
+
+<FilesMatch "\.(mp3)$">
+  ForceType application/octet-stream
+  <IfModule mod_headers.c>
+  Header set Content-Description "File Transfer"
+  </IfModule>
+</FilesMatch>

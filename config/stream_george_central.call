@@ -1,0 +1,7 @@
+Channel: Local/ices_george_central@test-menu
+MaxRetries: 2
+RetryTime: 60
+WaitTime: 30
+Context: test-menu
+Extension: meet_me_george_central
+Priority: 1

@@ -1,0 +1,6 @@
+Channel: Local/ices_tt_tt@test-menu
+MaxRetries: 0
+WaitTime: 60
+Context: test-menu
+Extension: meet_me_tt_tt
+Priority: 1

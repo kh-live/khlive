@@ -1,0 +1,234 @@
+/**********CSS*******/
+#login{
+	position:absolute;
+	border: 1px solid grey;
+	background-color:white;
+	width:180px;
+	height:140px;
+	top:50%;
+	left:50%;
+	margin-top:-80px;
+	margin-left:-100px;
+	padding:10px;
+}
+#titles{
+	position:absolute;
+	width:180px;
+		top:50%;
+	left:50%;
+	margin-top:-80px;
+	margin-left:-90px;
+		padding-top:10px;
+}
+#title1{
+	position:absolute;
+	font-size:30px;
+	margin-top:-42px;
+	margin-left:-12px;
+	color:#aaa;
+}
+#title2{
+	position:absolute;
+	font-size:20px;
+	margin-top:-32px;
+	margin-left:35px;
+}
+#title_mobile, #title_mobile2{
+	display:none;
+}
+#login-message{
+	color :#EB691D;
+	position:absolute;
+	height:14px;
+	top:50%;
+	left:50%;
+	margin-top: 84px;
+	margin-left:-100px;
+	font-size:14px;
+}
+#lines{
+	height:100%;
+	width:820px;
+	border-left : 1px solid grey;
+	border-right : 1px solid grey;
+	position: fixed;
+	left:50%;
+	margin-left:-411px;
+	z-index:10;
+	background-color:white;
+}
+#title3 {
+	position:fixed;
+	font-size:30px;
+	color:#aaa;
+	left:20px;
+	z-index:103;
+}
+#title4 {
+	position:fixed;
+	font-size:20px;
+	left:68px;
+	top:9px;
+	z-index:103;
+}
+#menu {
+	position:fixed;
+	font-size: 15px;
+	color:#EB691D;
+	width:100%;
+	text-align:center;
+	height:20px;
+	border-bottom: 1px solid grey;
+	padding-top:10px;
+	z-index:102;
+	background-color:white;
+}
+#logout{
+	font-size: 15px;
+	color:#EB691D;
+	height:25px;
+	text-align:center;
+	position:fixed;
+	top:10px;
+	right:20px;
+	z-index:103;
+}
+#logout a{
+	color:#EB691D;
+	text-decoration:none;
+	font-weight:bold;
+}
+#live{
+	font-size: 14px;
+	color:white;
+	width:100%;
+	height:20px;
+	background-color:#aaa;
+	padding-left:20px;
+	text-align:left;
+	position:fixed;
+	top:31px;
+	left:0px;
+	z-index:101;
+}
+#live u {
+	color:white;
+	text-decoration:none;
+}
+#live i {
+	color:red;
+}
+#page{
+	position:absolute;
+	width:800px;
+	top:34px;
+	left:50%;
+	margin-left:-410px;
+	padding:10px;
+	z-index:100;
+	overflow-y:auto;
+	padding-bottom:30px;
+}
+#page table {
+	width:800px;
+	background-color:#eee;
+}
+#sms_small{
+	color:white;
+	background-color:grey;
+	min-height:30px;
+	font-size:20px;
+	text-align:center;
+	margin-top:20px;
+	padding:10px;
+}
+#sms_small:hover{
+	text-decoration:underline;
+	cursor:pointer;
+}
+#sms{
+	display:none;
+	border:1px solid grey;
+	width: 400px;
+	margin-top:30px;
+	padding:10px;
+	background-color:#eeeeee
+}
+#p_no{
+	width:390px;
+}
+#answer{
+	width:390px;
+	height:100px;
+}
+#send{
+	float:right;
+}
+#songs{
+	position:absolute;
+	top:100px;
+	right:0px;
+	width:300px;
+	background-color:#AAAAAA;
+	border: 1px solid black;
+	height:320px;
+	z-index:200;
+	display:none;
+	padding: 5px;
+}
+#songs audio{
+	width:100%;
+}
+#songs a, #song-small a {
+	color:white;
+	text-decoration:none;
+	font-weight:bolder;
+}
+#song-small{
+	position:absolute;
+	top:100px;
+	right:0px;
+	width:30px;
+	background-color:#AAAAAA;
+	border: 1px solid black;
+	height:320px;
+
+	z-index:200;
+	text-align:center;
+}
+#meeting{
+	width:100%;
+	height:500px;
+	border:0px;
+}
+#error_msg{
+	position:absolute;
+	top: 52px;
+	color:red;
+	text-align:center;
+	width:100%;
+	z-index:101;
+}
+#ok_msg{
+	position:absolute;
+	top: 52px;
+	color:green;
+	text-align:center;
+	width:100%;
+	z-index:101;
+}
+#footer{
+	position:fixed;
+	left:50%;
+	margin-left:-400px;
+	bottom:0px;
+	width:800px;
+	border-top: 1px solid grey;
+	height: 20px;
+	z-index:102;
+	color:#EB691D;
+	font-size:12px;
+	text-align:center;
+	padding-top:5px;
+	background-color:white;
+}

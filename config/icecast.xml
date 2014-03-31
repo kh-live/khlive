@@ -1,0 +1,78 @@
+<icecast>
+    <limits>
+        <sources>2</sources>
+    </limits>
+    <authentication>
+        <source-password>toroob7e</source-password>
+        <relay-password>toroob7e</relay-password>
+        <admin-user>admin</admin-user>
+        <admin-password>toroob7e</admin-password>
+    </authentication>
+
+    <hostname>khlive.mooo.com</hostname>
+    <listen-socket>
+        <port>8000</port>
+	<!-- new <ssl>1</ssl>-->
+    </listen-socket>
+    <fileserve>1</fileserve>
+    <paths>
+       <logdir>/var/log/icecast</logdir>
+        <webroot>/usr/share/icecast/web</webroot>
+        <adminroot>/usr/share/icecast/admin</adminroot>
+        <pidfile>/var/run/icecast/icecast.pid</pidfile>
+	<alias source="/" dest="/status.xsl"/>
+	<!--new<ssl-certificate>/etc/pki/tls/certs/server-dummy</ssl-certificate>-->
+   </paths>
+    <logging>
+        <accesslog>access.log</accesslog>
+        <errorlog>error.log</errorlog>
+      	<loglevel>2</loglevel> <!-- 4 Debug, 3 Info, 2 Warn, 1 Error -->
+    </logging>
+<!--mount-george_central-->
+	<mount>
+	<mount-name>/stream-george_central.ogg</mount-name>
+	<username>source</username>
+        <password>1234</password>
+<authentication type="url">
+	<option name="mount_add" value="http://localhost/kh-live/stream_start.php"/>
+        <option name="mount_remove" value="http://localhost/kh-live/stream_end.php"/>
+	<option name="listener_add" value="http://localhost/kh-live/listener_joined.php"/>
+        <option name="listener_remove" value="http://localhost/kh-live/listener_left.php"/>
+	<option name="auth_header" value="icecast-auth-user: 1"/>
+</authentication>
+	</mount>
+<!--mount-george_east-->
+<mount>
+	<mount-name>/stream-george_east.ogg</mount-name>
+	<username>source</username>
+        <password>8vv3oe97234F8zkg</password>
+<authentication type="url">
+	<option name="mount_add" value="http://localhost/kh-live/stream_start.php"/>
+        <option name="mount_remove" value="http://localhost/kh-live/stream_end.php"/>
+	<option name="listener_add" value="http://localhost/kh-live/listener_joined.php"/>
+        <option name="listener_remove" value="http://localhost/kh-live/listener_left.php"/>
+	<option name="auth_header" value="icecast-auth-user: 1"/>
+</authentication>
+</mount>
+<!--mount-tt_tt-->
+<mount>
+	<mount-name>/stream-tt_tt.ogg</mount-name>
+	<username>source</username>
+        <password>xg5c3WJ4P6LaesHP</password>
+<authentication type="url">
+	<option name="mount_add" value="http://localhost/kh-live/stream_start.php"/>
+        <option name="mount_remove" value="http://localhost/kh-live/stream_end.php"/>
+	<option name="listener_add" value="http://localhost/kh-live/listener_joined.php"/>
+        <option name="listener_remove" value="http://localhost/kh-live/listener_left.php"/>
+	<option name="auth_header" value="icecast-auth-user: 1"/>
+</authentication>
+</mount>
+<!--lastmount-->
+<security>
+        <chroot>0</chroot>
+        <changeowner>
+            <user>icecast</user>
+            <group>icecast</group>
+        </changeowner>
+    </security>
+</icecast>
