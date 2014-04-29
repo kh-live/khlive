@@ -125,9 +125,9 @@ $streaming=0;
 	$listeners_out[$data[3]]=$data[0];
 	}
 	//end of meeting
-	}elseif ($data[2]=="mount stopped"){
+		
+	}elseif (($data[2]=="meeting stop" OR $data[2]=="mount stopped") AND $in_meeting==1){
 	$streaming=0;
-	}elseif ($data[2]=="meeting stop"){
 	$total_list=count($listeners_in);
 	$total_ans=0;
 		if (count($answers)!=0){
