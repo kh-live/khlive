@@ -19,5 +19,5 @@ echo 'Use the link "Report" above to see your congregation\'s meeting attendance
 echo $lng['welcome_instructions'].'<br /><br />';
 echo $lng['listen_records'].'.<br />';
 }
-echo "</div>";
 ?>
+</div>

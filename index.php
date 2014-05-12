@@ -17,6 +17,7 @@ if ($a == ''){
 session_start();
 }
 
+//simplify algo - duplicate if
 if (isset($_SERVER['HTTPS'])){
   if($_SERVER['HTTPS']!="on" AND $_SERVER['HTTP_HOST']!="192.168.1.123" )
   {
@@ -48,9 +49,10 @@ $version="1.1";
 
 include ("./lang.php");
 
-if (isset ($_REQUEST['page'])){
-$page=htmlentities($_REQUEST['page']);
+if (isset ($_GET['page'])){
+$page=htmlentities($_GET['page']);
 }else{
+// probably wrong see l 211
 $page="login.php";
 }
 if ($page=="logout"){
@@ -74,7 +76,7 @@ $info=time().'**info**logout successful**'.$_SESSION['user'].'**'.$_SESSION['con
     }
 
 
-if (isset ($_REQUEST['login_user']) AND isset ($_REQUEST['login_password'])){
+if (isset ($_POST['login_user']) AND isset ($_POST['login_password'])){
 $login_log="";
 $user=$_REQUEST['login_user'];
 $password=$_REQUEST['login_password'];
@@ -121,7 +123,7 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 	foreach($db2 as $line2){
         $data2=explode ("**",$line2);
 		if (strtoupper($data2[0])==strtoupper($user)){
-		
+		// last login time added in the database
 		$file_content.=$data2[0].'**'.$data2[1].'**'.$data2[2].'**'.$data2[3].'**'.$data2[4].'**'.$data2[5].'**'.@$data2[6].'**'.time()."**\n";
 		}else{
 		$file_content.=$line2;

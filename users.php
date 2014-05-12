@@ -28,7 +28,8 @@ $db=file("db/users");
 		//root sees everything and admins can see their congreg.
 	echo '<tr><td>'.$data[0].'</td>';
 	$tmp="user_".$data[4];
-	echo '<td>'.$data[2].'</td><td>'.$data[3].'</td><td>'.$lng[$tmp].'</td><td>'.$data[6].'</td><td>'.$data[5].'#</td><td>'.$last_login.'</td><td><a href="./user_edit?user='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./user_delete?user='.urlencode($data[0]).'&pin='.$data[5].'">'.$lng['delete'].'</a></td></tr>';
+	echo '<td>'.$data[2].'</td><td>'.$data[3].'</td><td>'.$lng[$tmp].'</td><td>'.$data[6].'</td><td>'.$data[5].'#</td><td>'.$last_login.'</td><td><a href="./user_edit?user='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./user_delete?user='.urlencode($data[0]).'&pin='.$data[5].'">'.$lng['delete'].'</a></td></tr>
+	';
 	
 		}
 	}
