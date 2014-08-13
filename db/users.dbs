@@ -8,3 +8,4 @@
 5		pin
 6		type (voip/web/all)
 7		time last login
+8		info field

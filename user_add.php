@@ -20,7 +20,7 @@ if(isset($_POST['submit'])){
 			
 			$salt=hash("sha512",rand());
 			$pwd_hashed=hash("sha512",$salt.$_POST['password']);
-			$info=$_POST['user'].'**'.$salt.'--'.$pwd_hashed.'**'.$_POST['name'].'**'.$_POST['congregation'].'**'.$_POST['rights'].'**'.$_POST['pin'].'**'.$_POST['type']."** **\n"; //sanitize input
+			$info=$_POST['user'].'**'.$salt.'--'.$pwd_hashed.'**'.$_POST['name'].'**'.$_POST['congregation'].'**'.$_POST['rights'].'**'.$_POST['pin'].'**'.$_POST['type']."** **".$_POST['info']."\n"; //sanitize input
 			$file=fopen('./db/users','a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -47,6 +47,9 @@ if(isset($_POST['submit'])){
 <b><?PHP echo $lng['name'];?></b><br />
 User's real full name.<br />
 <input class="field_login" type="text" name="name"><br /><br />
+<b>Info</b><br />
+Information about the user.<br />
+<input class="field_login" type="text" name="info"><br /><br />
 <b><?PHP echo $lng['congregation'];?></b><br />
 <select name="congregation">
 <option value="0"><?PHP echo $lng['select'];?>...</option>

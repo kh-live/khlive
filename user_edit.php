@@ -19,6 +19,7 @@ if(isset($_POST['submit'])){
 			$old_pin=$_POST['old_pin'];//sanitize input
 			$old_cong=$_POST['old_cong'];//sanitize input
 			$type_new=$_POST['type'];//sanitize input
+			$info_new=$_POST['info'];//sanitize input
 			$error="";
 			if ($user_new!=$user_confirmed){
 			$db=file("db/users");
@@ -48,7 +49,7 @@ if(isset($_POST['submit'])){
 			$pwd_hashed=hash("sha512",$salt.$password_new);
 			$password_new=$salt."--".$pwd_hashed;
 			}
-		$file_content.=$user_new.'**'.$password_new.'**'.$name_new.'**'.$congregation_new.'**'.$rights_new.'**'.$pin.'**'.$type_new."** **\n";
+		$file_content.=$user_new.'**'.$password_new.'**'.$name_new.'**'.$congregation_new.'**'.$rights_new.'**'.$pin.'**'.$type_new."** **".$info_new."**\n";
 		 }else{
 			//this an attempt at editing a user from another cong - log
 			$file_content.=$line;
@@ -94,6 +95,7 @@ $name="";
 $rights="";
 $pin="";
 $type="";
+$info="";
 $db=file("db/users");
     foreach($db as $line){
         $data=explode ("**",$line);
@@ -103,6 +105,7 @@ $db=file("db/users");
 	$rights=$data[4];
 	$pin=$data[5];
 	$type=$data[6];
+	$info=@$data[8];
 	}
 	}
 ?>
@@ -113,6 +116,9 @@ $db=file("db/users");
 <b><?PHP echo $lng['name'];?></b><br />
 User's real full name.<br />
 <input class="field_login" type="text" name="name" value="<?PHP echo $name;?>"><br /><br />
+<b>Info</b><br />
+Information about the user.<br />
+<input class="field_login" type="text" name="info" value="<?PHP echo $info;?>"><br /><br />
 <b><?PHP echo $lng['congregation'];?></b><br />
 <select name="congregation">
 <option value="0"><?PHP echo $lng['select'];?>...</option>

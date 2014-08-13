@@ -11,7 +11,7 @@ exit();
 <a href="./user_add"><?PHP echo $lng['add_new_user'];?></a><br /><br />
 <table>
 <?PHP
-echo '<tr><td><b>'.$lng['user'].'</td><td><b>'.$lng['name'].'</b></td><td><b>'.$lng['congregation'].'</b></td><td><b>'.$lng['rights'].'</b></td><td><b>type</b></td><td><b>'.$lng['PIN'].'</b></td><td><b>Last login on</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
+echo '<tr><td><b>'.$lng['user'].'</td><td><b>'.$lng['name'].'</b></td><td><b>'.$lng['congregation'].'</b></td><td><b>'.$lng['rights'].'</b></td><td><b>type</b></td><td><b>Info</b></td><td><b>Last login on</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 $db=file("db/users");
     foreach($db as $line){
         $data=explode ("**",$line);
@@ -23,12 +23,12 @@ $db=file("db/users");
 	}
 		if ($_SESSION['type']!="root" AND $data[4]=="root" AND $_SESSION['cong']==$data[3] ){
 		//we dont let normal admins edit superusers
-		echo '<tr><td>'.$data[0].'</td><td>'.$data[2].'</td><td>'.$data[3].'</td><td>Administrator</td><td>'.$data[6].'</td><td>'.$data[5].'#</td><td>'.$last_login.'</td><td></td></tr>';
+		echo '<tr><td>'.$data[0].'</td><td>'.$data[2].'</td><td>'.$data[3].'</td><td>Administrator</td><td>'.$data[6].'</td><td>'.@$data[8].'</td><td>'.$last_login.'</td><td></td></tr>';
 		}elseif ($_SESSION['type']=="root" OR $_SESSION['cong']==$data[3]){
 		//root sees everything and admins can see their congreg.
 	echo '<tr><td>'.$data[0].'</td>';
 	$tmp="user_".$data[4];
-	echo '<td>'.$data[2].'</td><td>'.$data[3].'</td><td>'.$lng[$tmp].'</td><td>'.$data[6].'</td><td>'.$data[5].'#</td><td>'.$last_login.'</td><td><a href="./user_edit?user='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./user_delete?user='.urlencode($data[0]).'&pin='.$data[5].'">'.$lng['delete'].'</a></td></tr>
+	echo '<td>'.$data[2].'</td><td>'.$data[3].'</td><td>'.$lng[$tmp].'</td><td>'.$data[6].'</td><td>'.@$data[8].'</td><td>'.$last_login.'</td><td><a href="./user_edit?user='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./user_delete?user='.urlencode($data[0]).'&pin='.$data[5].'">'.$lng['delete'].'</a></td></tr>
 	';
 	
 		}
