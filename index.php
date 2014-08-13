@@ -124,7 +124,7 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
         $data2=explode ("**",$line2);
 		if (strtoupper($data2[0])==strtoupper($user)){
 		// last login time added in the database
-		$file_content.=$data2[0].'**'.$data2[1].'**'.$data2[2].'**'.$data2[3].'**'.$data2[4].'**'.$data2[5].'**'.@$data2[6].'**'.time()."**\n";
+		$file_content.=$data2[0].'**'.$data2[1].'**'.$data2[2].'**'.$data2[3].'**'.$data2[4].'**'.$data2[5].'**'.@$data2[6].'**'.time()."**".@$data2[8]."**\n";
 		}else{
 		$file_content.=$line2;
 		}
