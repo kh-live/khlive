@@ -63,7 +63,7 @@ if (!$fp) {
 <div id="menu"><a href="./login"><?PHP echo $lng['home'];?></a>
  <?PHP
  if ($_SESSION['type']=="user") echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a>';
-if ($_SESSION['type']=="manager") echo ' - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./report">'.$lng['report'].'</a>';
+if ($_SESSION['type']=="manager") echo ' - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./report">'.$lng['report'].'</a>';
 if ($_SESSION['type']=="admin") echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./report">'.$lng['report'].'</a>';
 if ($_SESSION['type']=="root") echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./report">'.$lng['report'].'</a>';
 ?>

@@ -10,7 +10,7 @@ if ($lang=="fr"){
 
 }else{
 $lng['PIN']='PIN';
-$lng['welcome_instructions']='You may listen to the meeting in three different ways :<br />1.Click on the link "listen" above.<br />2.Call the no :044 004 0044 from your phone.<br />3.Connect to the meeting with a VOIP client simply call "meeting@kh.sinux.ch" . ';
+$lng['welcome_instructions']='To listen to the meeting click on the link "listen" above.';
 $lng['listening']='Listen';
 $lng['listening_text']='The meeting should start automatically. If it doesn\'t, try to press the "play" button.<br /> Note that there is a delay of at least 30sec with the actual meeting.';
 $lng['user']='User';
