@@ -11,7 +11,7 @@ exit();
 <a href="./user_add"><?PHP echo $lng['add_new_user'];?></a><br /><br />
 <table>
 <?PHP
-echo '<tr><td><b>'.$lng['user'].'</td><td><b>'.$lng['name'].'</b></td><td><b>'.$lng['congregation'].'</b></td><td><b>'.$lng['rights'].'</b></td><td><b>type</b></td><td><b>Info</b></td><td><b>Last login on</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
+echo '<tr><td><b>'.$lng['user'].'</td><td><b>'.$lng['name'].'</b></td><td><b>Info</b></td><td><b>Last login on</b></td><td><b>'.$lng['congregation'].'</b></td><td><b>'.$lng['rights'].'</b></td><td><b>type</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 $db=file("db/users");
     foreach($db as $line){
         $data=explode ("**",$line);
