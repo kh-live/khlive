@@ -25,7 +25,7 @@ if (isset($_SERVER['HTTPS'])){
      header("Location:$redirect");
   }
 }else{
-if($_SERVER['HTTP_HOST']!="192.168.1.123" AND $_SERVER['HTTP_HOST']!="localhost:8080")
+if($_SERVER['HTTP_HOST']!="192.168.1.123" AND $_SERVER['HTTP_HOST']!="localhost:8080" AND $_SERVER['HTTP_HOST']!="127.0.0.1:8081")
   {
 $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
      header("Location:$redirect");
@@ -94,6 +94,7 @@ $db=file("db/users");
 		$_SESSION['full_name']=$data[2];
                 $_SESSION['type']=$data[4];
 		$_SESSION['cong']=$data[3];
+		$_SESSION['pin']=$data[5];
 		$login_error="";
 		$login_log=1;
 		}else{
@@ -137,7 +138,71 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 			//sort out when a bad login is logged it is confusing
 
 	}else{
+	//$user might not exist...
 	$info=time().'**info**bad login**'.$user.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
+}elseif (isset ($_GET['qlog'])){
+$login_log="";
+if (is_numeric($_GET['qlog'])){
+$qlog=$_GET['qlog'];
+}else{
+$qlog="";
+}
+$db=file("db/users");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+        if ($data[5]==$qlog){
+	    //check that the user has the right to login (web or all) in data6
+                $_SESSION['user']=$data[0];
+		$user=$data[0];
+		$_SESSION['full_name']=$data[2];
+                $_SESSION['type']="user"; //we force user mode as quick login isnt very safe
+		$_SESSION['cong']=$data[3];
+		$_SESSION['pin']=$data[5];
+		$login_error="";
+		$login_log=1;
+		}else{
+	$login_error=$lng['badlogin'];
+	}
+}
+
+if ($login_log==1){
+$info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong'].'**'.$_SERVER['REMOTE_ADDR']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+			
+	$info=time().'**info**login successful**'.$_SESSION['user']."**\n";
+	$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	
+		$db2=file("db/users");
+			$file_content="";
+	foreach($db2 as $line2){
+        $data2=explode ("**",$line2);
+		if (strtoupper($data2[0])==strtoupper($user)){
+		// last login time added in the database
+		$file_content.=$data2[0].'**'.$data2[1].'**'.$data2[2].'**'.$data2[3].'**'.$data2[4].'**'.$data2[5].'**'.@$data2[6].'**'.time()."**".@$data2[8]."**\n";
+		}else{
+		$file_content.=$line2;
+		}
+
+		$file=fopen('./db/users','w');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			}
+			}
+			//sort out when a bad login is logged it is confusing
+
+	}else{
+	$info=time().'**info**bad login**'.$qlog.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -148,6 +213,7 @@ if (!isset($_SESSION['user'])){
 include ("./login.php");
 }else{
 //check if there is a live meeting
+ if ($_SERVER['HTTP_HOST']!="localhost:8080" AND $_SERVER['HTTP_HOST']!="127.0.0.1:8081"){
 	if (!file_exists('/dev/shm/meeting_'.$_SESSION['cong']) AND $_SERVER['HTTP_HOST']!="localhost:8080"){
 	$file=fopen('/dev/shm/meeting_'.$_SESSION['cong'],'w');
 	fputs($file,"down");
@@ -158,7 +224,6 @@ include ("./login.php");
 	fputs($file,"down");
 	fclose($file);
 	}
-	if ($_SERVER['HTTP_HOST']!="localhost:8080"){
 	$_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong']));
 	$_SESSION['test_meeting_status']=implode("",file('/dev/shm/test_meeting_'.$_SESSION['cong']));
 	}else{

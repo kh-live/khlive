@@ -1,45 +1,4 @@
 /**********CSS*******/
-#login{
-	width:100%;
-}
-#login form{
-	border: 1px solid grey;
-	background-color:white;
-	width:180px;
-		padding:10px;
-		margin:0 auto;
-}
-#titles{
-	width:200px;
-		margin:0 auto;
-		height:30px;
-		padding-top:10px;
-}
-#title1{
-	font-size:30px;
-	color:#aaa;
-	display:inline;
-}
-#title2{
-	font-size:20px;
-	display:inline;
-}
-#title_mobile{
-	font-size:20px;
-	color:#aaa;
-	display:inline;
-}
-#login-message{
-	color :#EB691D;
-	height:14px;
-	width:200px;
-	margin: 0 auto;
-	font-size:14px;
-	padding-bottom:20px;
-}
-#lines{
-display:none;
-}
 #title3 {
 	position:absolute;
 	font-size:30px;
@@ -54,6 +13,16 @@ display:none;
 	top:9px;
 	z-index:103;
 }
+#title_mobile{
+	font-size:26px;
+		    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 1px 2px 3px #fff, 0 0 0 #000;
+	display:inline;
+}
+#lines{
+display:none;
+}
+
 #title_mobile2{
 	position:absolute;
 	font-size:20px;

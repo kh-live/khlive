@@ -9,6 +9,7 @@ exit();
 <html>
 <head>
 <title><?PHP echo $lng['signin'];?></title>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300italic,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="<?PHP echo $site_css_default;?>" media="all" />
 <link rel="stylesheet" type="text/css" href="<?PHP echo $site_css_mobile;?>" media="only screen and (max-width:840px)" />
 <link type="text/css" rel="stylesheet" href="<?PHP echo $site_css;?>" media="only screen and (min-width:841px)" />
@@ -17,18 +18,73 @@ exit();
 <body>
 <div id="titles">
 <div id="title1">KH</div>
-<div id="title2">Live!</div>
+<div id="title2">Live!</div><br />
 <div id="title_mobile">mobile</div>
 </div>
 <div id="login">
+<a href="javascript:show_quick_login()">Quick Login</a>
 <form action="./login" method="post">
-<b><?PHP echo $lng['user'];?></b><br />
-<input class="field_login" type="text" name="login_user"><br />
-<b><?PHP echo $lng['password'];?></b><br />
-<input class="field_login" type="password" name="login_password"><br />
+<input class="field_login" type="text" name="login_user" placeholder="<?PHP echo $lng['user'];?>"><br />
+<input class="field_login" type="password" name="login_password" placeholder="<?PHP echo $lng['password'];?>"><br />
 <input id="input_login" type="submit" value="<?PHP echo $lng['signin'];?>">
 </form>
 </div>
+<div id="quick_login">
+<a href="javascript:show_normal_login()">Standard Login</a>
+<ul id="pad">
+<li class="pad_number">7</li>
+<li class="pad_number">8</li>
+<li class="pad_number">9</li>
+<li class="pad_number">4</li>
+<li class="pad_number">5</li>
+<li class="pad_number">6</li>
+<li class="pad_number">1</li>
+<li class="pad_number">2</li>
+<li class="pad_number">3</li>
+<li class="pad_number">*</li>
+<li class="pad_number">0</li>
+<li class="pad_number" id="hash">#</li>
+</ul>
+</div>
 <div id="login-message"><?PHP echo $login_error;?></div>
+<script>
+function show_normal_login(){
+document.getElementById("quick_login").style.display ="none";
+document.getElementById("login").style.display ="block";
+}
+function show_quick_login(){
+document.getElementById("quick_login").style.display ="block";
+document.getElementById("login").style.display ="none";
+}
+var quick_pwd="";
+function click_button(no){
+if (no=="*"){
+quick_pwd="";
+}else if (no=="#"){
+/*login*/
+document.location="./login?qlog=" + quick_pwd;
+}else{
+quick_pwd=quick_pwd + no;
+}
+}
+var link_ele = document.getElementsByClassName('pad_number');
+for (var i = 0; i < link_ele.length; ++i) {
+    var link = link_ele[i];
+	link.onclick = function(){
+	click_button(this.innerHTML);
+	this.style.backgroundColor="rgba(0,0,0,0.4)";
+	this.style.boxShadow="0 0 8px rgba(0, 0, 0, 0.7)";
+	window.setTimeout("reset_no()", 200);
+	}
+	}
+function reset_no(){
+	var link_ele = document.getElementsByClassName('pad_number');
+for (var i = 0; i < link_ele.length; ++i) {
+    var link = link_ele[i];
+    link.style.backgroundColor="";
+    link.style.boxShadow="";
+    }
+	}
+</script>
 </body>
 </html>
