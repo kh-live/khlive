@@ -22,7 +22,7 @@ exit();
 <div id="title_mobile">mobile</div>
 </div>
 <div id="login">
-<a href="javascript:show_quick_login()">Quick Login</a>
+<a href="javascript:show_quick_login()">Quick Login</a> | Standard Login
 <form action="./login" method="post">
 <input class="field_login" type="text" name="login_user" placeholder="<?PHP echo $lng['user'];?>"><br />
 <input class="field_login" type="password" name="login_password" placeholder="<?PHP echo $lng['password'];?>"><br />
@@ -30,7 +30,7 @@ exit();
 </form>
 </div>
 <div id="quick_login">
-<a href="javascript:show_normal_login()">Standard Login</a>
+Quick Login | <a href="javascript:show_normal_login()">Standard Login</a>
 <ul id="pad">
 <li class="pad_number">7</li>
 <li class="pad_number">8</li>
