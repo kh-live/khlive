@@ -33,11 +33,11 @@ $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 }
 
 header('Content-type: text/html; charset=ISO-8859-15');
-
+$version="1.1";
 $login_error="";
-$site_css_default="default.css";
-$site_css="style.css";
-$site_css_mobile="mobile.css";
+$site_css_default="default.css?version=".$version;
+$site_css="style.css?version=".$version;
+$site_css_mobile="mobile.css?version=".$version;
 //adress to test if the server is live - localhost
 $server="localhost";
 //adress to generate links for streams
@@ -45,7 +45,7 @@ $server_out="khlive.mooo.com";
 $port="8000";
 $lang="";
 $timer="60";
-$version="1.1";
+
 
 include ("./lang.php");
 
