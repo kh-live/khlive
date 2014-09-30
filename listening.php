@@ -7,6 +7,31 @@ exit();
 }
 ?>
 <script type="text/javascript">
+function update_at_no(no){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp=="ok"){
+//everything went fine
+    }else{
+	alert("There was an error while updating the attendance. Please try again.");
+    }
+   
+    }
+  }
+xmlhttp.open("GET","listener_joined.php?action=update_at&user=<?PHP echo $_SESSION['user'];?>&number=" + no, true);
+xmlhttp.send();
+}
 function showdiv(d1, d2){
 if(d1.length < 1) { return; }
 if(d2.length < 1) { return; }
@@ -169,6 +194,7 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
 	}
 	}
 	if ($is_live==1){
+	/*there is something weird here. only one live feed at the time....*/
     $no_streams_live+=1;
     $type_txt="";
     if ($type=="mp3") $type_txt="audio/mpeg";
@@ -205,8 +231,24 @@ $db=file("db/cong");
         $data=explode ("**",$line);
 	if ($data[0]==$_SESSION['cong']) $cong_answer=$data[11];
 	}
-if ($no_streams_live>>0 AND $cong_answer=="yes" ){ //OR 1==1
+if ($no_streams_live>>0 AND $cong_answer=="yes" OR 1==1){ //OR 1==1
 ?>
+<br /><div id="number_at">
+Please let us know how many people are listening on your side (yourself included) : <br />
+<select name="attendance" onchange="javascript:update_at_no(this.value)">
+<option value="">...</option>
+<option value="1" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==1) echo 'selected="selected"';} ?>>1</option>
+<option value="2" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==2) echo 'selected="selected"';} ?>>2</option>
+<option value="3" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==3) echo 'selected="selected"';} ?>>3</option>
+<option value="4" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==4) echo 'selected="selected"';} ?>>4</option>
+<option value="5" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==5) echo 'selected="selected"';} ?>>5</option>
+<option value="6" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==6) echo 'selected="selected"';} ?>>6</option>
+<option value="7" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==7) echo 'selected="selected"';} ?>>7</option>
+<option value="8" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==8) echo 'selected="selected"';} ?>>8</option>
+<option value="9" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==9) echo 'selected="selected"';} ?>>9</option>
+<option value="10" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==10) echo 'selected="selected"';} ?>>10</option>
+</select>
+</div>
 <div id="sms_small" onclick="javascript:showdiv('sms','sms_small')">
 Click here if you want to answer
 </div>

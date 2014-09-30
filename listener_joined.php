@@ -43,7 +43,7 @@ if (isset($cong)) unset($cong);
 			fclose($file);
 			}
 	}
-	$info=$client_id.'**'.$user.'**'.$congregation.'**'.$mount.'**'.time()."**normal**\n";
+	$info=$client_id.'**'.$user.'**'.$congregation.'**'.$mount.'**'.time()."**normal****\n";
 	$file=fopen('./db/live_users','a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -92,6 +92,33 @@ if ($_GET['action']=="phone_add"){
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+  }elseif  ($_GET['action']=="update_at"){
+	if (isset($_GET['number']) AND isset($_GET['user'])){
+	$number=$_GET['number'];
+	$user=$_GET['user'];
+	
+	$a = session_id();
+if ($a == ''){
+session_start();
+}
+	$_SESSION['number_at']=$number;
+	
+	$file=file('./db/live_users');
+	$new_file="";
+	foreach($file as $line){
+	$live_user=explode("**",$line);
+		if ($live_user[1]==$user){
+		$new_file.=$live_user[0]."**".$live_user[1]."**".$live_user[2]."**".$live_user[3]."**".$live_user[4]."**".$live_user[5]."**".$number."**\n";
+		}else{
+		$new_file.=$line;
+		}
 	}
+	$file2=fopen('./db/live_users','w');
+			if(fputs($file2,$new_file)){
+			fclose($file2);
+			echo "ok";
+			}
+	}
+  }
  }
 ?>

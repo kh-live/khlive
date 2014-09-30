@@ -38,6 +38,17 @@ body{
 	float:right;
 	padding-left:50px;
 }
+.user_count{
+height:30px;
+margin-top:10px;
+margin-left:10px;
+position:absolute;
+background-color:rgba(255,255,255,0.8);
+border-radius:5px;
+color: #eb691d;
+padding:5px;
+font-size:30px;
+}
 </style>
 <script type="text/javascript">
 function showdiv(d1, d2){
@@ -62,7 +73,7 @@ if(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop 
 <?PHP
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
 $_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong']));
-	if (!strstr($_SESSION['meeting_status'],"live")){ //AND 1==2
+	if (!strstr($_SESSION['meeting_status'],"live") AND 1==2){ //AND 1==2
 $cong_name=$_SESSION['cong'];
 if(isset($_POST['submit'])){
 	if($_POST['submit']=="Start meeting"){
@@ -267,7 +278,7 @@ exec('asterisk -rx "meetme list '.$cong_no.'concise"',$conf_db);
 	echo '<div class="live_user"><img src="./img/phone_record.png" /><br />'.$data[0].'</div>';
 	}else{
 	//this is streaming
-	echo '<div class="live_user"><img src="./img/comp1.png" /><br />'.$data[1].'</div>';
+	echo '<div class="live_user"><h1 class="user_count">'.$data[6].'</h1><img src="./img/comp1.png" /><br />'.$data[1].'</div>';
 	}
 	}elseif(strstr($data[5],"request")){
 	if($data[3]=="phone_live"){

@@ -37,7 +37,7 @@ there are 3 states of answering - normal - request - answering*/
 			$tmp=explode("--",$data[5]);
 			$action="answering--".$tmp[1]."--".$tmp[2];
 			}
-		$file_content.=$data[0].'**'.$data[1].'**'.$data[2].'**'.$data[3].'**'.$data[4].'**'.$action."**\n";//here is the action used to be passed to the meeting-ajax.php
+		$file_content.=$data[0].'**'.$data[1].'**'.$data[2].'**'.$data[3].'**'.$data[4].'**'.$action.'**'.$data[6]."**\n";//here is the action used to be passed to the meeting-ajax.php
 		$ij++;
 		}else{
 		$file_content.=$line;

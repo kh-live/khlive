@@ -90,6 +90,15 @@
 	width:800px;
 	background-color:#eee;
 }
+#number_at{
+	color:white;
+	background-color:grey;
+	min-height:30px;
+	font-size:20px;
+	text-align:center;
+	margin-top:20px;
+	padding:10px;
+}
 #sms_small{
 	color:white;
 	background-color:grey;
