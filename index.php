@@ -33,7 +33,7 @@ $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 }
 
 header('Content-type: text/html; charset=ISO-8859-15');
-$version="1.1";
+$version="1.2";
 $login_error="";
 $site_css_default="default.css?version=".$version;
 $site_css="style.css?version=".$version;
