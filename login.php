@@ -9,7 +9,6 @@ exit();
 <html>
 <head>
 <title><?PHP echo $lng['signin'];?></title>
-<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300italic,700' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="<?PHP echo $site_css_default;?>" media="all" />
 <link rel="stylesheet" type="text/css" href="<?PHP echo $site_css_mobile;?>" media="only screen and (max-width:840px)" />
 <link type="text/css" rel="stylesheet" href="<?PHP echo $site_css;?>" media="only screen and (min-width:841px)" />
@@ -45,6 +44,9 @@ Quick Login | <a href="javascript:show_normal_login()">Standard Login</a>
 <li class="pad_number">0</li>
 <li class="pad_number" id="hash">#</li>
 </ul>
+</div>
+<div id="hint">
+<b>Hint : </b>click on "Standard Login" to connect with your username and password.
 </div>
 <div id="login-message"><?PHP echo $login_error;?></div>
 <script>

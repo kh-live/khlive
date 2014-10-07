@@ -73,7 +73,7 @@ if(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop 
 <?PHP
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
 $_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong']));
-	if (!strstr($_SESSION['meeting_status'],"live") AND 1==2){ //AND 1==2
+	if (!strstr($_SESSION['meeting_status'],"live")){ //AND 1==2
 $cong_name=$_SESSION['cong'];
 if(isset($_POST['submit'])){
 	if($_POST['submit']=="Start meeting"){

@@ -4,7 +4,7 @@ body{
 	padding:0;
 	font-size:16px;
 	color:black;
-	font-family: 'Ubuntu', sans-serif;
+	font-family: sans-serif;
 	background-color:#eee;
 }
 #login, #quick_login{
@@ -68,6 +68,10 @@ text-decoration:underline;
 	font-size:14px;
 	padding-bottom:20px;
 	text-align:center;
+}
+#hint{
+	text-align:center;
+	padding: 20px;
 }
 #titles{
 	width:200px;
