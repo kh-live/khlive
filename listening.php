@@ -231,7 +231,7 @@ $db=file("db/cong");
         $data=explode ("**",$line);
 	if ($data[0]==$_SESSION['cong']) $cong_answer=$data[11];
 	}
-if ($no_streams_live>>0 AND $cong_answer=="yes" OR 1==1){ //OR 1==1
+if ($no_streams_live>>0 AND $cong_answer=="yes"){ //OR 1==1
 ?>
 <br /><div id="number_at">
 Please let us know how many people are listening on your side (yourself included) : <br />
