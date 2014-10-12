@@ -15,7 +15,8 @@ exit();
 <meta name="viewport" content="width=320" />
 <?PHP
 if($page=="listening"){
-if(!strstr($_SESSION['meeting_status'],"live")){
+if(strstr($_SESSION['meeting_status'],"live") OR $_SERVER['HTTP_HOST']=="127.0.0.1:8081" ){// for testing we trick it to belive it's live
+}else{
  echo '<meta http-equiv="refresh" content="15" />';
 }
 }

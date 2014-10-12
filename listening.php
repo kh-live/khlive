@@ -7,6 +7,7 @@ exit();
 }
 ?>
 <script type="text/javascript">
+var count="";
 function update_at_no(no){
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -31,6 +32,43 @@ xmlhttp.onreadystatechange=function()
   }
 xmlhttp.open("GET","listener_joined.php?action=update_at&user=<?PHP echo $_SESSION['user'];?>&number=" + no, true);
 xmlhttp.send();
+}
+function cancel_answer(){
+var r=confirm("Are you sure you want to cancel your answer ?");
+if (r==true)
+  {
+  
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp=="done"){
+//everything went fine
+document.getElementById("sms_small").onclick="";
+document.getElementById("sms_small").style.cursor= "auto";
+	document.getElementById("sms_small").onmouseover = function() {
+    this.style.textDecoration = "none";
+    }
+	 document.getElementById("sms_small").innerHTML="Your answer is canceled !<br />";
+	 var tmp=counter(1);
+    }else{
+	alert("There was an error while canceling the answer. Please try again.");
+    }
+   
+    }
+  }
+xmlhttp.open("GET","answer.php?action=sms_cancel&agent=client&client=<?PHP echo $_SESSION['user'];?>&cong=<?PHP echo $_SESSION['cong'];?>", true);
+xmlhttp.send();
+}
 }
 function showdiv(d1, d2){
 if(d1.length < 1) { return; }
@@ -96,12 +134,9 @@ xmlhttp.onreadystatechange=function()
 	//add event to check in 30sec
 	var timer=setTimeout(function(){trackSms("<?PHP echo $_SESSION['user'];?>","<?PHP echo $_SESSION['cong'];?>")}, 30000);
 	//deactivate onclick
-	document.getElementById("sms_small").onclick="";
-	document.getElementById("sms_small").style.cursor= "wait";
-	document.getElementById("sms_small").onmouseover = function() {
-    this.style.textDecoration = "none";
-    }
-	 document.getElementById("sms_small").innerHTML="Your answer is : " + resp + "<br />";
+	document.getElementById("sms_small").onclick=function () {cancel_answer();}
+
+	 document.getElementById("sms_small").innerHTML='Your answer is : ' + resp + '<br /> If you do not want to answer anymore, click here to cancel your answer!<br />';
 	 var tmp=counter(1);
     }else{
     //activate onclick showdiv('sms','sms_small')
@@ -114,6 +149,7 @@ xmlhttp.onreadystatechange=function()
     this.style.textDecoration="none";
     }
 	document.getElementById("sms_small").onclick=function () {showdiv('sms','sms_small');}
+	clearTimeout(count);
 	 document.getElementById("sms_small").innerHTML="Your answer is : " + resp + " ! Click here to answer again.";
     }
    
@@ -125,7 +161,7 @@ xmlhttp.send();
 function counter (i){
  document.getElementById("sms_small").innerHTML=document.getElementById("sms_small").innerHTML + "."
  if (i<=9){
- var count=setTimeout(function(){counter(i+1)}, 3000);
+  count=setTimeout(function(){counter(i+1)}, 3000);
  }
 }
 </script>
@@ -231,7 +267,7 @@ $db=file("db/cong");
         $data=explode ("**",$line);
 	if ($data[0]==$_SESSION['cong']) $cong_answer=$data[11];
 	}
-if ($no_streams_live>>0 AND $cong_answer=="yes"){ //OR 1==1
+if ($no_streams_live>>0 AND $cong_answer=="yes" OR $_SERVER['HTTP_HOST']=="127.0.0.1:8081" ){ //for testing we trick it to believe it's live
 ?>
 <br /><div id="number_at">
 Please let us know how many people are listening on your side (yourself included) : <br />

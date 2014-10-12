@@ -87,7 +87,7 @@ if ($_GET['action']=="phone_add"){
 			fclose($file);
 			}
 	}
-	$info=$client.'**'.$conf_id.'**'.$cong.'**'.$type.'**'.time()."**normal**\n";
+	$info=$client.'**'.$conf_id.'**'.$cong.'**'.$type.'**'.time()."**normal****\n";
 	$file=fopen('./db/live_users','a');
 			if(fputs($file,$info)){
 			fclose($file);

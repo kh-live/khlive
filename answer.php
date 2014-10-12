@@ -120,7 +120,12 @@ there are 3 states of answering - normal - request - answering*/
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+			//if the cancellation comes from the user we must not redirect
+			if (isset($_REQUEST['agent'])){
+				if ($_REQUEST['agent']=="client") echo "done";
+			}else{
 		header('Location: ./meeting-ajax.php');
+		}
 	}
 }
         

@@ -73,95 +73,8 @@ if(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop 
 <?PHP
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
 $_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong']));
-	if (!strstr($_SESSION['meeting_status'],"live")){ //AND 1==2
-$cong_name=$_SESSION['cong'];
-if(isset($_POST['submit'])){
-	if($_POST['submit']=="Start meeting"){
-//start meeting
-	$info="Channel: SIP/".$_SESSION['cong_phone_no']."
-MaxRetries: 2
-RetryTime: 60
-WaitTime: 30
-Context: test-menu
-Extension: meet_me_".$cong_name."_admin
-Priority: 1
-";
-$file=fopen('/var/spool/asterisk/outgoing/meeting_'.$cong_name.'_admin.call','w');
-			if(fputs($file,$info)){
-			fclose($file);
-			//fixit what if the call fails???
-			//dont fill shm here it is done in the dialplan (line 142)
-			//log accordingly
-			/*$file=fopen('/dev/shm/meeting_'.$_SESSION['cong'],'w');
-			fputs($file,"live");
-			fclose($file);*/
-			  echo 'Starting...<br /><br />';
-			  $_SESSION['meeting_just_started']=1;
-			$info=time().'**info**meeting start**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
-	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
-			if(fputs($file,$info)){
-			fclose($file);
-			}
-	}
-}
-}else{
-//if the meeting just stopped
-if (isset($_SESSION['meeting_just_stopped'])){
-			if ($_SESSION['meeting_just_stopped']==1){
-			$info=time().'**info**meeting stop**'.$_SESSION['user']."**\n";
-			$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
-			if(fputs($file,$info)){
-			fclose($file);
-			}
-			$_SESSION['meeting_just_stopped']='';
-			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />';
-			}
-		}
-// if the meeting failed to start
-if (isset($_SESSION['meeting_just_started'])){
-			if ($_SESSION['meeting_just_started']==1){
-			$info=time().'**error**failure to start the meeting**'.$_SESSION['user']."**\n";
-			$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
-			if(fputs($file,$info)){
-			fclose($file);
-			}
-			$_SESSION['meeting_just_started']='';
-			echo '<b style="color:red;">The meeting failed to start!</b><br />';
-			}
-		}
-//otherwise
-$db=file("db/cong");
-foreach($db as $line){
-$data=explode ("**",$line);
-if ($data[0]==$_SESSION['cong']) {
-$_SESSION['cong_phone_no']=$data[4];
-$meeting_type=$data[5];
-}
-}
-	if (isset($_SESSION['cong_phone_no'])){
-	if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
-	echo 'Click on the button bellow to start the meeting.<br />
-	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b><br />';
-	//check if the call can be placed first warn if it can't
-	exec('asterisk -rx "sip show peers"',$sip_result);
-	$sip_result=implode(" , ",$sip_result);
-	//find a way to avoid having all the spaces in the strstr
-	if (strstr($sip_result, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].'                   192.168.1.10')){
-	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
-	echo '<form action="" method="post">
-	<input name="submit" id="input_login" type="submit" value="Start meeting">
-	</form>';
-	}else{
-	echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
-	}
-	
-	}else{
-	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
-	}
-	}
-	}
-	}else{
-if(isset($_POST['submit'])){
+	if (strstr($_SESSION['meeting_status'],"live") OR $_SERVER['HTTP_HOST']=="127.0.0.1:8081"){ //for testing we trick it to believe it's live
+	if(isset($_POST['submit'])){
 	if($_POST['submit']=="Stop meeting"){
 	echo 'Are you sure you want to stop the meeting ?<br /><br />
 	<form action="" method="post">
@@ -316,6 +229,95 @@ exec('asterisk -rx "meetme list '.$cong_no.'concise"',$conf_db);
 	
 	echo '</table>';
 
+	}else{
+
+$cong_name=$_SESSION['cong'];
+if(isset($_POST['submit'])){
+	if($_POST['submit']=="Start meeting"){
+//start meeting
+	$info="Channel: SIP/".$_SESSION['cong_phone_no']."
+MaxRetries: 2
+RetryTime: 60
+WaitTime: 30
+Context: test-menu
+Extension: meet_me_".$cong_name."_admin
+Priority: 1
+";
+$file=fopen('/var/spool/asterisk/outgoing/meeting_'.$cong_name.'_admin.call','w');
+			if(fputs($file,$info)){
+			fclose($file);
+			//fixit what if the call fails???
+			//dont fill shm here it is done in the dialplan (line 142)
+			//log accordingly
+			/*$file=fopen('/dev/shm/meeting_'.$_SESSION['cong'],'w');
+			fputs($file,"live");
+			fclose($file);*/
+			  echo 'Starting...<br /><br />';
+			  $_SESSION['meeting_just_started']=1;
+			$info=time().'**info**meeting start**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
+}
+}else{
+//if the meeting just stopped
+if (isset($_SESSION['meeting_just_stopped'])){
+			if ($_SESSION['meeting_just_stopped']==1){
+			$info=time().'**info**meeting stop**'.$_SESSION['user']."**\n";
+			$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+			$_SESSION['meeting_just_stopped']='';
+			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />';
+			}
+		}
+// if the meeting failed to start
+if (isset($_SESSION['meeting_just_started'])){
+			if ($_SESSION['meeting_just_started']==1){
+			$info=time().'**error**failure to start the meeting**'.$_SESSION['user']."**\n";
+			$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+			$_SESSION['meeting_just_started']='';
+			echo '<b style="color:red;">The meeting failed to start!</b><br />';
+			}
+		}
+//otherwise
+$db=file("db/cong");
+foreach($db as $line){
+$data=explode ("**",$line);
+if ($data[0]==$_SESSION['cong']) {
+$_SESSION['cong_phone_no']=$data[4];
+$meeting_type=$data[5];
+}
+}
+	if (isset($_SESSION['cong_phone_no'])){
+	if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
+	echo 'Click on the button bellow to start the meeting.<br />
+	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b><br />';
+	//check if the call can be placed first warn if it can't
+	exec('asterisk -rx "sip show peers"',$sip_result);
+	$sip_result=implode(" , ",$sip_result);
+	//find a way to avoid having all the spaces in the strstr
+	if (strstr($sip_result, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].'                   192.168.1.10')){
+	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
+	echo '<form action="" method="post">
+	<input name="submit" id="input_login" type="submit" value="Start meeting">
+	</form>';
+	}else{
+	echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
+	}
+	
+	}else{
+	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
+	}
+	}
+	}
+	
 	}
 }
 ?>
