@@ -20,7 +20,7 @@ if(isset($_POST['submit'])){
 			
 			$salt=hash("sha512",rand());
 			$pwd_hashed=hash("sha512",$salt.$_POST['password']);
-			$info=$_POST['user'].'**'.$salt.'--'.$pwd_hashed.'**'.$_POST['name'].'**'.$_POST['congregation'].'**'.$_POST['rights'].'**'.$_POST['pin'].'**'.$_POST['type']."** **".$_POST['info']."\n"; //sanitize input
+			$info=$_POST['user'].'**'.$salt.'--'.$pwd_hashed.'**'.$_POST['name'].'**'.$_POST['congregation'].'**'.$_POST['rights'].'**'.$_POST['pin'].'**'.$_POST['type']."** **".$_POST['info']."**\n"; //sanitize input
 			$file=fopen('./db/users','a');
 			if(fputs($file,$info)){
 			fclose($file);
