@@ -16,7 +16,13 @@ $filename=$_POST['filename'];
 $url=$_POST['url'];
 $name=$_POST['name'];
 $desc=$_POST['desc'];
-if ( is_file("./downloads/".$filename)){
+$video_list=file("db/videos");
+$test="";
+	foreach($video_list as $line){
+		$video=explode("**", $line);
+		if (in_array($filename,$video)) $test="ok";
+		}
+if ($test=="ok"){
 echo "error : file name already used";
 }else {    
 //we add the new file in the db
