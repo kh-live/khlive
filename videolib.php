@@ -80,18 +80,23 @@ $video_list=file("db/videos");
 	   }else{
 	    $info.=" B";
 	   }
-                     echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="./downloads/'.$file.'">'.$lng['download'].'</a></td></tr>';
+	   $link="Available at the kingdom hall";
+	   if (($_SESSION['type']=="manager" OR $_SESSION['type']=="root") AND strstr($_SERVER['HTTP_HOST'], "192.168.1.123")) $link='<a href="./downloads/'.$file.'">'.$lng['download'].'</a>';
+                     echo'<tr><td>'.$video[2].'</td><td>'.$info.'</td><td>'.$link.'</td></tr>';
                      $status="ok";
 		}
 	 }
 	closedir($dh);
 	}
 		if ($status==""){
-		echo'<tr><td>'.$video[1].'</td><td>-</td><td>Available tomorrow</td></tr>';
+		echo'<tr><td>'.$video[2].'</td><td>-</td><td>Available tomorrow</td></tr>';
 		}
 	}
 ?>
 </table>
+<?PHP
+if ($_SESSION['type']=="root"){
+?>
 <h3> Add video to be downloaded</h3>
  it will be uploaded in downloads folder on the next day at 00:05am
 <form action="" method="post">
@@ -107,4 +112,7 @@ $video_list=file("db/videos");
         </table>
         <input type="submit" name="submit" value="Add to list" />
     </form>
+<?PHP
+}
+?>
 </div>
