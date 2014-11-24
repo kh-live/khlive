@@ -248,6 +248,8 @@ if ($_SESSION['type']=="root"){
 	include ("./software.php");
 	}elseif($page=="diagnosis"){
 	include ("./diagnosis.php");
+	}elseif ($page=="video_edit"){
+	include ("./video_edit.php");
 	}
 	}
 //admin links only
