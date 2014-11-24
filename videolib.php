@@ -7,7 +7,7 @@ exit();
 }
 if(!isset($_SESSION['selected_lang'])) $_SESSION['selected_lang']="";
 if(!isset($_SESSION['selected_cat'])) $_SESSION['selected_cat']="";
-if(!isset($_SESSION['selected_date_v'])) $_SESSION['selected_date_v']="new";
+if(!isset($_SESSION['selected_date_v'])) $_SESSION['selected_date_v']="";
 
 if(isset($_GET['lang'])){
 $_SESSION['selected_lang']=$_GET['lang'];
@@ -97,6 +97,7 @@ Category : <select onchange="video_change_cat(this.value)">
 <option value="Whiteboard Animations" <?PHP if($_SESSION['selected_cat']=='Whiteboard Animations') echo 'selected="selected"'; ?> >Whiteboard Animations</option>
 </select>
 Date : <select onchange="video_change_date(this.value)">
+<option value="" <?PHP if($_SESSION['selected_date_v']=='') echo 'selected="selected"'; ?> >...</option>
 <option value="new" <?PHP if($_SESSION['selected_date_v']=='new') echo 'selected="selected"'; ?> >Newest first</option>
 <option value="old" <?PHP if($_SESSION['selected_date_v']=='old') echo 'selected="selected"'; ?> >Oldest first</option>
 </select>
@@ -130,8 +131,13 @@ $video_list=file("db/videos");
 	   if (($_SESSION['type']=="manager" OR $_SESSION['type']=="root") AND strstr($_SERVER['HTTP_HOST'], "192.168.1.123")) $link='<a href="./downloads/'.$file.'">'.$lng['download'].'</a>';
 	   if ($_SESSION['type']=="root") $link.=' - <a href="./video_edit?file='.$file.'">Edit</a>';
 	   if (isset($_SESSION['video_path'])) $link.=' - <a href="file:///'.$_SESSION['video_path'].$file.'">Local link</a>';
-                     $table_videos[]='<tr><td>'.$video[2].'</td><td>'.$info.'</td><td>'.$link.'</td></tr>';
-                     $status="ok";
+		if (time()-$video[0]<=604800){
+                     $table_videos[]='<tr><td><b>'.$video[3].' : '.$video[2].'</b></td><td>'.$info.'</td><td>'.$link.'</td></tr>';
+                   }else{
+		$table_videos[]='<tr><td>'.$video[3].' : '.$video[2].'</td><td>'.$info.'</td><td>'.$link.'</td></tr>';
+		}
+		    $status="ok";
+		     
 		}
 	 }
 	closedir($dh);
@@ -141,7 +147,12 @@ $video_list=file("db/videos");
 		}
 	}
 	}
-if ($_SESSION['selected_date_v']=="new"){
+if ($_SESSION['selected_date_v']==""){
+sort($table_videos);
+foreach ($table_videos as $video){
+echo $video;
+}
+}elseif ($_SESSION['selected_date_v']=="new"){
 $new_videos=array_reverse($table_videos);
 foreach ($new_videos as $video){
 echo $video;
