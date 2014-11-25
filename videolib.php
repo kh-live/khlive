@@ -101,20 +101,24 @@ Date : <select onchange="video_change_date(this.value)">
 <option value="new" <?PHP if($_SESSION['selected_date_v']=='new') echo 'selected="selected"'; ?> >Newest first</option>
 <option value="old" <?PHP if($_SESSION['selected_date_v']=='old') echo 'selected="selected"'; ?> >Oldest first</option>
 </select>
-<table>
 <?PHP
+$v_no=0;
+$v_selected=0;
+$v_size=0;
 $table_videos = array();
-echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b>'.$lng['status'].'</b></td></tr>';
+
 //we must check if the file is on the video list
 $video_list=file("db/videos");
 	foreach($video_list as $line){
 		$video=explode("**", $line);
 		$status="";
+		$v_no++;
 	if (($_SESSION['selected_lang']=='' OR strstr($video[1],$_SESSION['selected_lang'])) AND ($_SESSION['selected_cat']=='' OR strstr($video[3],$_SESSION['selected_cat']))){
  if ($dh = @opendir("./downloads")) {
        while (($file = readdir($dh)) !== false) {
 	if ($file==$video[1]){
 	   $info=filesize("./downloads/".$file);
+	   $v_size+=$info;
 	   if ($info>=1073741824){
 	   $info=round($info/1073741824,1);
 	   $info.=" GB";
@@ -137,7 +141,7 @@ $video_list=file("db/videos");
 		$table_videos[]='<tr><td>'.$video[3].' : '.$video[2].'</td><td>'.$info.'</td><td>'.$link.'</td></tr>';
 		}
 		    $status="ok";
-		     
+		     $v_selected++;
 		}
 	 }
 	closedir($dh);
@@ -147,6 +151,12 @@ $video_list=file("db/videos");
 		}
 	}
 	}
+	
+	$v_size=round($v_size/1073741824,1);
+echo '<br /><br />Videos : '.$v_selected.'/'.$v_no.'<br /> Size : '.$v_size.' GB
+<table>';
+echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b>'.$lng['status'].'</b></td></tr>';
+
 if ($_SESSION['selected_date_v']==""){
 sort($table_videos);
 foreach ($table_videos as $video){
@@ -165,6 +175,7 @@ echo $video;
 ?>
 </table>
 <?PHP
+
 if ($_SESSION['type']=="root"){
 ?>
 <h3> Add video to be downloaded</h3>
