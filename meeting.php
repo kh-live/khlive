@@ -52,7 +52,7 @@ xmlhttp.send();
 function random_song(){
 var player = document.getElementById('rand_player');
 if (player.paused){
-var no=Math.floor((Math.random()*135)+1);
+var no=Math.floor((Math.random()*137)+1);
 if (no<=9){
 no="00"+no;
 }
@@ -79,7 +79,7 @@ Song : <select id="song1" onchange="javascript:update_song(1,this.value)">
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
-while ($i<=135){
+while ($i<=138){
 $j=$i;
 if ($i<=9) $j="00".$j;
 if ($i<=99 AND $i>=10) $j="0".$j;
@@ -102,7 +102,7 @@ Song 2: <select id="song2" onchange="javascript:update_song(2,this.value)">
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
-while ($i<=135){
+while ($i<=138){
 $j=$i;
 if ($i<=9) $j="00".$j;
 if ($i<=99 AND $i>=10) $j="0".$j;
@@ -125,7 +125,7 @@ if (isset($_SESSION['song_2'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
-while ($i<=135){
+while ($i<=138){
 $j=$i;
 if ($i<=9) $j="00".$j;
 if ($i<=99 AND $i>=10) $j="0".$j;

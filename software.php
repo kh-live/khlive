@@ -14,7 +14,7 @@ echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b
  if ($dh = @opendir("./downloads")) {
        while (($file = readdir($dh)) !== false) {
            if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
-	   if (true OR $_SESSION['type']=="admin") {
+	   if (!strstr($file, ".mp4")) {
 	   $info=filesize("./downloads/".$file);
 	   if ($info>=1048576){
 	   $info=round($info/1048576,1);
@@ -25,7 +25,7 @@ echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b
 	   }else{
 	    $info.=" B";
 	   }
-                     echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="./downloads/'.$file.'">'.$lng['download'].'</a>  - <a href="">'.$lng['delete'].'</a></td></tr>';
+                     echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="./downloads/'.$file.'">'.$lng['download'].'</a></td></tr>';
 }
                      }
 		}
