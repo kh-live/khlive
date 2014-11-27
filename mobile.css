@@ -124,33 +124,39 @@ display:none;
 	position:absolute;
 	top:100px;
 	right:0px;
-	width:300px;
-	background-color:#AAAAAA;
+	width:320px;
+	height:400px;
+	background-color:#CCCCCC;
 	border: 1px solid black;
-	height:320px;
 	z-index:200;
-	display:none;
+	margin-right:-320px;
 	padding: 5px;
+	transition:margin-right 0.3s;
 }
 #songs audio{
 	width:100%;
 }
-#songs a, #song-small a {
+#songs a {
 	color:white;
 	text-decoration:none;
 	font-weight:bolder;
+	font-size:16px;
+	float:right;
 }
 #song-small{
 	position:absolute;
 	top:100px;
-	right:0px;
+	right:10px;
 	width:30px;
 	background-color:#AAAAAA;
 	border: 1px solid black;
-	height:320px;
-
+	height:410px;
 	z-index:200;
 	text-align:center;
+}
+#song-small:hover{
+background-color:#BBBBBB;
+cursor:pointer;
 }
 #meeting{
 	width:100%;

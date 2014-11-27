@@ -15,8 +15,8 @@ echo '<div id="page">
 function showdiv(d1, d2){
 if(d1.length < 1) { return; }
 if(d2.length < 1) { return; }
-        document.getElementById(d1).style.display = "block";
-        document.getElementById(d2).style.display = "none";
+        document.getElementById(d1).style.marginRight = "0px";
+        document.getElementById(d2).style.marginRight = "-320px";
 }
 function update_song(id, no){
 if(id.length < 1) { return; }
@@ -72,9 +72,8 @@ player.stop();
 </script>
 </div>
 <div id="songs">
-<a href="javascript:showdiv('song-small','songs')">>></a>
-SONGS :<br /><br />
-Song : <select id="song1" onchange="javascript:update_song(1,this.value)">
+<a href="javascript:showdiv('song-small','songs')">>> HIDE</a><br /><br />
+Song 1 : <select id="song1" onchange="javascript:update_song(1,this.value)">
 <?PHP
 $i=1;
 $tmp="";
@@ -146,10 +145,12 @@ if (isset($_SESSION['song_3'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['
 Random songs:
 <audio id="rand_player" controls preload="auto" onclick="javascript:random_song()" >
  </audio>
+ <br /> <br />136 : The Kingdom is in place - Let it come!<br />
+ 137 : Grant us boldness<br />
+ 138 : Jehovah is your Name
 </div>
-<div id="song-small">
-<a href="javascript:showdiv('songs','song-small')"><<</a><br /><br />
-S<br />
+<div id="song-small" onclick="javascript:showdiv('songs','song-small')">
+<br />S<br />
 O<br />
 N<br />
 G<br />
