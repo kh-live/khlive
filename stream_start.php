@@ -1,4 +1,5 @@
 <?PHP
+include "db/config.php";
 if (isset($cong)) unset($cong);
  if (isset($_POST['action'])){
 	if ($_POST['action']=="mount_add"){
@@ -29,7 +30,7 @@ if (isset($cong)) unset($cong);
 	if ($data[0]==$cong) $type=$data[5];
 	}
 		if ($type=="none"){
-		$file=fopen('/dev/shm/meeting_'.$cong,'w');
+		$file=fopen($temp_dir.'meeting_'.$cong,'w');
 			fputs($file,"live");
 		fclose($file);
 		}

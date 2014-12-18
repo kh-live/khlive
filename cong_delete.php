@@ -105,6 +105,9 @@ if(isset($_POST['submit'])){
 			}else{
 			echo '<div id="error_msg">'.$lng['error'].'</div>';
 			}
+include "sip-gen.php";
+
+include "iax-gen.php";
 		}else{
 		echo '<div id="error_msg">'.$lng['error'].'</div>';
 		}

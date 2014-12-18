@@ -61,11 +61,11 @@ $tmp_results=array();
 	   }
 	   closedir($dh);
 	}
-	sort($tmp_results);
+	rsort($tmp_results);
 	$dates=array();
 	foreach ($tmp_results as $file){
-	$parts=explode("_",$file);
-	$date=substr($parts[2],0,6); //warning this is true only if the congregation has an _ in it's name. fix_it
+	$parts=explode("-",$file);
+	$date=substr($parts[1],0,6);
 	$dates[$date]="ok";
 	}
 	ksort($dates);
@@ -90,7 +90,7 @@ $tmp_results=array();
 	if ($selected_date==$date) $opt='selected="selected"';
 	echo '<option value="'.$date.'" '.$opt.'>'.$month.'/'.$year.'</option>';
 	}
-	echo '</select><br /><br />';
+	echo '</select><br /><br />Newest at the top';
 echo '<table><tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 
 	foreach($tmp_results as $file)

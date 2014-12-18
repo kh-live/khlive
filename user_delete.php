@@ -33,8 +33,11 @@ if(isset($_POST['submit'])){
 			$file=fopen('./db/users','w');
 			if(fputs($file,$file_content)){
 			fclose($file);
-			exec('asterisk -rx "database del '.$congregation.' '.$pin.'"');
+			exec($asterisk_bin.' -rx "database del '.$congregation.' '.$pin.'"');
 			//remove voip account if needed
+include "sip-gen.php";
+
+include "iax-gen.php";
 			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 			}else{
 			echo '<div id="error_msg">'.$lng['error'].'</div>';

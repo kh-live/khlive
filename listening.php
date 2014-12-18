@@ -176,8 +176,8 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
 	//only mp3
 	$type_accept="mp3";
 }elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Firefox")){
-	//only ogg
-	$type_accept="ogg";
+	//only ogg mp3 since v. 21
+	$type_accept="all";
 }elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Mobile")){
 	//everything
 	$type_accept="mob";
@@ -209,20 +209,7 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
 	$no_streams+=1;
 	$feed=$data[0];
 	$type=$data[2];
-	/*$response="";
-	$fp = fsockopen( $server, $port , $errno, $errstr, 1); //last param is timeout 1sec
-	if (!$fp) {
-	 echo $lng['nolive'].'<br /><br />';
-	} else {
-	$out = "GET ".$feed." HTTP/1.1\r\n";
-    $out .= "Host: ".$server.":".$port."\r\n";
-    $out .="Authorization: Basic ".base64_encode($_SESSION['user'].":".$_SESSION['cong'])."\r\n";
-    $out .= "Connection: Close\r\n\r\n";
-    fwrite($fp, $out);
-        $response=fgets($fp, 128);
-	
-    if (strstr($response,"200 OK")){*/
- 
+
     foreach($live as $live_line){
     $live_data=explode ("**",$live_line);
 	if ($live_data[0]==$feed){
@@ -230,7 +217,7 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
 	}
 	}
 	if ($is_live==1){
-	/*there is something weird here. only one live feed at the time....*/
+	
     $no_streams_live+=1;
     $type_txt="";
     if ($type=="mp3") $type_txt="audio/mpeg";
@@ -267,7 +254,7 @@ $db=file("db/cong");
         $data=explode ("**",$line);
 	if ($data[0]==$_SESSION['cong']) $cong_answer=$data[11];
 	}
-if ($no_streams_live>>0 AND $cong_answer=="yes" OR $_SERVER['HTTP_HOST']=="127.0.0.1:8081" ){ //for testing we trick it to believe it's live
+if ($no_streams_live>>0 OR $server_beta=='true' ){ //for testing we trick it to believe it's live
 ?>
 <br /><div id="number_at">
 Please let us know how many people are listening on your side (yourself included) : <br />
@@ -285,6 +272,9 @@ Please let us know how many people are listening on your side (yourself included
 <option value="10" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==10) echo 'selected="selected"';} ?>>10</option>
 </select>
 </div>
+<?PHP 
+if ($cong_answer=="yes" ){
+?>
 <div id="sms_small" onclick="javascript:showdiv('sms','sms_small')">
 Click here if you want to answer
 </div>
@@ -294,6 +284,7 @@ Your answer :<br /><textarea name="answer" id="answer"></textarea><br /><br />
 <input id="send" type="button" name="send" value="Click here to send your Answer" onclick="javascript:send_answer()" /><br />
 </div>
 <?PHP
+	}
 }
 ?>
 </div>

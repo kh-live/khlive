@@ -61,19 +61,31 @@ if(d2.length < 1) { return; }
 <?PHP
 if(session_id()==""){session_start();}
 date_default_timezone_set ('Africa/Johannesburg');
+include "db/config.php";
 //when stopping, it takes 23 secondes to hangup the call (or more on alpine linux)
 if(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop it"){
  echo '<meta http-equiv="refresh" content=5>';
 }else{
- echo '<meta http-equiv="refresh" content=60>';
+ echo '<meta http-equiv="refresh" content='.$timer.'>';
 }
 ?>
 </head>
 <body>
 <?PHP
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
-$_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong']));
-	if (strstr($_SESSION['meeting_status'],"live") OR $_SERVER['HTTP_HOST']=="127.0.0.1:8081"){ //for testing we trick it to believe it's live
+if ($server_beta!='true'){
+$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
+}
+	$db=file("db/cong");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+		if ($data[0]==$_SESSION['cong']) {
+		$meeting_type=$data[5];
+		$sip_caller_ip=@$data[13];
+		}
+	}
+	
+	if (strstr($_SESSION['meeting_status'],"live") OR $server_beta=='true'){ //for testing we trick it to believe it's live
 	if(isset($_POST['submit'])){
 	if($_POST['submit']=="Stop meeting"){
 	echo 'Are you sure you want to stop the meeting ?<br /><br />
@@ -82,15 +94,19 @@ $_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong'
 	</form><br /><br />';
 	}elseif($_POST['submit']=="Yes, Stop it"){
 	/*this only works if the call was initiated on sip*/
+	if ($meeting_type=="sip"){
 	$client='SIP/'.$_SESSION['cong_phone_no'];
-			exec('asterisk -rx "core show channels concise"',$conf_db);
+	}elseif ($meeting_type=="iax"){
+	$client='IAX2/'.$_SESSION['cong_phone_no'];
+	}
+			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
 		if (strstr($data[0],$client)) $kill=$data[0];
 		}
-	exec('asterisk -rx "channel request hangup '.$kill.'"');
+	exec($asterisk_bin.' -rx "channel request hangup '.$kill.'"');
 	/*if we are streaming mp3 we must still kill the stream proc*/
-		exec('ps',$stream_pid_list);
+		exec('ps -eo pid,user,args',$stream_pid_list);
 		$next="";
 		foreach ($stream_pid_list as $pid_line){
 			if ($next=="ok"){
@@ -98,7 +114,9 @@ $_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong'
 			$next="";
 			}
 			/*only works if there is only one mp3 stream per cong*/
-			if (strstr($pid_line, "{mp3stream-".$_SESSION['cong']."}")){
+			/*in alpine the output of PS is different than on debian*/
+			/*the shell script doesn't always become defunct before ps is called*/
+			if (strstr($pid_line, "{mp3stream-".$_SESSION['cong']."}") OR strstr($pid_line, "mp3stream-".$_SESSION['cong'].".sh") OR strstr($pid_line, "<defunct>")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0]+1;
 			$next="ok";
@@ -119,12 +137,12 @@ $db=file("db/cong");
         $data=explode ("**",$line);
 	if ($_SESSION['cong']==$data[0]) $cong_no=$data[1];
 	}
-exec('asterisk -rx "meetme list '.$cong_no.'concise"',$conf_db);
+exec($asterisk_bin.' -rx "meetme list '.$cong_no.'concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
 		if (strstr($data[2],$client)) $kill=$data[3];
 		}
-	exec('asterisk -rx "channel redirect '.$kill.' grg-meetme,killpin,1"');
+	exec($asterisk_bin.' -rx "channel redirect '.$kill.' grg-meetme,killpin,1"');
 		echo 'Disconnecting...<br /><br />';
 }
 }elseif(isset($_GET['kill'])){
@@ -160,11 +178,6 @@ exec('asterisk -rx "meetme list '.$cong_no.'concise"',$conf_db);
 			}
 		}
 	//not allowed to stop the meeting if it was started by the stream.
-	$db=file("db/cong");
-    foreach($db as $line){
-        $data=explode ("**",$line);
-	if ($data[0]==$_SESSION['cong']) $meeting_type=$data[5];
-	}
 	if ($meeting_type!="none"){
 	echo 'Use this button to stop the meeting<br /><br />
 	<form action="" method="post">
@@ -235,15 +248,26 @@ $cong_name=$_SESSION['cong'];
 if(isset($_POST['submit'])){
 	if($_POST['submit']=="Start meeting"){
 //start meeting
+if ($meeting_type=="sip"){
 	$info="Channel: SIP/".$_SESSION['cong_phone_no']."
-MaxRetries: 2
+MaxRetries: 1
 RetryTime: 60
 WaitTime: 30
 Context: test-menu
 Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
-$file=fopen('/var/spool/asterisk/outgoing/meeting_'.$cong_name.'_admin.call','w');
+}elseif ($meeting_type=="iax"){
+	$info="Channel: IAX2/".$_SESSION['cong_phone_no']."
+MaxRetries: 1
+RetryTime: 60
+WaitTime: 30
+Context: test-menu
+Extension: meet_me_".$cong_name."_admin
+Priority: 1
+";
+}
+$file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			//fixit what if the call fails???
@@ -297,13 +321,23 @@ $meeting_type=$data[5];
 }
 	if (isset($_SESSION['cong_phone_no'])){
 	if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
+	$tmp_sip="";
+	if ($sip_caller_ip!="") $tmp_sip=" ( ".$sip_caller_ip." ) ";
 	echo 'Click on the button bellow to start the meeting.<br />
-	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b><br />';
+	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b>'.$tmp_sip.'<br />';
 	//check if the call can be placed first warn if it can't
-	exec('asterisk -rx "sip show peers"',$sip_result);
+		if ($meeting_type=="sip"){
+	exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
+	$tmp_unspec="(Unspecified)";
+	}elseif ($meeting_type=="iax"){
+		exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
+		$tmp_unspec="(null)";
+		}
 	$sip_result=implode(" , ",$sip_result);
 	//find a way to avoid having all the spaces in the strstr
-	if (strstr($sip_result, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].'                   192.168.1.10')){
+	$sip_result2=str_replace(" ", "", $sip_result);
+	if ($sip_caller_ip!=""){
+	if (strstr($sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$sip_caller_ip)){
 	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
 	echo '<form action="" method="post">
 	<input name="submit" id="input_login" type="submit" value="Start meeting">
@@ -311,7 +345,17 @@ $meeting_type=$data[5];
 	}else{
 	echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
 	}
-	
+	}else{
+	//as we dont have an ip to compare to, we check that the phone no is unregistered
+	if (!strstr($sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$tmp_unspec)){
+	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
+	echo '<form action="" method="post">
+	<input name="submit" id="input_login" type="submit" value="Start meeting">
+	</form>';
+	}else{
+	echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
+	}
+	}
 	}else{
 	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
 	}

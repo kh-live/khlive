@@ -57,7 +57,7 @@ $video_list=file("db/videos");
 	}
 	$downloader_script="#!/bin/sh \n#downloader script \n\n";
 	foreach($to_download as $filename => $url){
-	$downloader_script.='FILE="/var/www/html/kh-live/downloads/'.$filename."\" \n".'URL="'.$url.$filename."\" \n".'if [ ! -f $FILE ]; then'." \n".'wget -q -O $FILE $URL'." \nfi \n";
+	$downloader_script.='FILE="'.$web_server_root.'kh-live/downloads/'.$filename."\" \n".'URL="'.$url.$filename."\" \n".'if [ ! -f $FILE ]; then'." \n".'wget -q -O $FILE $URL'." \nfi \n";
 	}
 	$file=fopen('config/downloader.sh','w');
 			if(fputs($file,$downloader_script)){
@@ -183,7 +183,7 @@ if ($_SESSION['type']=="root"){
 <form action="" method="post">
      <table>
      <tr><td>
-     filename path on jw.org</td><td> <input type="text" name="filename" /></td></tr>
+     filename on jw.org</td><td> <input type="text" name="filename" /></td></tr>
      <tr><td>
      video path on jw.org</td><td> <input type="text" name="url" /></td></tr>
     <tr><td>

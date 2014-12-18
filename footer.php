@@ -6,6 +6,6 @@ include "404.php";
 exit(); 
 }
 ?>
-<div id="footer">&copy; 2013 - KH Live!</div>
+<div id="footer">&copy; 2014 - KH Live!</div>
 </body>
 </html>

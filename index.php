@@ -6,8 +6,8 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
-
-if (strstr($_SERVER['HTTP_HOST'], "192.168.1.123")){
+include "db/config.php";
+if ($server_beta==true){
 error_reporting(E_ALL);
 }else{
 /*error_reporting(E_ERROR);*/
@@ -16,44 +16,31 @@ $a = session_id();
 if ($a == ''){
 session_start();
 }
-
-//simplify algo - duplicate if
+//we only enable https on live systems as others don't have certifs in place
+if (strstr($_SERVER['HTTP_HOST'],"kh.sinux.ch")){
 if (isset($_SERVER['HTTPS'])){
-  if($_SERVER['HTTPS']!="on" AND $_SERVER['HTTP_HOST']!="192.168.1.123" )
-  {
+  if($_SERVER['HTTPS']!="on"){
      $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
      header("Location:$redirect");
   }
 }else{
-if($_SERVER['HTTP_HOST']!="192.168.1.123" AND $_SERVER['HTTP_HOST']!="localhost:8080" AND $_SERVER['HTTP_HOST']!="127.0.0.1:8081")
-  {
 $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
      header("Location:$redirect");
-     }
 }
-
+}
 header('Content-type: text/html; charset=ISO-8859-15');
-$version="1.2";
 $login_error="";
 $site_css_default="css/".$version."--default.css";
 $site_css="css/".$version."--style.css";
 $site_css_mobile="css/".$version."--mobile.css";
-//adress to test if the server is live - localhost
-$server="localhost";
-//adress to generate links for streams
-$server_out="khlive.mooo.com";
-$port="8000";
+
 $lang="";
-$timer="60";
-
-
 include ("./lang.php");
 
 if (isset ($_GET['page'])){
 $page=htmlentities($_GET['page']);
 }else{
-// probably wrong see l 211
-$page="login.php";
+$page="login";
 }
 if ($page=="logout"){
 
@@ -171,13 +158,13 @@ $db=file("db/users");
 }
 
 if ($login_log==1){
-$info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong'].'**'.$_SERVER['REMOTE_ADDR']."**\n";
+$info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION['cong'].'**'.$_SERVER['REMOTE_ADDR']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
 			
-	$info=time().'**info**login successful**'.$_SESSION['user']."**\n";
+	$info=time().'**info**quick login successful**'.$_SESSION['user']."**\n";
 	$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -214,18 +201,24 @@ include ("./login.php");
 }else{
 //check if there is a live meeting
  if ($_SERVER['HTTP_HOST']!="localhost:8080" AND $_SERVER['HTTP_HOST']!="127.0.0.1:8081"){
-	if (!file_exists('/dev/shm/meeting_'.$_SESSION['cong']) AND $_SERVER['HTTP_HOST']!="localhost:8080"){
-	$file=fopen('/dev/shm/meeting_'.$_SESSION['cong'],'w');
+	if (!file_exists($temp_dir.'meeting_'.$_SESSION['cong'])){
+	//if the file doesn't exist, it means the computer restarted (if the temp_dir =/dev/shm)
+	//we must clear the database of the admin state in case the computer crashed while a meeting was on
+	exec ($asterisk_bin.' -rx "database del '.$_SESSION['cong'].' admin"');
+	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
 	fputs($file,"down");
 	fclose($file);
 	}
-	if (!file_exists('/dev/shm/test_meeting_'.$_SESSION['cong']) AND $_SERVER['HTTP_HOST']!="localhost:8080"){
-	$file=fopen('/dev/shm/test_meeting_'.$_SESSION['cong'],'w');
+	if (!file_exists($temp_dir.'test_meeting_'.$_SESSION['cong'])){
+	//if the file doesn't exist, it means the computer restarted (if the temp_dir =/dev/shm)
+	//we must clear the database of the admin state in case the computer crashed while a meeting was on
+	exec ($asterisk_bin.' -rx "database del Testing_0 '.$_SESSION['cong'].'"');
+	$file=fopen($temp_dir.'test_meeting_'.$_SESSION['cong'],'w');
 	fputs($file,"down");
 	fclose($file);
 	}
-	$_SESSION['meeting_status']=implode("",file('/dev/shm/meeting_'.$_SESSION['cong']));
-	$_SESSION['test_meeting_status']=implode("",file('/dev/shm/test_meeting_'.$_SESSION['cong']));
+	$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
+	$_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
 	}else{
 	$_SESSION['meeting_status']="down";
 	$_SESSION['test_meeting_status']="down";
@@ -250,6 +243,8 @@ if ($_SESSION['type']=="root"){
 	include ("./diagnosis.php");
 	}elseif ($page=="video_edit"){
 	include ("./video_edit.php");
+	}elseif ($page=="configure"){
+	include ("./config.php");
 	}
 	}
 //admin links only
@@ -273,19 +268,10 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./report.php");
 	}
 	}
-//homepage error message if server isnt live
-//but it doesnt help right now as the server has to be live to see this page...
-/*if ($_SESSION['server_status']=="ok"){*/
+//everybody's links
 	if ($page=="login"){
 	include ("./home.php");
-	}
-/*}else{
-	if ($page=="login"){
-	include ("./error.php");
-	}
-}*/
-//all other links
-if ($page=="record"){
+	}elseif ($page=="record"){
 	include ("./records.php");
 	}elseif($page=="listening"){
 	include ("./listening.php");

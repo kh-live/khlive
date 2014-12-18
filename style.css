@@ -137,7 +137,7 @@
 	width:320px;
 	height:400px;
 	background-color:#CCCCCC;
-	border: 1px solid black;
+	border: 1px solid rgba(0, 0, 0, 0.5);
 	z-index:200;
 	margin-right:-320px;
 	padding: 5px;
@@ -159,7 +159,7 @@
 	right:10px;
 	width:30px;
 	background-color:#AAAAAA;
-	border: 1px solid black;
+	border: 1px solid rgba(0, 0, 0, 0.3);
 	height:410px;
 	z-index:200;
 	text-align:center;
@@ -167,6 +167,7 @@
 #song-small:hover{
 background-color:#BBBBBB;
 cursor:pointer;
+border: 1px solid rgba(0, 0, 0, 1);
 }
 #meeting{
 	width:100%;

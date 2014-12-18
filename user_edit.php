@@ -65,13 +65,15 @@ if(isset($_POST['submit'])){
 			
 		if ($skip==0){
 			if ($old_cong!=$congregation_new OR $old_pin!=$pin){
-			exec('asterisk -rx "database del '.$old_cong.' '.$old_pin.'"');
-			exec('asterisk -rx "database put '.$congregation_new.' '.$pin.' '.$user_new.'"');
+			exec($asterisk_bin.' -rx "database del '.$old_cong.' '.$old_pin.'"');
+			exec($asterisk_bin.' -rx "database put '.$congregation_new.' '.$pin.' '.$user_new.'"');
 			}
 			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 			
 			//add voip account if needed
-			
+include "sip-gen.php";
+
+include "iax-gen.php";			
 			}else{
 		//this an attempt at deleting a user from another cong - log
 		echo '<div id="error_msg">'.$lng['error'].'</div>';

@@ -26,7 +26,10 @@ if(isset($_POST['submit'])){
 			fclose($file);
 			
 			//add account for voip if needed
-			exec('asterisk -rx "database put '.$_POST['congregation'].' '.$_POST['pin'].' '.$_POST['user'].'"');
+include "sip-gen.php";
+
+include "iax-gen.php";
+			exec($asterisk_bin.' -rx "database put '.$_POST['congregation'].' '.$_POST['pin'].' '.$_POST['user'].'"');
 			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 			}else{
 			echo '<div id="error_msg">'.$lng['error'].'</div>';

@@ -16,14 +16,14 @@ Context: test-menu
 Extension: test_meeting_".$cong_name."
 Priority: 1
 ";
-$file=fopen('/var/spool/asterisk/outgoing/meeting_'.$cong_name.'_admin.call','w');
+$file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
-			$file=fopen('/dev/shm/meeting_'.$_SESSION['cong'],'w');
+			$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"live");
 			fclose($file);
 			$_SESSION['meeting_status']="live";
-			$file=fopen('/dev/shm/test_meeting_'.$_SESSION['cong'],'w');
+			$file=fopen($temp_dir.'test_meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"live");
 			fclose($file);
 			$_SESSION['test_meeting_status']="live";
@@ -41,17 +41,17 @@ $file=fopen('/var/spool/asterisk/outgoing/meeting_'.$cong_name.'_admin.call','w'
 	}
 }elseif($_POST['submit']=="Stop test"){
 	$client='Local/meet_me_'.$cong_name.'_admin@test-menu';
-			exec('asterisk -rx "core show channels concise"',$conf_db);
+			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
 		if (strstr($data[0],$client)) $kill=$data[0];
 		}
-	exec('asterisk -rx "channel request hangup '.$kill.'"');
-			$file=fopen('/dev/shm/meeting_'.$_SESSION['cong'],'w');
+	exec($asterisk_bin.' -rx "channel request hangup '.$kill.'"');
+			$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"down");
 			fclose($file);
 			$_SESSION['meeting_status']="down";
-			$file=fopen('/dev/shm/test_meeting_'.$_SESSION['cong'],'w');
+			$file=fopen($temp_dir.'test_meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"down");
 			fclose($file);
 			$_SESSION['test_meeting_status']="down";
@@ -98,7 +98,7 @@ if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meetin
 	}
 	echo '</form>';
 	//we dont do the test when we start the test meeting
-if(!isset($_POST['submit'])){
+if(!isset($_POST['submit']) AND $server_beta==true){
 	$ping='';
 	$dns='';
 	$iax='';
@@ -111,16 +111,16 @@ if(!isset($_POST['submit'])){
 	}else{
 	$ping='<b style="color:red;">disconnected</b><br /><i style="font-size:12px;background-color:grey;">'.$ping_result.'</i>';
 	}*/
-	$dns_result=gethostbyname("kh.sinux.ch");
-	if (!strstr($dns_result, "kh.sinux.ch")){
+	$dns_result=gethostbyname($test_url);
+	if (!strstr($dns_result, $test_url)){
 	$dns='<b style="color:green;">connected</b>';
 	}else{
 	$dns='<b style="color:red;">disconnected</b><br />';
 	}
-	exec('ping -c 1 192.168.1.1',$local_result);
+	exec('ping -c 1 '.$test_ip, $local_result);
 	$local_result=implode(" , ",$local_result);
-	//on centos the answer is : "1 received " on alpine linux : "1 packets received"
-	if (strstr($local_result, "1 packets received")){
+	//on centos  and debian the answer is : "1 received " on alpine linux : "1 packets received"
+	if (strstr($local_result, "1 packets received") OR strstr($local_result, "1 received")){
 	$local='<b style="color:green;">connected</b>';
 	}else{
 	$local='<b style="color:red;">disconnected</b><br /><i style="font-size:12px;background-color:grey;">'.$local_result.'</i>';
@@ -132,7 +132,7 @@ if(!isset($_POST['submit'])){
 	}else{
 	$iax='<b style="color:red;">disconnected</b><br /><i style="font-size:12px;background-color:grey;">'.$iax_result.'</i>';
 	}*/
-	exec('asterisk -rx "sip show peers"',$sip_result);
+	exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
 	$sip_result=implode(" , ",$sip_result);
 	if (strstr($sip_result, "Monitored: 1 online,")){
 	$sip='<b style="color:green;">connected</b>';
@@ -149,6 +149,6 @@ IAX trunk : '.$iax.'<br />*/
 echo '<b>SIP local link connectivity:</b><br />
 Congregation computer : '.$sip.'<br />
 </div>';
-echo "</div>";
 }
+echo "</div>";
 ?>

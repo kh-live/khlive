@@ -2,6 +2,8 @@
 /*this page can be accessed by ajax call from the listen page then it returns something to the browser. Or through a get call then it doesnt return anything.
 there seems to be quite some mess in this file. check where the actions come from and see if they all are necessary
 there are 3 states of answering - normal - request - answering*/
+include_once "db/config.php";
+
  if (isset($_REQUEST['action'])){
 	if ($_REQUEST['action']=="request"){
 	$action="request";//coming from??
@@ -52,12 +54,12 @@ there are 3 states of answering - normal - request - answering*/
 	exit;
 	}
 	if($action=="answering"){
-	exec('asterisk -rx "meetme list '.$conf.' concise"',$conf_db);	
+	exec($asterisk_bin.' -rx "meetme list '.$conf.' concise"',$conf_db);	
 	foreach ($conf_db as $line){
 		$data=explode("!",$line);
 		if (strstr($client,$data[2])) $unmute=$data[0];
 		}
-	exec('asterisk -rx "meetme unmute '.$conf.' '.$unmute.'"');
+	exec($asterisk_bin.' -rx "meetme unmute '.$conf.' '.$unmute.'"');
 	$info=time().'**info**answer start**'.$client."**\n";
 	$file=fopen('./db/logs-'.strtolower($cong).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
@@ -65,12 +67,12 @@ there are 3 states of answering - normal - request - answering*/
 			}
 	header('Location: ./meeting-ajax.php'); 
 	}elseif ($_REQUEST['action']=="stop"){
-	exec('asterisk -rx "meetme list '.$conf.' concise"',$conf_db);
+	exec($asterisk_bin.' -rx "meetme list '.$conf.' concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
 		if (strstr($client,$data[2])) $mute=$data[0];
 		}
-	exec('asterisk -rx "meetme mute '.$conf.' '.$mute.'"');
+	exec($asterisk_bin.' -rx "meetme mute '.$conf.' '.$mute.'"');
 	$info=time().'**info**answer stop**'.$client."**\n";
 	$file=fopen('./db/logs-'.strtolower($cong).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
