@@ -6,6 +6,7 @@ body{
 	color:black;
 	font-family: sans-serif;
 	background-color:#eee;
+	overflow-x:hidden;
 }
 #login, #quick_login{
 	width:100%;

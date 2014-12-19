@@ -11,65 +11,6 @@ echo '<div id="page">
 ?>
 
 </iframe>
-<script type="text/javascript">
-function showdiv(d1, d2){
-if(d1.length < 1) { return; }
-if(d2.length < 1) { return; }
-        document.getElementById(d1).style.marginRight = "0px";
-        document.getElementById(d2).style.marginRight = "-320px";
-}
-function update_song(id, no){
-if(id.length < 1) { return; }
-if(no.length < 1) { return; }
-
-var song=document.getElementById("song" +id+ "_audio");
-song.src="kh-songs/iasn_E_" +no+".m4a";
-song.type="audio/mp4";
-
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange=function()
-  {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    resp=xmlhttp.responseText;
-    if (resp!=""){
-	//there was an error
-	var error = alert(resp);
-    }
-    }
-   
-    }
-xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
-xmlhttp.send();
-}
-function random_song(){
-var player = document.getElementById('rand_player');
-if (player.paused){
-var no=Math.floor((Math.random()*137)+1);
-if (no<=9){
-no="00"+no;
-}
-else if (no<=99){
-no="0"+no;
-}
-
-player.src = "kh-songs/iasn_E_" +no+".m4a";
-player.type="audio/mp4";
-player.addEventListener('ended', random_song);
-player.autoplay= true ;
-player.load();
-} else {
-player.stop();
-}
-}
-</script>
 </div>
 <div id="songs">
 <a href="javascript:showdiv('song-small','songs')">>> HIDE</a><br /><br />
@@ -143,7 +84,8 @@ if (isset($_SESSION['song_3'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['
 ?>
  </audio><br /><br />
 Random songs:
-<audio id="rand_player" controls preload="auto" onclick="javascript:random_song()" >
+<audio id="rand_player" controls preload="auto" >
+<source src="kh-songs/iasn_E_<?PHP echo rand(100,138); ?>.m4a" type="audio/mp4" >
  </audio>
  <br /> <br />136 : The Kingdom is in place - Let it come!<br />
  137 : Grant us boldness<br />
@@ -156,3 +98,58 @@ N<br />
 G<br />
 S<br />
 </div>
+<script type="text/javascript">
+function showdiv(d1, d2){
+if(d1.length < 1) { return; }
+if(d2.length < 1) { return; }
+        document.getElementById(d1).style.marginRight = "0px";
+        document.getElementById(d2).style.marginRight = "-320px";
+}
+function update_song(id, no){
+if(id.length < 1) { return; }
+if(no.length < 1) { return; }
+
+var song=document.getElementById("song" +id+ "_audio");
+song.src="kh-songs/iasn_E_" +no+".m4a";
+song.type="audio/mp4";
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+	//there was an error
+	var error = alert(resp);
+    }
+    }
+   
+    }
+xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
+xmlhttp.send();
+}
+document.getElementById('rand_player').addEventListener('ended',function(e){
+var player = document.getElementById('rand_player');
+
+var no=Math.floor((Math.random()*137)+1);
+if (no<=9){
+no="00"+no;
+}
+else if (no<=99){
+no="0"+no;
+}
+
+player.src = "kh-songs/iasn_E_" +no+".m4a";
+player.type="audio/mp4";
+player.autoplay= true ;
+player.load();
+});
+</script>
