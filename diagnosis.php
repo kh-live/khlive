@@ -40,13 +40,18 @@ $file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			}
 	}
 }elseif($_POST['submit']=="Stop test"){
-	$client='Local/meet_me_'.$cong_name.'_admin@test-menu';
+//Local/meet_me_'.$cong_name.'_admin@test-menu
+//doesnt work on debian
+	$client='_'.$cong_name;
 			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
-		if (strstr($data[0],$client)) $kill=$data[0];
+		if (strstr($data[0],$client)) {
+		$kill=$data[0];
+		exec($asterisk_bin.' -rx "channel request hangup '.$kill.'"');
 		}
-	exec($asterisk_bin.' -rx "channel request hangup '.$kill.'"');
+		}
+	
 			$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"down");
 			fclose($file);
@@ -56,7 +61,7 @@ $file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			fclose($file);
 			$_SESSION['test_meeting_status']="down";
 		/*if we are streaming mp3 we mus still kill the stream proc*/
-		exec('ps',$stream_pid_list);
+		exec('ps -eo pid,user,args',$stream_pid_list);
 		$next="";
 		foreach ($stream_pid_list as $pid_line){
 			if ($next=="ok"){
@@ -64,7 +69,9 @@ $file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			$next="";
 			}
 			/*only works if there is only one mp3 stream per cong*/
-			if (strstr($pid_line, "{mp3stream-") AND strstr($pid_line, $_SESSION['cong'])){
+			/*in alpine the output of PS is different than on debian*/
+			/*the shell script doesn't always become defunct before ps is called*/
+			if (strstr($pid_line, "{mp3stream-".$_SESSION['cong']."}") OR strstr($pid_line, "mp3stream-".$_SESSION['cong'].".sh") OR strstr($pid_line, "<defunct>")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0]+1;
 			$next="ok";
