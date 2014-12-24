@@ -333,7 +333,11 @@ $meeting_type=$data[5];
 		exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
 		$tmp_unspec="(null)";
 		}
+	if (
 	$sip_result=implode(" , ",$sip_result);
+	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
+	echo 'Asterisk died. contact your administrator!';
+	}else{
 	//find a way to avoid having all the spaces in the strstr
 	$sip_result2=str_replace(" ", "", $sip_result);
 	if ($sip_caller_ip!=""){
@@ -347,6 +351,7 @@ $meeting_type=$data[5];
 	}
 	}else{
 	//as we dont have an ip to compare to, we check that the phone no is unregistered
+	// this breaks when asterisk died
 	if (!strstr($sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$tmp_unspec)){
 	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
 	echo '<form action="" method="post">
@@ -354,6 +359,7 @@ $meeting_type=$data[5];
 	</form>';
 	}else{
 	echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
+	}
 	}
 	}
 	}else{
