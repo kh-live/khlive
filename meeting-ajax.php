@@ -333,7 +333,7 @@ $meeting_type=$data[5];
 		exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
 		$tmp_unspec="(null)";
 		}
-	if (
+	
 	$sip_result=implode(" , ",$sip_result);
 	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
 	echo 'Asterisk died. contact your administrator!';
