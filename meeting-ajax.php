@@ -341,7 +341,9 @@ $meeting_type=$data[5];
 	//find a way to avoid having all the spaces in the strstr
 	$sip_result2=str_replace(" ", "", $sip_result);
 	if ($sip_caller_ip!=""){
-	if (strstr($sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$sip_caller_ip)){
+	//$sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$sip_caller_ip
+	//that doesnt work on debian or maybe it does to be tested
+	if (strstr($sip_result2, $_SESSION['cong_phone_no'].$sip_caller_ip)){
 	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
 	echo '<form action="" method="post">
 	<input name="submit" id="input_login" type="submit" value="Start meeting">
@@ -352,7 +354,9 @@ $meeting_type=$data[5];
 	}else{
 	//as we dont have an ip to compare to, we check that the phone no is unregistered
 	// this breaks when asterisk died
-	if (!strstr($sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$tmp_unspec)){
+	//$sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$tmp_unspec
+	//that doesnt work on debian
+	if (!strstr($sip_result2, $_SESSION['cong_phone_no'].$tmp_unspec)){
 	echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
 	echo '<form action="" method="post">
 	<input name="submit" id="input_login" type="submit" value="Start meeting">
