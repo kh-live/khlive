@@ -454,17 +454,138 @@ $fichier = fopen('./config/musiconhold.conf', 'w');
 	    
 	    	    	    	    	ob_start();
 ?>;
-; Asterisk configuration file
-;
-; Module Loader configuration file
-;
 [modules]
-autoload=yes
-noload => pbx_gtkconsole.so
-load => res_musiconhold.so
-noload => chan_alsa.so
-noload => chan_oss.so
-load => format_pcm.so
+autoload=no
+
+load=res_adsi.so               ; ADSI Resource                            
+;load=res_agi.so                ; Asterisk Gateway Interface (AGI)         
+load=res_config_odbc.so        ; ODBC Configuration                       
+;load=res_crypto.so             ; Cryptographic Digital Signatures         
+load=res_features.so           ; Call Parking Resource                    
+;load=res_indications.so        ; Indications Configuration                
+;load=res_monitor.so            ; Call Monitoring Resource                 
+load=res_musiconhold.so        ; Music On Hold Resource                   
+;load=res_odbc.so               ; ODBC Resource                            
+load=cdr_csv.so                ; Comma Separated Values CDR Backend       
+;load=cdr_manager.so            ; Asterisk Call Manager CDR Backend        
+;load=cdr_odbc.so               ; ODBC CDR Backend                         
+;load=cdr_pgsql.so              ; PostgreSQL CDR Backend                   
+;load=chan_agent.so             ; Agent Proxy Channel                      
+load=chan_alsa.so              ; ALSA Console Channel Driver              0
+load=chan_iax2.so              ; Inter Asterisk eXchange (Ver 2)          
+load=chan_local.so             ; Local Proxy Channel                      
+;load=chan_mgcp.so              ; Media Gateway Control Protocol (MGCP)    
+;load=chan_modem.so             ; Generic Voice Modem Driver               
+;load=chan_modem_aopen.so       ; A/Open (Rockwell Chipset) ITU-2 VoiceMod 
+;load=chan_modem_bestdata.so    ; BestData (Conexant V.90 Chipset) VoiceMo 
+;load=chan_modem_i4l.so         ; ISDN4Linux Emulated Modem Driver         
+;load=chan_oss.so               ; OSS Console Channel Driver               
+;load=chan_phone.so             ; Linux Telephony API Support              
+load=chan_sip.so               ; Session Initiation Protocol (SIP)        
+;load=chan_skinny.so            ; Skinny Client Control Protocol (Skinny)  
+;load=chan_zap.so               ; Zapata Telephony w/PRI                   
+;load=codec_a_mu.so             ; A-law and Mulaw direct Coder/Decoder     
+;load=codec_adpcm.so            ; Adaptive Differential PCM Coder/Decoder  
+;load=codec_alaw.so             ; A-law Coder/Decoder                      
+;load=codec_g726.so             ; ITU G.726-32kbps G726 Transcoder         
+load=codec_gsm.so              ; GSM/PCM16 (signed linear) Codec Translat 
+load=codec_ilbc.so             ; iLBC/PCM16 (signed linear) Codec Transla 
+;load=codec_lpc10.so            ; LPC10 2.4kbps (signed linear) Voice Code 
+;load=codec_speex.so            ; Speex/PCM16 (signed linear) Codec Transl 
+load=codec_ulaw.so             ; Mu-law Coder/Decoder                     
+;load=format_g726.so            ; Raw G.726 (16/24/32/40kbps) data         
+;load=format_g729.so            ; Raw G729 data                            
+load=format_gsm.so             ; Raw GSM data                             
+;load=format_h263.so            ; Raw h263 data                            
+load=format_ilbc.so            ; Raw iLBC data                            
+;load=format_jpeg.so            ; JPEG (Joint Picture Experts Group) Image 
+load=format_pcm.so             ; Raw uLaw 8khz Audio support (PCM)        
+;load=format_pcm_alaw.so        ; Raw aLaw 8khz PCM Audio support          
+;load=format_sln.so             ; Raw Signed Linear Audio support (SLN)    
+;load=format_vox.so             ; Dialogic VOX (ADPCM) File Format         
+load=format_wav.so             ; Microsoft WAV format (8000hz Signed Line 
+load=format_wav_gsm.so         ; Microsoft WAV format (Proprietary GSM)   
+;load=app_adsiprog.so           ; Asterisk ADSI Programming Application    
+;load=app_alarmreceiver.so      ; Alarm Receiver for Asterisk              
+;load=app_authenticate.so       ; Authentication Application               
+;load=app_cdr.so                ; Make sure asterisk doesn't save CDR for  
+;load=app_chanisavail.so        ; Check if channel is available            
+load=app_controlplayback.so    ; Control Playback Application             
+;load=app_cut.so                ; Cuts up variables                        
+load=app_db.so                 ; Database access functions for Asterisk e 
+load=app_dial.so               ; Dialing Application                      
+;load=app_directory.so          ; Extension Directory                      
+;load=app_disa.so               ; DISA (Direct Inward System Access) Appli 
+;load=app_echo.so               ; Simple Echo Application                  
+;load=app_enumlookup.so         ; ENUM Lookup                              
+;load=app_eval.so               ; Reevaluates strings                      
+;load=app_exec.so               ; Executes applications                    
+;load=app_festival.so           ; Simple Festival Interface                
+;load=app_flash.so              ; Flash zap trunk application              
+;load=app_forkcdr.so            ; Fork The CDR into 2 seperate entities.   
+;load=app_getcpeid.so           ; Get ADSI CPE ID                          
+;load=app_groupcount.so         ; Group Management Routines                
+;load=app_hasnewvoicemail.so    ; Indicator for whether a voice mailbox ha 
+load=app_ices.so               ; Encode and Stream via icecast and ices   
+;load=app_image.so              ; Image Transmission Application           
+;load=app_intercom.so           ; OBSOLETE
+;load=app_lookupblacklist.so    ; Look up Caller*ID name/number from black 
+;load=app_lookupcidname.so      ; Look up CallerID Name from local databas 
+load=app_macro.so              ; Extension Macros                         
+load=app_meetme.so             ; MeetMe conference bridge                 
+;load=app_milliwatt.so          ; Digital Milliwatt (mu-law) Test Applicat 
+;load=app_mp3.so                ; Silly MP3 Application                    
+;load=app_nbscat.so             ; Silly NBS Stream Application             
+;load=app_parkandannounce.so    ; Call Parking and Announce Application    
+load=app_playback.so           ; Trivial Playback Application             
+;load=app_privacy.so            ; Require phone number to be entered, if n 
+;load=app_qcall.so              ; Call from Queue                          
+;load=app_queue.so              ; True Call Queueing                       
+;load=app_random.so             ; Random goto                              
+load=app_read.so               ; Read Variable Application                
+;load=app_record.so             ; Trivial Record Application               
+;load=app_sayunixtime.so        ; Say time                                 
+;load=app_senddtmf.so           ; Send DTMF digits Application             
+;load=app_sendtext.so           ; Send Text Applications                   
+load=app_setcallerid.so        ; Set CallerID Application                 
+;load=app_setcdruserfield.so    ; CDR user field apps                      
+load=app_setcidname.so         ; Set CallerID Name                        
+load=app_setcidnum.so          ; Set CallerID Number                      
+;load=app_sms.so                ; SMS/PSTN handler                         
+;load=app_softhangup.so         ; Hangs up the requested channel           
+;load=app_sql_postgres.so       ; Simple PostgreSQL Interface              
+;load=app_striplsd.so           ; Strip trailing digits                    
+;load=app_substring.so          ; (Deprecated) Save substring digits in a
+load=app_system.so             ; Generic System() application             
+;load=app_talkdetect.so         ; Playback with Talk Detection             
+;load=app_test.so               ; Interface Test Application               
+;load=app_transfer.so           ; Transfer                                 
+;load=app_txtcidname.so         ; TXTCIDName                               
+;load=app_url.so                ; Send URL Applications                    
+;load=app_userevent.so          ; Custom User Event Application            
+load=app_verbose.so            ; Send verbose output                      
+;load=app_voicemail.so          ; Comedian Mail (Voicemail System)         
+;load=app_waitforring.so        ; Waits until first ring after time        
+;load=app_zapateller.so         ; Block Telemarketers with Special Informa 
+;load=app_zapbarge.so           ; Barge in on Zap channel application      
+;load=app_zapras.so             ; Zap RAS Application                      
+;load=app_zapscan.so            ; Scan Zap channels application            
+load=pbx_config.so             ; Text Extension Configuration             
+load=pbx_spool.so              ; Outgoing Spool Support                   
+;load=pbx_wilcalu.so            ; Wil Cal U (Auto Dialer)                  
+load =pbx_functions.so
+load => func_uri.so
+load => func_logic.so
+load => chan_dahdi.so
+load => chan_features.so
+load => app_readexten.so
+load => func_db.so
+load => func_channel.so
+load => func_strings.so
+load => res_agi.so
+
+[global]
+;chan_modem.so=yes
 <?PHP
 	          $message = ob_get_clean();
 $fichier = fopen('./config/modules.conf', 'w');
@@ -474,7 +595,7 @@ $fichier = fopen('./config/modules.conf', 'w');
 	    }else{
 	    // error saving
 	    }
-	    
+
 	    	    	    	    	    	ob_start();
 ?>;
 ; indications.conf
@@ -1227,7 +1348,7 @@ $info4="<?xml version=\"1.0\"?>
 	}
 	
 include "sip-gen.php";
-
+Include "alsa-gen.php";
 Include "iax-gen.php";
 
 
@@ -1349,6 +1470,10 @@ test_url : <br />test url ex kh.sinux.ch check if nslookup works<br />
 <input class="field_login" type="text" name="test_url" value="<?PHP echo $test_url;?>" /><br />
 test_ip :<br />local ip to ping<br />
 <input class="field_login" type="text" name="test_ip" value="<?PHP echo $test_ip;?>" /><br />
+Alsa input hw :<br />hardware for input (default)<br />
+<input class="field_login" type="text" name="alsa_in" value="<?PHP echo @$alsa_in;?>" /><br />
+Alsa output hw :<br />hardware for output (default)<br />
+<input class="field_login" type="text" name="alsa_out" value="<?PHP echo @$alsa_out;?>" /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />

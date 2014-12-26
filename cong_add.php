@@ -288,9 +288,8 @@ we should also probably reload the dialplan and maybe also icecast
 			echo '<div id="error_msg">'.$lng['error'].'</div>';
 			}
 include "sip-gen.php";
-
 include "iax-gen.php";
-
+include "alsa-gen.php";
 			}else{
 			echo '<div id="error_msg">'.$lng['name_exists'].'...</div>';
 			}
@@ -321,6 +320,7 @@ IAX : the congregation connects to the server with Yate (currently not working).
 <option value="none">none</option>
 <option value="sip">SIP</option>
 <option value="iax">IAX</option>
+<option value="alsa">Alsa (direct input)</option>
 </select><br /><br />
 <b>Voip account number (Phone no)</b><br />
 <input class="field_login" type="text" name="phone_no" />

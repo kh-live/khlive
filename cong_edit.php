@@ -392,7 +392,7 @@ callerid=Lionel test iax <79179>
 iax2 reload
 */
 include "sip-gen.php";
-
+include "alsa-gen.php";
 include "iax-gen.php";
 
 		//end cong add
@@ -442,10 +442,12 @@ No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 none : the congregation streams to the server with Edcast (currently not working).<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate.<br />
+Alsa : Use the sound input/output on the server.<br />
 <select name="voip_type">
 <option value="none" <?PHP if ($voip_type=="none") echo 'selected=selected';?>>none</option>
 <option value="sip" <?PHP if ($voip_type=="sip") echo 'selected=selected';?>>SIP</option>
 <option value="iax" <?PHP if ($voip_type=="iax") echo 'selected=selected';?>>IAX</option>
+<option value="alsa" <?PHP if ($voip_type=="alsa") echo 'selected=selected';?>>Alsa (direct input)</option>
 </select><br /><br />
 <b>Voip account number (Phone no)</b><br />
 <input class="field_login" type="text" name="phone_no" value="<?PHP echo $phone_no;?>" />

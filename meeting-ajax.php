@@ -266,6 +266,15 @@ Context: test-menu
 Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
+}elseif ($meeting_type=="alsa"){
+	$info="Channel: console/alsa
+MaxRetries: 1
+RetryTime: 60
+WaitTime: 30
+Context: test-menu
+Extension: meet_me_".$cong_name."_admin
+Priority: 1
+";
 }
 $file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
@@ -323,8 +332,7 @@ $meeting_type=$data[5];
 	if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
 	$tmp_sip="";
 	if ($sip_caller_ip!="") $tmp_sip=" ( ".$sip_caller_ip." ) ";
-	echo 'Click on the button bellow to start the meeting.<br />
-	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b>'.$tmp_sip.'<br />';
+	
 	//check if the call can be placed first warn if it can't
 		if ($meeting_type=="sip"){
 	exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
@@ -337,7 +345,14 @@ $meeting_type=$data[5];
 	$sip_result=implode(" , ",$sip_result);
 	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
 	echo 'Asterisk died. contact your administrator!';
+	}elseif ($meeting_type=="alsa"){
+	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
+	echo '<form action="" method="post">
+	<input name="submit" id="input_login" type="submit" value="Start meeting">
+	</form>';
 	}else{
+	echo 'Click on the button bellow to start the meeting.<br />
+	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b>'.$tmp_sip.'<br />';
 	//find a way to avoid having all the spaces in the strstr
 	$sip_result2=str_replace(" ", "", $sip_result);
 	if ($sip_caller_ip!=""){
