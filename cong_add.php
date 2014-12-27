@@ -6,7 +6,6 @@ include "404.php";
 exit(); 
 }
 
-
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['save']){
 		if ($_POST['cong_name']!=""){

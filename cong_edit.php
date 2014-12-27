@@ -31,7 +31,6 @@ if(isset($_POST['submit'])){
 			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 			}else{
 			echo $file_content;
-			
 			echo '<div id="error_msg">'.$lng['error'].'1</div>';
 			}
 		}

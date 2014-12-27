@@ -1351,7 +1351,6 @@ include "sip-gen.php";
 Include "alsa-gen.php";
 Include "iax-gen.php";
 
-
 	$db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
