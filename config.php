@@ -583,6 +583,7 @@ load => func_db.so
 load => func_channel.so
 load => func_strings.so
 load => res_agi.so
+load => res_rtp_asterisk.so
 
 [global]
 ;chan_modem.so=yes
