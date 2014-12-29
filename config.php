@@ -481,7 +481,7 @@ load => chan_local.so             ; Local Proxy Channel
 ;load=chan_modem_aopen.so       ; A/Open (Rockwell Chipset) ITU-2 VoiceMod 
 ;load=chan_modem_bestdata.so    ; BestData (Conexant V.90 Chipset) VoiceMo 
 ;load=chan_modem_i4l.so         ; ISDN4Linux Emulated Modem Driver
-<?PHP if ($server_audio=="oss") { ?>
+<?PHP if ($server_audio=="dsp") { ?>
 load => chan_oss.so               ; OSS Console Channel Driver
 <?PHP } ?>
 ;load=chan_phone.so             ; Linux Telephony API Support              
@@ -1478,7 +1478,7 @@ Audio device :<br />select which input device to use on direct input<br />
 <select class="field_login" name="server_beta" >
 <option value="0">None</option>
 <option value="alsa" <?PHP if ($server_audio=="alsa") echo 'selected=selected';?>>Alsa</option>
-<option value="oss" <?PHP if ($server_audio=="oss") echo 'selected=selected';?>>Oss</option>
+<option value="dsp" <?PHP if ($server_audio=="dsp") echo 'selected=selected';?>>Oss (/dev/dsp)</option>
 </select><br />
 Direct input hw :<br />hardware for input (default)<br />
 <input class="field_login" type="text" name="alsa_in" value="<?PHP echo @$alsa_in;?>" /><br />
