@@ -1475,7 +1475,7 @@ test_url : <br />test url ex kh.sinux.ch check if nslookup works<br />
 test_ip :<br />local ip to ping<br />
 <input class="field_login" type="text" name="test_ip" value="<?PHP echo $test_ip;?>" /><br />
 Audio device :<br />select which input device to use on direct input<br />
-<select class="field_login" name="server_beta" >
+<select class="field_login" name="server_audio" >
 <option value="0">None</option>
 <option value="alsa" <?PHP if ($server_audio=="alsa") echo 'selected=selected';?>>Alsa</option>
 <option value="dsp" <?PHP if ($server_audio=="dsp") echo 'selected=selected';?>>Oss (/dev/dsp)</option>
