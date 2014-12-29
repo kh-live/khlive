@@ -470,16 +470,20 @@ load => cdr_csv.so                ; Comma Separated Values CDR Backend
 ;load=cdr_manager.so            ; Asterisk Call Manager CDR Backend        
 ;load=cdr_odbc.so               ; ODBC CDR Backend                         
 ;load=cdr_pgsql.so              ; PostgreSQL CDR Backend                   
-;load=chan_agent.so             ; Agent Proxy Channel                      
-load => chan_alsa.so              ; ALSA Console Channel Driver              0
+;load=chan_agent.so             ; Agent Proxy Channel
+<?PHP if ($server_audio=="alsa") { ?>
+load => chan_alsa.so              ; ALSA Console Channel Driver
+<?PHP } ?>
 load => chan_iax2.so              ; Inter Asterisk eXchange (Ver 2)          
 load => chan_local.so             ; Local Proxy Channel                      
 ;load=chan_mgcp.so              ; Media Gateway Control Protocol (MGCP)    
 ;load=chan_modem.so             ; Generic Voice Modem Driver               
 ;load=chan_modem_aopen.so       ; A/Open (Rockwell Chipset) ITU-2 VoiceMod 
 ;load=chan_modem_bestdata.so    ; BestData (Conexant V.90 Chipset) VoiceMo 
-;load=chan_modem_i4l.so         ; ISDN4Linux Emulated Modem Driver         
-;load=chan_oss.so               ; OSS Console Channel Driver               
+;load=chan_modem_i4l.so         ; ISDN4Linux Emulated Modem Driver
+<?PHP if ($server_audio=="oss") { ?>
+load => chan_oss.so               ; OSS Console Channel Driver
+<?PHP } ?>
 ;load=chan_phone.so             ; Linux Telephony API Support              
 load => chan_sip.so               ; Session Initiation Protocol (SIP)        
 ;load=chan_skinny.so            ; Skinny Client Control Protocol (Skinny)  
@@ -1470,10 +1474,17 @@ test_url : <br />test url ex kh.sinux.ch check if nslookup works<br />
 <input class="field_login" type="text" name="test_url" value="<?PHP echo $test_url;?>" /><br />
 test_ip :<br />local ip to ping<br />
 <input class="field_login" type="text" name="test_ip" value="<?PHP echo $test_ip;?>" /><br />
-Alsa input hw :<br />hardware for input (default)<br />
+Audio device :<br />select which input device to use on direct input<br />
+<select class="field_login" name="server_beta" >
+<option value="0">None</option>
+<option value="alsa" <?PHP if ($server_audio=="alsa") echo 'selected=selected';?>>Alsa</option>
+<option value="oss" <?PHP if ($server_audio=="oss") echo 'selected=selected';?>>Oss</option>
+</select><br />
+Direct input hw :<br />hardware for input (default)<br />
 <input class="field_login" type="text" name="alsa_in" value="<?PHP echo @$alsa_in;?>" /><br />
-Alsa output hw :<br />hardware for output (default)<br />
+Direct output hw :<br />hardware for output (default)<br />
 <input class="field_login" type="text" name="alsa_out" value="<?PHP echo @$alsa_out;?>" /><br />
+
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />

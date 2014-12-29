@@ -446,7 +446,7 @@ Alsa : Use the sound input/output on the server.<br />
 <option value="none" <?PHP if ($voip_type=="none") echo 'selected=selected';?>>none</option>
 <option value="sip" <?PHP if ($voip_type=="sip") echo 'selected=selected';?>>SIP</option>
 <option value="iax" <?PHP if ($voip_type=="iax") echo 'selected=selected';?>>IAX</option>
-<option value="alsa" <?PHP if ($voip_type=="alsa") echo 'selected=selected';?>>Alsa (direct input)</option>
+<option value="direct" <?PHP if ($voip_type=="direct") echo 'selected=selected';?>>direct input</option>
 </select><br /><br />
 <b>Voip account number (Phone no)</b><br />
 <input class="field_login" type="text" name="phone_no" value="<?PHP echo $phone_no;?>" />

@@ -266,8 +266,8 @@ Context: test-menu
 Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
-}elseif ($meeting_type=="alsa"){
-	$info="Channel: console/alsa
+}elseif ($meeting_type=="direct"){
+	$info="Channel: console/".$server_audio." 
 MaxRetries: 1
 RetryTime: 60
 WaitTime: 30
@@ -345,7 +345,7 @@ $meeting_type=$data[5];
 	$sip_result=implode(" , ",$sip_result);
 	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
 	echo 'Asterisk died. contact your administrator!';
-	}elseif ($meeting_type=="alsa"){
+	}elseif ($meeting_type=="direct"){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 	echo '<form action="" method="post">
 	<input name="submit" id="input_login" type="submit" value="Start meeting">

@@ -319,7 +319,7 @@ IAX : the congregation connects to the server with Yate (currently not working).
 <option value="none">none</option>
 <option value="sip">SIP</option>
 <option value="iax">IAX</option>
-<option value="alsa">Alsa (direct input)</option>
+<option value="direct">direct input</option>
 </select><br /><br />
 <b>Voip account number (Phone no)</b><br />
 <input class="field_login" type="text" name="phone_no" />
