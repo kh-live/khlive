@@ -14,6 +14,9 @@ $decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($api_key), base64_dec
 		echo $encrypted;
 		exit;
 		}
+	}else{
+	echo "timeout";
+	echo time();
 	}
 }
 //$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
