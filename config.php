@@ -1450,6 +1450,8 @@ Server_in : <br />adress to test if the server is live - localhost used for : ic
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
 server_out : <br />production address (to generate links for streams)<br />
 <input class="field_login" type="text" name="server_out" value="<?PHP echo $server_out;?>" /><br />
+api_key : <br />api key for link up with main server<br />
+<input class="field_login" type="text" name="api_key" value="<?PHP echo @$api_key;?>" /><br />
 web_server_root : <br />root for webserver with trailing /<br />
 <input class="field_login" type="text" name="web_server_root" value="<?PHP echo $web_server_root;?>" /><br />
 temp_dir : <br />temp directory /dev/shm with trailing / <br />
