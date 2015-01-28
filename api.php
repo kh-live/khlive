@@ -6,7 +6,7 @@ $decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($api_key), base64_dec
 $query=explode("**", $decrypted);
 	if ($query[0]+60>=time()){
 		if ($query[1]=="status"){
-		$string="ok";
+		$string=$version."@@@ok";
 		}elseif($query[1]=="fetch_users"){
 		$db=file('db/users');
 			foreach($db as $line){
