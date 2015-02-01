@@ -13,6 +13,12 @@ $query=explode("**", $decrypted);
 			$string.=$line;
 			}
 			$string.="@@@ok";
+		}elseif($query[1]=="fetch_congs"){
+		$db=file('db/cong');
+			foreach($db as $line){
+			$string.=$line;
+			}
+			$string.="@@@ok";
 		}
 	
 	if ($string!=""){
