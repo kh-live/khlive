@@ -1,7 +1,11 @@
 <?PHP
 include ('db/config.php');
 exec ('wget -q -O - http://checkip.dyndns.org', $current_ip);
+if (file_exists($temp_dir.'global_ip'){
 $previous_ip=implode("",file($temp_dir.'global_ip'));
+}else{
+$previous_ip="";
+}
 if ($current_ip!=$previous_ip){
 	$key=$master_key;
 	$key2=$api_key;
@@ -17,6 +21,8 @@ if ($current_ip!=$previous_ip){
 	fputs($file,$current_ip);
 	fclose($file);
 	}else{
+	echo "current_ip :".$current_ip."\n";
+	echo "received_ip :".$dec[0]."\n";
 	echo "error wrong ip";
 	}
 	}else{
