@@ -1,7 +1,7 @@
 <?PHP
 include ('db/config.php');
 exec ('wget -q -O - http://checkip.dyndns.org', $current_ip);
-if (file_exists($temp_dir.'global_ip'){
+if (file_exists($temp_dir.'global_ip')){
 $previous_ip=implode("",file($temp_dir.'global_ip'));
 }else{
 $previous_ip="";
