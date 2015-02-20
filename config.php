@@ -437,6 +437,30 @@ $fichier = fopen('./config/logger.conf', 'w');
 	    // error saving
 	    }
 	    
+	    ob_start();
+?>#!/bin/sh
+#FreeDNS updater script
+
+UPDATEURL="http://freedns.afraid.org/dynamic/update.php?<?PHP echo $moo_key ; ?>"
+DOMAIN="<?PHP echo $moo_adr ; ?>"
+
+registered=$(nslookup $DOMAIN|tail -n2|grep A|sed s/[^0-9.]//g)
+
+  current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
+       [ "$current" != "$registered" ] && {
+          wget -q -O /dev/null $UPDATEURL
+		wget -q -O /dev/null http://<?PHP echo $server_in ; ?>/kh-live/update_ip.php
+           }
+<?PHP
+	          $message = ob_get_clean();
+$fichier = fopen('./config/update.sh', 'w');
+            if (fwrite($fichier, $message)){
+            echo "File saved successfully<br />" ;
+	fclose ($fichier);
+	    }else{
+	    // error saving
+	    }
+	    
 	    	    	    	ob_start();
 ?>[grg-music]
 mode=files
@@ -1166,10 +1190,10 @@ $fichier = fopen('./config/indications.conf', 'w');
         <sources>2</sources>
     </limits>
     <authentication>
-        <source-password>toroob7e</source-password>
-        <relay-password>toroob7e</relay-password>
+        <source-password><?PHP echo $master_key; ?></source-password>
+        <relay-password><?PHP echo $master_key; ?></relay-password>
         <admin-user>admin</admin-user>
-        <admin-password>toroob7e</admin-password>
+        <admin-password><?PHP echo $master_key; ?></admin-password>
     </authentication>
 
     <hostname><?PHP echo $server_out; ?></hostname>
@@ -1450,9 +1474,13 @@ Server_in : <br />adress to test if the server is live - localhost used for : ic
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
 server_out : <br />production address (to generate links for streams)<br />
 <input class="field_login" type="text" name="server_out" value="<?PHP echo $server_out;?>" /><br />
+mooo.com address : <br />
+<input class="field_login" type="text" name="moo_adr" value="<?PHP echo @$moo_adr;?>" /><br />
+moo_key : <br />api key for link up with mooo.com server<br />
+<input class="field_login" type="text" name="moo_key" value="<?PHP echo @$moo_key;?>" /><br />
 api_key : <br />api key for link up with main server<br />
 <input class="field_login" type="text" name="api_key" value="<?PHP echo @$api_key;?>" /><br />
-master_key : <br />key for ip synch with main server<br />
+master_key : <br />key for ip synch with main server and pwd for icecast admin<br />
 <input class="field_login" type="text" name="master_key" value="<?PHP echo @$master_key;?>" /><br />
 web_server_root : <br />root for webserver with trailing /<br />
 <input class="field_login" type="text" name="web_server_root" value="<?PHP echo $web_server_root;?>" /><br />

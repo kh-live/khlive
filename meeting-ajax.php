@@ -98,6 +98,8 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 	$client='SIP/'.$_SESSION['cong_phone_no'];
 	}elseif ($meeting_type=="iax"){
 	$client='IAX2/'.$_SESSION['cong_phone_no'];
+	}elseif ($meeting_type=="direct"){
+	$client='ALSA/'.$alsa_in;
 	}
 			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){
