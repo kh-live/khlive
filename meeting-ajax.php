@@ -280,7 +280,7 @@ Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
 }elseif ($meeting_type=="direct" AND $server_audio=="dsp"){
-	$info="Channel: console/".$server_in." 
+	$info="Channel: console/".$alsa_in." 
 MaxRetries: 1
 RetryTime: 60
 WaitTime: 30
