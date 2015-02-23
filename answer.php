@@ -6,7 +6,7 @@ include_once "db/config.php";
 
  if (isset($_REQUEST['action'])){
 	if ($_REQUEST['action']=="request"){
-	$action="request";//coming from??
+	$action="request";//coming from?? - that's a request over the phone_live
 	}elseif ($_REQUEST['action']=="cancel"){
 	$action="normal";
 	}elseif ($_REQUEST['action']=="answering"){
@@ -25,7 +25,7 @@ include_once "db/config.php";
 	if(isset($action)){
 	$cong=$_REQUEST['cong'];
 	$client=$_REQUEST['client'];
-	$type=@$_GET['type']; //useless...
+	$type=@$_GET['type']; //useless... no - setwhen first answering over phone = phone_live
 	$conf=@$_GET['conf'];
 	
 	$ij=0;

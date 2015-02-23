@@ -98,8 +98,10 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 	$client='SIP/'.$_SESSION['cong_phone_no'];
 	}elseif ($meeting_type=="iax"){
 	$client='IAX2/'.$_SESSION['cong_phone_no'];
-	}elseif ($meeting_type=="direct"){
+	}elseif ($meeting_type=="direct" AND $server_audio=="alsa"){
 	$client='ALSA/'.$alsa_in;
+	}elseif ($meeting_type=="direct" AND $server_audio=="dsp"){
+	$client='Console/'.$alsa_in;
 	}
 			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){
@@ -268,8 +270,17 @@ Context: test-menu
 Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
-}elseif ($meeting_type=="direct"){
+}elseif ($meeting_type=="direct" AND $server_audio=="alsa"){
 	$info="Channel: console/".$server_audio." 
+MaxRetries: 1
+RetryTime: 60
+WaitTime: 30
+Context: test-menu
+Extension: meet_me_".$cong_name."_admin
+Priority: 1
+";
+}elseif ($meeting_type=="direct" AND $server_audio=="dsp"){
+	$info="Channel: console/".$server_in." 
 MaxRetries: 1
 RetryTime: 60
 WaitTime: 30
