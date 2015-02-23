@@ -270,17 +270,8 @@ Context: test-menu
 Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
-}elseif ($meeting_type=="direct" AND $server_audio=="alsa"){
+}elseif ($meeting_type=="direct"){
 	$info="Channel: console/".$server_audio." 
-MaxRetries: 1
-RetryTime: 60
-WaitTime: 30
-Context: test-menu
-Extension: meet_me_".$cong_name."_admin
-Priority: 1
-";
-}elseif ($meeting_type=="direct" AND $server_audio=="dsp"){
-	$info="Channel: console/".$alsa_in." 
 MaxRetries: 1
 RetryTime: 60
 WaitTime: 30
