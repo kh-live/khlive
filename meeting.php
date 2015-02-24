@@ -41,7 +41,11 @@ $tmp="";
 		}
 	}
 if ($meeting_type=="direct"){
+if (isset($_SESSION['song_1'])){
+echo '<br /><input type="submit" id="play_1" value="Play Song '.$_SESSION['song_1'].'" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
+}else{
 echo '<br /><input type="submit" id="play_1" value="select a song..." disabled="disabled" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
+}
 }else{
 ?>
 <audio id="song1_audio" controls preload="none" >
@@ -73,7 +77,11 @@ $tmp="";
 </select>
 <?PHP
 if ($meeting_type=="direct"){
+if (isset($_SESSION['song_2'])){
+echo '<br /><input type="submit" id="play_2" value="Play Song '.$_SESSION['song_2'].'" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
+}else{
 echo '<br /><input type="submit" id="play_2" value="select a song..." disabled="disabled" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
+}
 }else{
 ?>
 <audio id="song2_audio" controls preload="none" >
@@ -104,7 +112,11 @@ $tmp="";
 </select>
 <?PHP
 if ($meeting_type=="direct"){
+if (isset($_SESSION['song_3'])){
+echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_3'].'" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
+}else{
 echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
+}
 }else{
 ?>
 <audio id="song3_audio" controls preload="none" >
