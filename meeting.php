@@ -269,15 +269,17 @@ xmlhttp.send();
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("play_"+i);
 	link.onclick= function(){
+	var no=this.id.substr(5);
 	var songNo=this.value.substr(10);
-		play_song(i, songNo);
+		play_song(no, songNo);
 		}
 }
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("stop_"+i);
 	link.onclick= function(){
+	var no=this.id.substr(5);
 	var songNo=this.value.substr(10);
-		stop_song(i);
+		stop_song(no);
 		}
 }
 <?PHP
