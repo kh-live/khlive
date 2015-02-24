@@ -219,7 +219,7 @@ xmlhttp.onreadystatechange=function()
     resp=xmlhttp.responseText;
     if (resp!=""){
 	//there was an error
-	document.getElementById("play_song_"+id).value=resp;
+	document.getElementById("play_"+id).value=resp;
 	document.getElementById("stop_"+id).disabled = false;
     }
     }
@@ -257,14 +257,14 @@ xmlhttp.send();
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("play_"+i);
 	link.onclick= function(){
-	var songNo=this.value.substr(11);
+	var songNo=this.value.substr(10);
 		play_song(i, songNo);
 		}
 }
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("stop_"+i);
 	link.onclick= function(){
-	var songNo=this.value.substr(11);
+	var songNo=this.value.substr(10);
 		stop_song(i);
 		}
 }
