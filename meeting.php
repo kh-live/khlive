@@ -255,7 +255,7 @@ xmlhttp.open("GET","song.php?stop=true", true);
 xmlhttp.send();
 }
 for (var i = 1; i <= 3; ++i) {
-var link = document.getElementById("play_song_"+i);
+var link = document.getElementById("play_"+i);
 	link.onclick= function(){
 	var songNo=this.value.substr(11);
 		play_song(i, songNo);
