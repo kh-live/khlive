@@ -101,7 +101,7 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 	}elseif ($meeting_type=="direct" AND $server_audio=="alsa"){
 	$client='ALSA/'.$alsa_in;
 	}elseif ($meeting_type=="direct" AND $server_audio=="dsp"){
-	$client='Console/'.$alsa_in;
+	$client='Console/'.$server_audio;
 	}
 			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){

@@ -321,7 +321,7 @@ exten => STARTMEETME,1,Set(CHANNEL(musicclass)=grg-music)
  same => n,Playback(grg/goodbye)
  same => n,Hangup
 
-exten => 4,1,TrySystem(wget -q -O /dev/null "http:/<?PHP echo $server_in ;?>/kh-live/answer.php?action=request&type=phone_live&cong=${CURRENT_CONG}&client=${URIENCODE(${GRG_USER})}")
+exten => 4,1,TrySystem(wget -q -O /dev/null "http://<?PHP echo $server_in ;?>/kh-live/answer.php?action=request&type=phone_live&cong=${CURRENT_CONG}&client=${URIENCODE(${GRG_USER})}")
  same =>n,Playback(grg/give_answer)
  same => n,Goto(STARTMEETME,1)
 
