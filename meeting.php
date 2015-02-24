@@ -32,11 +32,26 @@ $tmp="";
 }
 ?>
 </select>
+<?PHP
+	$db=file("db/cong");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+		if ($data[0]==$_SESSION['cong']) {
+		$meeting_type=$data[5];
+		}
+	}
+if ($meeting_type=="direct"){
+echo '<input type="submit" id="play_1" value="select a song..." disabled="disabled" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
+}else{
+?>
 <audio id="song1_audio" controls preload="none" >
 <?PHP
 if (isset($_SESSION['song_1'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.m4a" type="audio/mp4" >';
 ?>
  </audio><br /><br />
+ <?PHP
+ }
+ ?>
 Song 2: <select id="song2" onchange="javascript:update_song(2,this.value)">
 <?PHP
 $i=1;
@@ -55,11 +70,19 @@ $tmp="";
 }
 ?>
 </select>
+<?PHP
+if ($meeting_type=="direct"){
+echo '<input type="submit" id="play_2" value="select a song..." disabled="disabled" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
+}else{
+?>
 <audio id="song2_audio" controls preload="none" >
 <?PHP
 if (isset($_SESSION['song_2'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_2'].'.m4a" type="audio/mp4" >';
 ?>
- </audio><br /><br />
+ </audio>
+ <?PHP
+ }
+ ?><br /><br />
  Song 3: <select id="song3" onchange="javascript:update_song(3,this.value)">
 <?PHP
 $i=1;
@@ -78,6 +101,11 @@ $tmp="";
 }
 ?>
 </select>
+<?PHP
+if ($meeting_type=="direct"){
+echo '<input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
+}else{
+?>
 <audio id="song3_audio" controls preload="none" >
 <?PHP
 if (isset($_SESSION['song_3'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_3'].'.m4a" type="audio/mp4" >';
@@ -87,6 +115,9 @@ Random songs:
 <audio id="rand_player" controls preload="auto" >
 <source src="kh-songs/iasn_E_<?PHP echo rand(100,138); ?>.m4a" type="audio/mp4" >
  </audio>
+ <?PHP
+ }
+ ?>
  <br /> <br />136 : The Kingdom is in place - Let it come!<br />
  137 : Grant us boldness<br />
  138 : Jehovah is your Name
@@ -108,11 +139,21 @@ if(d2.length < 1) { return; }
 function update_song(id, no){
 if(id.length < 1) { return; }
 if(no.length < 1) { return; }
-
+<?PHP
+if ($meeting_type=="direct"){
+?>
+var song=document.getElementById("play_" +id);
+song.value="Play Song "+no;
+song.disabled = false;
+<?PHP
+}else{
+?>
 var song=document.getElementById("song" +id+ "_audio");
 song.src="kh-songs/iasn_E_" +no+".m4a";
 song.type="audio/mp4";
-
+<?PHP
+}
+?>
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
@@ -136,6 +177,9 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
 xmlhttp.send();
 }
+<?PHP
+if ($meeting_type!="direct"){
+?>
 document.getElementById('rand_player').addEventListener('ended',function(e){
 var player = document.getElementById('rand_player');
 
@@ -152,4 +196,78 @@ player.type="audio/mp4";
 player.autoplay= true ;
 player.load();
 });
+<?PHP
+}else{
+?>
+function play_song(id, no){
+if(id.length < 1) { return; }
+if(no.length < 1) { return; }
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+	//there was an error
+	document.getElementById("play_song_"+id).value=resp;
+	document.getElementById("stop_"+id).disabled = false;
+    }
+    }
+   
+    }
+xmlhttp.open("GET","song.php?play=" + no, true);
+xmlhttp.send();
+}
+function stop_song(id){
+if(id.length < 1) { return; }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+	//there was an error
+	document.getElementById("stop_"+id).value = resp;
+	document.getElementById("stop_"+id).disabled = true;
+    }
+    }
+   
+    }
+xmlhttp.open("GET","song.php?stop=true", true);
+xmlhttp.send();
+}
+for (var i = 1; i = 3; ++i) {
+var link = document.getElementById("play_song_"+i);
+	link.onclick= function(){
+	var songNo=this.value.substr(11);
+		play_song(i, songNo);
+		}
+}
+for (var i = 1; i = 3; ++i) {
+var link = document.getElementById("stop_"+i);
+	link.onclick= function(){
+	var songNo=this.value.substr(11);
+		stop_song(i);
+		}
+}
+<?PHP
+}
+?>
 </script>

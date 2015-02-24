@@ -324,6 +324,7 @@ if (isset($_SESSION['meeting_just_started'])){
 			}
 		}
 //otherwise
+//aren't we doing that on line 79 already?
 $db=file("db/cong");
 foreach($db as $line){
 $data=explode ("**",$line);
