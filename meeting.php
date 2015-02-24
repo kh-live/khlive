@@ -232,6 +232,7 @@ xmlhttp.onreadystatechange=function()
     if (resp!=""){
 	//there was an error
 	document.getElementById("play_"+id).value=resp;
+	document.getElementById("play_"+id).disabled = true;
 	document.getElementById("stop_"+id).disabled = false;
     }
     }
