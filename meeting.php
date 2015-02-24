@@ -258,6 +258,7 @@ xmlhttp.onreadystatechange=function()
     resp=xmlhttp.responseText;
     if (resp!=""){
 	//there was an error
+	document.getElementById("play_"+id).value = "Played";
 	document.getElementById("stop_"+id).value = resp;
 	document.getElementById("stop_"+id).disabled = true;
     }
