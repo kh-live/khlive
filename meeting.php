@@ -41,17 +41,18 @@ $tmp="";
 		}
 	}
 if ($meeting_type=="direct"){
-echo '<input type="submit" id="play_1" value="select a song..." disabled="disabled" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
+echo '<br /><input type="submit" id="play_1" value="select a song..." disabled="disabled" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
 }else{
 ?>
 <audio id="song1_audio" controls preload="none" >
 <?PHP
 if (isset($_SESSION['song_1'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.m4a" type="audio/mp4" >';
 ?>
- </audio><br /><br />
+ </audio>
  <?PHP
  }
  ?>
+ <br /><br />
 Song 2: <select id="song2" onchange="javascript:update_song(2,this.value)">
 <?PHP
 $i=1;
@@ -72,7 +73,7 @@ $tmp="";
 </select>
 <?PHP
 if ($meeting_type=="direct"){
-echo '<input type="submit" id="play_2" value="select a song..." disabled="disabled" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
+echo '<br /><input type="submit" id="play_2" value="select a song..." disabled="disabled" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
 }else{
 ?>
 <audio id="song2_audio" controls preload="none" >
@@ -103,7 +104,7 @@ $tmp="";
 </select>
 <?PHP
 if ($meeting_type=="direct"){
-echo '<input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
+echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
 }else{
 ?>
 <audio id="song3_audio" controls preload="none" >
@@ -253,14 +254,14 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","song.php?stop=true", true);
 xmlhttp.send();
 }
-for (var i = 1; i = 3; ++i) {
+for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("play_song_"+i);
 	link.onclick= function(){
 	var songNo=this.value.substr(11);
 		play_song(i, songNo);
 		}
 }
-for (var i = 1; i = 3; ++i) {
+for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("stop_"+i);
 	link.onclick= function(){
 	var songNo=this.value.substr(11);
