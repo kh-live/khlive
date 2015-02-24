@@ -57,7 +57,7 @@ include_once "db/config.php";
 	exec($asterisk_bin.' -rx "meetme list '.$conf.' concise"',$conf_db);	
 	foreach ($conf_db as $line){
 		$data=explode("!",$line);
-		if (strstr($client,$data[2]) OR strstr($client,$data[3])) $unmute=$data[0];
+		if (strstr($client,$data[2]) OR strstr($data[3],$client)) $unmute=$data[0];//data2 works on alpine data3 on rpi...
 		}
 	exec($asterisk_bin.' -rx "meetme unmute '.$conf.' '.$unmute.'"');
 	$info=time().'**info**answer start**'.$client."**\n";
@@ -70,7 +70,7 @@ include_once "db/config.php";
 	exec($asterisk_bin.' -rx "meetme list '.$conf.' concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
-		if (strstr($client,$data[2]) OR strstr($client,$data[3])) $mute=$data[0];
+		if (strstr($client,$data[2]) OR strstr($data[3],$client)) $mute=$data[0];
 		}
 	exec($asterisk_bin.' -rx "meetme mute '.$conf.' '.$mute.'"');
 	$info=time().'**info**answer stop**'.$client."**\n";
