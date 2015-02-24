@@ -12,7 +12,7 @@ if (isset($_GET['song_3'])){
 if (isset($_GET['play'])){
 	if (is_numeric($_GET['play']){
 	if ($_GET['play'] >=1 AND $_GET['play'] <=138) {
-	exec("sox /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a", $test);
+	exec("play /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a", $test);
 	print_r($test);
 	echo "Playing..."
 	}
