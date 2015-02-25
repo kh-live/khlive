@@ -1464,7 +1464,7 @@ else
 </script>
 <div id="page">
 <h2>Configuration</h2>
-<form action="" method="post">
+<form action="./configure" method="post">
 Server state :<br />enable testing functions - the meeting is faked live, all errors are displayed,the listening page doesnt refresh<br />
 <select class="field_login" name="server_beta" >
 <option value="false" <?PHP if ($server_beta=="false") echo 'selected=selected';?>>Production</option>
