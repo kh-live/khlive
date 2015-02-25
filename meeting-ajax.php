@@ -202,7 +202,7 @@ exec($asterisk_bin.' -rx "meetme list '.$cong_no.'concise"',$conf_db);
 	if($data[2]==$_SESSION['cong']){
 	if($data[5]=="normal"){
 	if($data[3]=="phone_live"){
-	echo '<div class="live_user"><img src="./img/phone1.png" /><br />'.$data[0].' - <a class="stop" href="./meeting?kill=1&user='.$data[0].'">x</a></div>';
+	echo '<div class="live_user"><img src="./img/phone1.png" /><br />'.$data[0].' - <a class="stop" href="./meeting-ajax.php?kill=1&user='.$data[0].'">x</a></div>';
 	}elseif($data[3]=="phone_record"){
 	//listening to a recording while the meeting is on... shouldnt happen
 	echo '<div class="live_user"><img src="./img/phone_record.png" /><br />'.$data[0].'</div>';
