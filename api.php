@@ -19,12 +19,42 @@ $query=explode("**", $decrypted);
 			$string.=$line;
 			}
 			$string.="@@@ok";
+		}elseif ($query[1]=="update" AND $server_beta=="master"){
+		$server_name=$query[2];
+		$new_ip=$_SERVER['REMOTE_ADDR'];
+		
+		$content="";
+		$db=file("db/servers");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if ($data[0]==$server_name){
+	$api_key=$data[2];
+		$content.=$server_name."**".$new_ip."**".$api_key."**\n";
+		}else{
+		$content.=$line;
+		}
+		}
+		$file=fopen("db/servers",'w');
+	if (fputs($file,$content)){
+	fclose($file);
+		$string=$new_ip."@@@ok";
+		}
 		}
 	
 	if ($string!=""){
 	$string=="nothing@@@ko";
 		}
 	}else{
+	//api_key is undefined when we timeout on master side
+	if ($server_beta=="master"){
+	$db=file("db/servers");
+		foreach($db as $line){
+        $data=explode ("**",$line);
+	if ($data[0]==$query[2]){
+	$api_key=$data[2];
+	}
+	}
+	}
 	$string=="timeout@@@".time();
 	}
 		$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($api_key), $string, MCRYPT_MODE_CBC, md5(md5($api_key))));

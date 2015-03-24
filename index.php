@@ -245,6 +245,14 @@ if ($_SESSION['type']=="root"){
 	include ("./video_edit.php");
 	}elseif ($page=="configure"){
 	include ("./config.php");
+	}elseif ($page=="servers" AND $server_beta=="master"){
+	include ("./servers.php");
+	}elseif ($page=="server_add" AND $server_beta=="master"){
+	include ("./server_add.php");
+	}elseif ($page=="server_edit" AND $server_beta=="master"){
+	include ("./server_edit.php");
+	}elseif ($page=="server_delete" AND $server_beta=="master"){
+	include ("./server_delete.php");
 	}
 	}
 //admin links only

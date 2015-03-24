@@ -1,10 +1,41 @@
 <?PHP
+//this page is either included or contacted directly in an iframe (for remote connection)
+$print='ok';
+
+
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
-header("HTTP/1.1 404 Not Found");
-include "404.php";
-exit(); 
+$a = session_id();
+if ($a == ''){
+session_start();
 }
+include "db/config.php";
+include "lang.php";
+//in case of i frame we need to set some session variables that we get through a get arg
+$_SESSION['user']=$_GET['user'];
+$_SESSION['cong']=$_GET['cong'];
+echo '<html><head><link rel="stylesheet" type="text/css" href="css/'.$version.'--style.css" media="all" /></head>
+<body>';
+}else{
+//if it's from the master server, we need to redirect to the slave server
+if ($server_beta=="master"){
+$print='ko';
+$url="";
+$db=file("db/servers");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$_SESSION['cong'])){
+	$url=$data[1];
+	}
+	}
+if ($url==""){
+echo 'Could not find your congregations server...';
+}else{
+echo '<iframe id="page" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe>';
+}
+}
+}
+if ($print=='ok'){
 ?>
 <script type="text/javascript">
 var count="";
@@ -288,3 +319,9 @@ Your answer :<br /><textarea name="answer" id="answer"></textarea><br /><br />
 }
 ?>
 </div>
+<?PHP
+}
+if (strstr($test, ".php")){
+echo '</body></html>';
+}
+?>

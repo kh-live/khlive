@@ -1423,7 +1423,7 @@ ob_start();
        
         echo '<?PHP
 	/**last change on : '.date("F d Y H:i:s").'**/
-$version=\'1.3\';
+$version=\'1.4\';
 ' ;
 	foreach ($_POST as $key=>$value){
 if ($key!="submit"){
@@ -1469,6 +1469,7 @@ Server state :<br />enable testing functions - the meeting is faked live, all er
 <select class="field_login" name="server_beta" >
 <option value="false" <?PHP if ($server_beta=="false") echo 'selected=selected';?>>Production</option>
 <option value="true" <?PHP if ($server_beta=="true") echo 'selected=selected';?>>Testing</option>
+<option value="master" <?PHP if ($server_beta=="master") echo 'selected=selected';?>>Master (only use on kh-live.co.za)</option>
 </select><br />
 Server_in : <br />adress to test if the server is live - localhost used for : icecast actions urls + ices instance + ezstream instance<br />
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />

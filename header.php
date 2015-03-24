@@ -15,7 +15,7 @@ exit();
 <meta name="viewport" content="width=320" />
 <?PHP
 if($page=="listening"){
-if(strstr($_SESSION['meeting_status'],"live") OR $server_beta==true ){// for testing we trick it to belive it's live
+if(strstr($_SESSION['meeting_status'],"live") OR $server_beta=="true" ){// for testing we trick it to belive it's live
 }else{
  echo '<meta http-equiv="refresh" content="'.$timer_listen.'" />';
 }
@@ -40,6 +40,7 @@ $_SESSION['server_status']="ok";
 if ($_SESSION['type']=="manager") echo ' - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./video">Videos</a> - <a href="./report">'.$lng['report'].'</a>';
 if ($_SESSION['type']=="admin") echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./report">'.$lng['report'].'</a>';
 if ($_SESSION['type']=="root") echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./report">'.$lng['report'].'</a> - <a href="./configure">Configuration</a>';
+if ($_SESSION['type']=="root" AND $server_beta=="master") echo '  - <a href="./servers">Servers</a>';
 ?>
 </div>
 
