@@ -1,14 +1,4 @@
 <?PHP
-$test=$_SERVER['REQUEST_URI'];
-if (strstr($test, ".php")){
-header("HTTP/1.1 404 Not Found");
-include "404.php";
-exit(); 
-}
-
-if ($lang=="fr"){
-
-}else{
 $lng['PIN']='PIN';
 $lng['welcome_instructions']='To listen to the meeting click on the link "listen" above.';
 $lng['listening']='Listen';
@@ -82,5 +72,4 @@ $lng['cong_id']='Congregation ID';
 $lng['admin_pin']='Admin PIN';
 $lng['report']='Report';
 $lng['status']='Status';
-}
 ?>
