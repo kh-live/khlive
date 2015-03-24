@@ -14,7 +14,11 @@ include "lang.php";
 //in case of i frame we need to set some session variables that we get through a get arg
 $_SESSION['user']=$_GET['user'];
 $_SESSION['cong']=$_GET['cong'];
-echo '<html><head><link rel="stylesheet" type="text/css" href="css/'.$version.'--style.css" media="all" /></head>
+echo '<html><head>
+<link rel="stylesheet" type="text/css" href="css/'.$version.'--style.css" media="all" />
+<link rel="stylesheet" type="text/css" href="css/'.$version.'--mobile.css" media="only screen and (max-width:840px)" />
+<link type="text/css" rel="stylesheet" href="css/'.$version.'--default.css" media="only screen and (min-width:841px)" />
+</head>
 <body>';
 }else{
 //if it's from the master server, we need to redirect to the slave server
@@ -31,7 +35,7 @@ $db=file("db/servers");
 if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
-echo '<iframe id="page" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe>';
+echo '<iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe>';
 }
 }
 }
