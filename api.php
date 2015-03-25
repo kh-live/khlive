@@ -39,6 +39,12 @@ $query=explode("**", $decrypted);
 	fclose($file);
 		$string=$new_ip."@@@ok";
 		}
+		//we log that the ip has been updated
+		$info=time().'**info**ip updated**'.$server_name.'@'.$new_ip."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
 		}elseif ($query[1]=="start" AND $server_beta=="master"){
 		//we must make sure query2 is really a cong
 		$cong=$query[2];

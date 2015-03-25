@@ -9,4 +9,6 @@ find /var/www/kh-live/ -type f -print | xargs chmod 640
 chown -R asterisk:asterisk /var/www/kh-live/*
 cp update_script_debian.sh update.sh
 chmod 700 update.sh
+chmod +x /var/www/kh-live/config/update.sh
+chmod +x /var/www/kh-live/config/downloader.sh
 echo "done"
