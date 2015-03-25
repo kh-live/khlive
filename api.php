@@ -39,6 +39,26 @@ $query=explode("**", $decrypted);
 	fclose($file);
 		$string=$new_ip."@@@ok";
 		}
+		}elseif ($query[1]=="start" AND $server_beta=="master"){
+		//we must make sure query2 is really a cong
+		$cong=$query[2];
+		$file=fopen($temp_dir.'meeting_'.$cong,'w');
+	if (fputs($file,"live")){
+	fclose($file);
+		$string=time()."@@@ok";
+	}else{
+	$string=time()."@@@ko";
+	}
+		}elseif ($query[1]=="stop" AND $server_beta=="master"){
+		//we must make sure query2 is really a cong
+		$cong=$query[2];
+		$file=fopen($temp_dir.'meeting_'.$cong,'w');
+	if (fputs($file,"down")){
+	fclose($file);
+		$string=time()."@@@ok";
+	}else{
+	$string=time()."@@@ko";
+	}
 		}
 	
 	if ($string!=""){

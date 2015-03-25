@@ -35,7 +35,12 @@ $db=file("db/servers");
 if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
-echo '<iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe>';
+//we check if the meeting is live or not
+if ($_SESSION['meeting_status']=='live'){
+echo '<div id="page"><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
+}else{
+echo '<div id="page"><u>'.$lng['not_available'].'</u></div>';
+}
 }
 }
 }

@@ -19,6 +19,23 @@ if (isset($cong)) unset($cong);
 			if(fputs($file,$info)){
 			fclose($file);
 	}
+	$key=$master_key;
+	$key2=$api_key;
+	$string=time()."**start**".$cong;
+	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
+	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$dec=explode("@@@", $decrypted);
+	if (@$dec[1]=="ok"){
+	//update succesful
+	}else{
+	$info=time().'**error**could not remote sync meeting start**'.$mount.'@'.$server.':'.$port.'**'.$cong."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
+	}
+	
 	$info=time().'**info**new mount**'.$mount."**\n";
 	$file=fopen('./db/logs-'.strtolower($cong).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){

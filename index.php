@@ -199,8 +199,8 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 if (!isset($_SESSION['user'])){
 include ("./login.php");
 }else{
-//check if there is a live meeting
- if ($_SERVER['HTTP_HOST']!="localhost:8080" AND $_SERVER['HTTP_HOST']!="127.0.0.1:8081"){
+//check if there is a live meeting only if we are in production mode
+ if ($server_beta=="false"){
 	if (!file_exists($temp_dir.'meeting_'.$_SESSION['cong'])){
 	//if the file doesn't exist, it means the computer restarted (if the temp_dir =/dev/shm)
 	//we must clear the database of the admin state in case the computer crashed while a meeting was on
@@ -219,6 +219,13 @@ include ("./login.php");
 	}
 	$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 	$_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
+	}elseif ($server_beta=="master") {
+	if (!file_exists($temp_dir.'meeting_'.$_SESSION['cong'])){
+	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
+	fputs($file,"down");
+	fclose($file);
+	}
+	$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 	}else{
 	$_SESSION['meeting_status']="down";
 	$_SESSION['test_meeting_status']="down";
