@@ -5,47 +5,28 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
-$skip=0;
+include 'functions.php';
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['delete']){
 		if ($_POST['user_confirmed']!=""){
 			$user_confirmed=urldecode($_POST['user_confirmed']);//sanitize
 			$pin=$_POST['pin'];
-			$db=file("db/users");
-			$file_content="";
-	foreach($db as $line){
-        $data=explode ("**",$line);
-		
-		if ($data[0]==$user_confirmed){
-			if ($data[3]==$_SESSION['cong'] OR $_SESSION['type']=='root'){
-			$congregation=$data[3];
-			}else{
-			//this an attempt at deleting a user from another cong - log
-			$file_content.=$line;
-			$skip=1;
-			}
-		}else{
-		$file_content.=$line;
-		}
-		
-	}
-	if ($skip==0){
-			$file=fopen('./db/users','w');
-			if(fputs($file,$file_content)){
+			$deleting=kh_user_del($user_confirmed,$pin);
+if ($deleting=='ok'){
+echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
+$info=time().'**info**local user delete successful**'.$user_confirmed."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
 			fclose($file);
-			exec($asterisk_bin.' -rx "database del '.$congregation.' '.$pin.'"');
-			//remove voip account if needed
-include "sip-gen.php";
-
-include "iax-gen.php";
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-		}else{
-		//this an attempt at deleting a user from another cong - log
-		echo '<div id="error_msg">'.$lng['error'].'</div>';
-		}
+	}
+}else{
+echo $deleting;
+$info=time().'**info**local user delete fail**'.$user_confirmed."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
+}
 		}else{
 		echo '<div id="error_msg">'.$lng['error'].'</div>';
 		}

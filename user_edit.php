@@ -5,7 +5,7 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit();
 }
-$skip=0;
+include 'functions.php';
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['save']){
 		if ($_POST['user_confirmed']!="" AND $_POST['congregation']!="0" AND $_POST['rights']!="0" AND $_POST['user']!="" AND $_POST['name']!="" AND $_POST['pin']>=9999 AND $_POST['pin']<=100000){
@@ -20,6 +20,7 @@ if(isset($_POST['submit'])){
 			$old_cong=$_POST['old_cong'];//sanitize input
 			$type_new=$_POST['type'];//sanitize input
 			$info_new=$_POST['info'];//sanitize input
+			$last_login=" ";
 			$error="";
 			if ($user_new!=$user_confirmed){
 			$db=file("db/users");
@@ -36,51 +37,29 @@ if(isset($_POST['submit'])){
 			}
 			}
 			if ($error!="ko"){
-			$db=file("db/users");
-			$file_content="";
-	foreach($db as $line){
-        $data=explode ("**",$line);
-		if ($data[0]==$user_confirmed){
-		 if ($data[3]==$_SESSION['cong'] OR $_SESSION['type']=='root'){
+			$encode="1";
 			if ($password_new==""){
+			$encode="0";
+			$db=file("db/users");
+			foreach($db as $line){
+			$data=explode ("**",$line);
+			if ($data[0]==$user_confirmed){
 			$password_new=$data[1];
-			}else{
-			$salt=hash("sha512",rand());
-			$pwd_hashed=hash("sha512",$salt.$password_new);
-			$password_new=$salt."--".$pwd_hashed;
 			}
-		$file_content.=$user_new.'**'.$password_new.'**'.$name_new.'**'.$congregation_new.'**'.$rights_new.'**'.$pin.'**'.$type_new."** **".$info_new."**\n";
-		 }else{
-			//this an attempt at editing a user from another cong - log
-			$file_content.=$line;
-			$skip=1;
 			}
-		}else{
-		$file_content.=$line;
-		}
-	}
-			$file=fopen('./db/users','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
+			}
+$deleting=kh_user_del($user_confirmed,$old_pin);
+if ($deleting=='ok'){
+$adding=kh_user_add($user_new,$password_new,$name_new,$congregation_new,$rights_new,$pin,$type_new,$last_login,$info_new,$encode);
+if ($adding=='ok'){
+echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
+}else{
+echo $adding;
+}
+}else{
+echo $deleting;
+}
 			
-		if ($skip==0){
-			if ($old_cong!=$congregation_new OR $old_pin!=$pin){
-			exec($asterisk_bin.' -rx "database del '.$old_cong.' '.$old_pin.'"');
-			exec($asterisk_bin.' -rx "database put '.$congregation_new.' '.$pin.' '.$user_new.'"');
-			}
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			
-			//add voip account if needed
-include "sip-gen.php";
-
-include "iax-gen.php";			
-			}else{
-		//this an attempt at deleting a user from another cong - log
-		echo '<div id="error_msg">'.$lng['error'].'</div>';
-		}
-		}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
 			}else{
 			echo '<div id="error_msg">'.$lng['name_exists'].'...</div>';
 			}

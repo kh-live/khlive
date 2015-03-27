@@ -5,41 +5,26 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+include 'functions.php';
 
-$error="";
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['save']){
-		if ($_POST['rights']!="0" AND $_POST['congregation']!="0" AND $_POST['user']!="" AND $_POST['password']!="" AND strlen($_POST['password'])>=8 AND $_POST['name']!="" AND $_POST['pin']>=9999 AND $_POST['pin']<=100000){
-			$db=file("db/users");
-			foreach($db as $line){
-			$data=explode ("**",$line);
-			if ($data[0]==$_POST['user']) $error="ko";
-			if ($data[5]==$_POST['pin']) $error="ko";
-			}
-			if ($error!="ko"){
-			
-			$salt=hash("sha512",rand());
-			$pwd_hashed=hash("sha512",$salt.$_POST['password']);
-			$info=$_POST['user'].'**'.$salt.'--'.$pwd_hashed.'**'.$_POST['name'].'**'.$_POST['congregation'].'**'.$_POST['rights'].'**'.$_POST['pin'].'**'.$_POST['type']."** **".$_POST['info']."**\n"; //sanitize input
-			$file=fopen('./db/users','a');
-			if(fputs($file,$info)){
-			fclose($file);
-			
-			//add account for voip if needed
-include "sip-gen.php";
-
-include "iax-gen.php";
-			exec($asterisk_bin.' -rx "database put '.$_POST['congregation'].' '.$_POST['pin'].' '.$_POST['user'].'"');
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-			}else{
-			echo '<div id="error_msg">'.$lng['name_exists'].'...</div>';
-			}
-		}else{
-		echo '<div id="error_msg">'.$lng['fill_incorrect'].'...</div>';
-		}
+	$user=$_POST['user'];
+	$password=$_POST['password'];
+	$name=$_POST['name'];
+	$congregation=$_POST['congregation'];
+	$rights=$_POST['rights'];
+	$pin=$_POST['pin'];
+	$type=$_POST['type'];
+	$info=$_POST['info'];
+	$last_login=" ";
+	$encode="1";
+	$adding=kh_user_add($user,$password,$name,$congregation,$rights,$pin,$type,$last_login,$info,$encode);
+if ($adding=='ok'){
+echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
+}else{
+echo $adding;
+}
 	}
 }
 ?>

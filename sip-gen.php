@@ -72,8 +72,8 @@ allow=alaw
 $fichier = fopen('./config/sip.conf', 'w');
             if (fwrite($fichier, $message)){
 		exec($asterisk_bin.' -rx "sip reload"');
-            echo "File saved successfully<br />" ;
+        //   File saved successfully
 	fclose ($fichier);
 	    }else{
-	    // error saving
+	    echo "error saving sip file";
 	    }
