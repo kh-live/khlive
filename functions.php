@@ -1,6 +1,6 @@
 <?PHP
 function kh_user_add($user,$password,$name,$congregation,$rights,$pin,$type,$last_login,$info,$encode="1",$api="0"){
-$error="";
+$error="ok";
 global $server_beta;
 global $lng;
 global $asterisk_bin;
@@ -22,6 +22,7 @@ global $api_key;
 	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
 	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
 	$dec=explode("@@@", $decrypted);
+	//if upstream server fails to answer should we still add the user locally?
 	if (@$dec[1]=="ko") $error="ko";
 			}
 			
@@ -39,7 +40,7 @@ global $api_key;
 			$error='ko';
 			}
 
-if ($server_beta=="false"){	
+if ($server_beta=="false"){
 			//add account for voip only on production server (not on master server)
 include "sip-gen.php";
 include "iax-gen.php";
