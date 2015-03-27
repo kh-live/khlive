@@ -14,7 +14,7 @@ global $api_key;
 			if ($data[5]==$pin) $error="ko";
 			}
 			//remote check
-			if ($server_beta!="master"){
+			if ($server_beta!="master" AND $api=="0"){
 			$key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_check**".$user.'###'.$congregation;
