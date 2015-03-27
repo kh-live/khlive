@@ -15,9 +15,55 @@ include "lang.php";
 $_SESSION['user']=$_GET['user'];
 $_SESSION['cong']=$_GET['cong'];
 echo '<html><head>
-<link rel="stylesheet" type="text/css" href="css/'.$version.'--style.css" media="all" />
-<link rel="stylesheet" type="text/css" href="css/'.$version.'--mobile.css" media="only screen and (max-width:840px)" />
-<link type="text/css" rel="stylesheet" href="css/'.$version.'--default.css" media="only screen and (min-width:841px)" />
+<style type="text/css">
+body {
+    background-color: #eee;
+    color: black;
+    font-family: sans-serif;
+    font-size: 16px;
+    margin: 0;
+    overflow-x: hidden;
+}
+#page {
+    background-color: white;
+    overflow-y: auto;
+    padding: 10px 10px 30px;
+}
+
+#feeds {
+    padding-left: 10px;
+}
+#feeds u {
+    color: red;
+    text-decoration: none;
+}
+#number_at {
+    background-color: grey;
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+    min-height: 30px;
+    padding: 10px;
+    text-align: center;
+}
+#sms_small {
+    background-color: grey;
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+    min-height: 30px;
+    padding: 10px;
+    text-align: center;
+}
+#sms {
+    background-color: #eeeeee;
+    border: 1px solid grey;
+    display: none;
+    margin-top: 30px;
+    padding: 10px;
+    width: 400px;
+}
+</style>
 </head>
 <body>';
 }else{
@@ -39,7 +85,7 @@ echo 'Could not find your congregations server...';
 if ($_SESSION['meeting_status']=='live'){
 echo '<div id="page"><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
 }else{
-echo '<div id="page"><u>'.$lng['not_available'].'</u></div>';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><div id="feeds">'.$lng['nolive'].' :<br /><br /><u>'.$lng['not_available'].'</u><br /><br /></div>'.$lng['listen_records'].'<br /></div>';
 }
 }
 }
@@ -206,9 +252,7 @@ function counter (i){
 }
 </script>
 <div id="page">
-<?PHP echo '<h2>'.$lng['listening'].'</h2>';
-
-echo $lng['listening_text'].'<br /><br />';
+<?PHP echo '<h2>'.$lng['listening'].'</h2>'.$lng['listening_text'].'<br /><br />';
 
 //detect navigator
 $type_accept="";
