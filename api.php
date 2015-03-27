@@ -190,7 +190,7 @@ $query=explode("**", $decrypted);
 	}
 	//we tell the function not to loop back
 	$api="1";
-	$encode="0",
+	$encode="0";
 	$last_login=" ";
 	$adding=kh_user_add($user,$password,$name,$cong,$rights,$pin,$type,$last_login,$info,$encode,$api);
 	if ($adding!='ok') $error="1";
