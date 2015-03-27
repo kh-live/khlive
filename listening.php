@@ -17,7 +17,6 @@ $_SESSION['cong']=$_GET['cong'];
 echo '<html><head>
 <style type="text/css">
 body {
-    background-color: #eee;
     color: black;
     font-family: sans-serif;
     font-size: 16px;
@@ -307,7 +306,7 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
     if ($type==$type_accept OR $type_accept=="all" OR $type_accept=="mob"){
-    $buffer.='<audio controls autoplay> <source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a></audio><br /><br />';
+    $buffer.='<audio controls autoplay> <source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a></audio><br /><br />';
 	}else{
     $buffer.=$lng['alern_link'].' <a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
     }
