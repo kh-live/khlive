@@ -143,7 +143,6 @@ $query=explode("**", $decrypted);
         $data=explode ("**",$line);
 	if (strstr($data[3],$cong)){
 	$api_key=$data[2];
-	$slave_url=$data[1];
 	}
 	}
 	}
@@ -163,6 +162,50 @@ $query=explode("**", $decrypted);
 	}else{
 	$string=time()."@@@ko";
 	$info=time().'**info**user del fail**'.$user_del.'@'.$cong."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
+		}
+		}elseif ($query[1]=="user_add" ){
+		//we must make sure query2 is really a cong
+		$error="0";
+		$param=explode('###',$query[2]);
+		$user=$param[0];
+		$password=$param[1];
+		$name=$param[2];
+		$cong=$param[3];
+		$rights=$param[4];
+		$pin=$param[5];
+		$type=$param[6];
+		$info=$param[7];
+		if ($server_beta=="master"){
+		$db=file("./db/servers");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$cong)){
+	$api_key=$data[2];
+	}
+	}
+	}
+	//we tell the function not to loop back
+	$api="1";
+	$encode="0",
+	$last_login=" ";
+	$adding=kh_user_add($user,$password,$name,$cong,$rights,$pin,$type,$last_login,$info,$encode,$api);
+	if ($adding!='ok') $error="1";
+
+	if ($error=="0"){
+		$string=time()."@@@ok";
+		//we log that the ip has been updated
+		$info=time().'**info**user added successful**'.$user.'@'.$cong."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
+	}else{
+	$string=time()."@@@ko";
+	$info=time().'**info**user add fail**'.$user.'@'.$cong."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);

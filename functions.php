@@ -1,5 +1,5 @@
 <?PHP
-function kh_user_add($user,$password,$name,$congregation,$rights,$pin,$type,$last_login,$info,$encode="1"){
+function kh_user_add($user,$password,$name,$congregation,$rights,$pin,$type,$last_login,$info,$encode="1",$api="0"){
 $error="";
 global $server_beta;
 global $lng;
@@ -35,6 +35,9 @@ global $api_key;
 			$file=fopen('./db/users','a');
 			if(fputs($file,$info)){
 			fclose($file);
+			}else{
+			$error='ko';
+			}
 
 if ($server_beta=="false"){	
 			//add account for voip only on production server (not on master server)
@@ -42,6 +45,44 @@ include "sip-gen.php";
 include "iax-gen.php";
 exec($asterisk_bin.' -rx "database put '.$congregation.' '.$pin.' '.$user.'"');
 }
+if ($api=="0"){
+if ($server_beta!="master"){
+//we need to sync with master server only if we are not called by api (otherwise it loops)
+
+$key=$master_key;
+	$key2=$api_key;
+	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
+	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
+	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$dec=explode("@@@", $decrypted);
+	if (@$dec[1]=="ko") $error="ko";
+	
+}else{
+//we need to sync with slave server only with the function isn't called from api!
+//which server to contact?
+$db=file("./db/servers");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$congregation)){
+	$api_key=$data[2];
+	$slave_url=$data[1];
+	}
+	}
+if ($slave_url!=""){
+$key=$api_key;
+	$key2=$api_key;
+	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
+	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$response=file_get_contents('http://'.$slave_url.'/kh-live/api.php?q='.urlencode($encrypted));
+	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$dec=explode("@@@", $decrypted);
+	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?
+	if (@$dec[1]=="ko") $error="ko";
+	}
+}
+}
+			if ($error=='ok'){
 			return 'ok';
 			}else{
 			return '<div id="error_msg">'.$lng['error'].'</div>';
@@ -110,8 +151,14 @@ $key=$master_key;
 }else{
 //we need to sync with slave server only with the function isn't called from api!
 //which server to contact?
-
-global $slave_url;
+$db=file("./db/servers");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$congregation)){
+	$api_key=$data[2];
+	$slave_url=$data[1];
+	}
+	}
 if ($slave_url!=""){
 $key=$api_key;
 	$key2=$api_key;
