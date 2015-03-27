@@ -53,11 +53,26 @@ if ($deleting=='ok'){
 $adding=kh_user_add($user_new,$password_new,$name_new,$congregation_new,$rights_new,$pin,$type_new,$last_login,$info_new,$encode);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
+$info=time().'**info**local user edit successful**'.$user_confirmed.'@'.$old_cong.'->'.$user_new.'@'.$congregation_new."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
 }else{
 echo $adding;
+$info=time().'**error**local user edit fail add**'.$user_confirmed.'@'.$old_cong.'->'.$user_new.'@'.$congregation_new."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
 }
 }else{
 echo $deleting;
+$info=time().'**error**local user edit fail del**'.$user_confirmed.'@'.$old_cong.'->'.$user_new.'@'.$congregation_new."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
 }
 			
 			}else{

@@ -21,7 +21,7 @@ $info=time().'**info**local user delete successful**'.$user_confirmed."**\n";
 	}
 }else{
 echo $deleting;
-$info=time().'**info**local user delete fail**'.$user_confirmed."**\n";
+$info=time().'**error**local user delete fail**'.$user_confirmed."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);

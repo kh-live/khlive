@@ -6,6 +6,6 @@ include "404.php";
 exit(); 
 }
 ?>
-<div id="footer">&copy; 2014 - KH Live!</div>
+<div id="footer">&copy; <?PHP echo date("Y",time()); ?> - KH Live!</div>
 </body>
 </html>

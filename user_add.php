@@ -22,8 +22,18 @@ if(isset($_POST['submit'])){
 	$adding=kh_user_add($user,$password,$name,$congregation,$rights,$pin,$type,$last_login,$info,$encode);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
+$info=time().'**info**local user add successful**'.$user.'@'.$congregation."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
 }else{
 echo $adding;
+$info=time().'**error**local user add fail**'.$user.'@'.$congregation."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+	}
 }
 	}
 }
