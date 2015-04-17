@@ -20,6 +20,7 @@ if(isset($_POST['submit'])){
 			$phone_no=@$_POST['phone_no'];
 			$voip_type=$_POST['voip_type'];
 			$stream=$_POST['stream'];
+			$stream_server=$_POST['stream_server'];
 			$stream_type=$_POST['stream_type'];
 			$voip_pwd=$_POST['voip_pwd'];
 			$trunk=$_POST['trunk'];
@@ -182,10 +183,11 @@ Priority: 1
 			}else{
 			echo '<div id="error_msg">'.$lng['error'].'3</div>';
 			}
+if ($stream_server=="") $stream_server=$server_in;
 if ($stream_type=="mp3"){
 $bitrate=15+(3*$stream_quality);
 $info4 = "<ezstream>
-    <url>http://".$server_in.":".$port."/stream-".$cong_name."</url>
+    <url>http://".$stream_server.":".$port."/stream-".$cong_name."</url>
     <sourcepassword>".$voip_pwd."</sourcepassword>
     <format>MP3</format>
     <filename>stdin</filename>
@@ -238,7 +240,7 @@ $info4="<?xml version=\"1.0\"?>
             <param name=\"metadatafilename\"> </param>
         </input>
         <instance>
-            <hostname>".$server_in."</hostname>
+            <hostname>".$stream_server."</hostname>
             <port>".$port."</port>
             <password>".$voip_pwd."</password>
             <mount>/stream-".$cong_name.".ogg</mount>
@@ -331,6 +333,9 @@ sip_caller_ip :<br />limit cong meeting call to this IP (leave blank if no limit
 <option value="yes">yes</option>
 <option value="no">no</option>
 </select><br /><br />
+<br />
+stream_to_server :<br />server to send the stream to. usually localhost.<br />
+<input class="field_login" type="text" name="stream_server"  /><br /><br />
 <b>Streaming quality</b><br />
 <select name="stream_quality">
 <option value="0">0 (15 kb/s)</option>
