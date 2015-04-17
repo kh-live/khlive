@@ -1,4 +1,5 @@
 <?PHP
+$gen_version='1.5';
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
 header("HTTP/1.1 404 Not Found");
@@ -440,7 +441,7 @@ $fichier = fopen('./config/logger.conf', 'w');
 	    ob_start();
 ?>#!/bin/sh
 #FreeDNS updater script
-ifup ppp0 &>/dev/null
+ifup ppp0 1>&- 2>&-
 cp -u "/var/www/kh-live/config/cron" "/etc/cron.d/khlive"
 echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
@@ -1439,7 +1440,7 @@ ob_start();
        
         echo '<?PHP
 	/**last change on : '.date("F d Y H:i:s").'**/
-$version=\'1.4\';
+$version=\''.$gen_version.'\';
 ' ;
 	foreach ($_POST as $key=>$value){
 if ($key!="submit"){
