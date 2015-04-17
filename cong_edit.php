@@ -152,7 +152,7 @@ if(isset($_POST['submit'])){
 			
 			if ($error!="ko"){
 			
-			$info=$cong_name."**".$cong_no."**".$conf_admin."**".$conf_user."**".$phone_no."**".$voip_type."**".$stream."**".$stream_type."**".$voip_pwd."**".$trunk."**".$record."**".$answer."**".$stream_quality."**".$sip_caller_ip."**\n";
+			$info=$cong_name."**".$cong_no."**".$conf_admin."**".$conf_user."**".$phone_no."**".$voip_type."**".$stream."**".$stream_type."**".$voip_pwd."**".$trunk."**".$record."**".$answer."**".$stream_quality."**".$sip_caller_ip."**".$stream_server."**\n";
 			$info1="conf => ".$cong_no.",".$conf_user.",".$conf_admin."\n";
 if ($stream_type=="mp3"){
 $tmp_type="EAGI(".$web_server_root."kh-live/config/mp3stream-".$cong_name.".sh)";
@@ -421,6 +421,7 @@ $db=file("db/cong");
 	$answer=@$data[11];
 	$stream_quality=@$data[12];
 	$sip_caller_ip=@$data[13];
+	$stream_server=@$data[14];
 	}
 	}
 	if ($voip_pwd==""){
