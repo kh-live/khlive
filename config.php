@@ -440,6 +440,7 @@ $fichier = fopen('./config/logger.conf', 'w');
 	    ob_start();
 ?>#!/bin/sh
 #FreeDNS updater script
+cp "/var/www/kh-live/config/cron" "/etc/cron.d/khlive"
 echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
 UPDATEURL="http://freedns.afraid.org/dynamic/update.php?<?PHP echo $moo_key ; ?>"
