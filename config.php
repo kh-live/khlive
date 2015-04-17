@@ -462,6 +462,19 @@ $fichier = fopen('./config/update.sh', 'w');
 	    // error saving
 	    }
 	    
+	     ob_start();
+?>*/5 * * * * root /var/www/kh-live/config/update.sh
+5 0 * * * root /var/www/kh-live/config/downloader.sh
+<?PHP
+	          $message = ob_get_clean();
+$fichier = fopen('./config/cron', 'w');
+            if (fwrite($fichier, $message)){
+            echo "File saved successfully<br />" ;
+	fclose ($fichier);
+	    }else{
+	    // error saving
+	    }
+	    
 	    	    	    	ob_start();
 ?>[grg-music]
 mode=files
@@ -1378,8 +1391,8 @@ $info4="<?xml version=\"1.0\"?>
 	}
 	
 include "sip-gen.php";
-Include "alsa-gen.php";
-Include "iax-gen.php";
+include "alsa-gen.php";
+include "iax-gen.php";
 
 	$db=file("db/cong");
     foreach($db as $line){
