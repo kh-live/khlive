@@ -158,7 +158,7 @@ if ($meeting_type=="direct"){
 var song=document.getElementById("play_" +id);
 song.value="Play Song "+no;
 song.disabled = false;
-getElementById("stop_" +id).value= "Stop Song "+no;
+document.getElementById("stop_" +id).value= "Stop Song "+no;
 <?PHP
 }else{
 ?>
@@ -215,7 +215,7 @@ player.load();
 ?>
 function play_song(id, song){
 if(id.length < 1) { return; }
-if(no.length < 1) { return; }
+if(song.length < 1) { return; }
 
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
