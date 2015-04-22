@@ -15,9 +15,16 @@ if (isset($_GET['play'])){
 	exec("/usr/bin/mocp -x");
 	echo "Playing...";
 	exec("/usr/bin/mocp -S");
-	exec("/usr/bin/mocp -l /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a", $tt);
-	print_r($tt);
+	exec("/usr/bin/mocp -l /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a");
 	}
+	}elseif ($_GET['play']=="rand"){
+	exec("/usr/bin/mocp -x");
+	echo "Playing Random...";
+	exec("/usr/bin/mocp -S");
+	exec("/usr/bin/mocp -c");
+	exec("/usr/bin/mocp -a /var/www/kh-live/kh-songs/");
+	exec("/usr/bin/mocp -t shuffle");
+	exec("/usr/bin/mocp -p");
 	}
 }
 if (isset($_GET['stop'])){

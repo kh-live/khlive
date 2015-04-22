@@ -117,6 +117,7 @@ echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_
 }else{
 echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
 }
+echo '<br /><br />Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" disabled="disabled" />';
 }else{
 ?>
 <audio id="song3_audio" controls preload="none" >
@@ -246,6 +247,32 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","song.php?play=" + song, true);
 xmlhttp.send();
 }
+function play_rand(){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+	document.getElementById("play_rand").value="Play Pause";
+	document.getElementById("stop_rand").disabled = false;
+	document.getElementById("play_rand").onclick= function(){
+		pause_rand();
+		}
+    }
+    }
+    }
+xmlhttp.open("GET","song.php?play=rand", true);
+xmlhttp.send();
+}
 function stop_song(id, song){
 if(id.length < 1) { return; }
 if (window.XMLHttpRequest)
@@ -268,6 +295,33 @@ xmlhttp.onreadystatechange=function()
 	var no=this.id.substr(5);
 	var songNo=this.value.substr(10);
 		play_song(no, songNo);
+		}
+    }
+    }
+   
+    }
+xmlhttp.open("GET","song.php?stop=true", true);
+xmlhttp.send();
+}
+function stop_rand(){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+	document.getElementById("play_rand").value = "Play Random";
+	document.getElementById("stop_rand").disabled = true;
+	document.getElementById("play_rand").onclick= function(){
+		play_rand();
 		}
     }
     }
@@ -300,6 +354,29 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","song.php?pause=true", true);
 xmlhttp.send();
 }
+function pause_rand(){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+    }
+    }
+   
+    }
+xmlhttp.open("GET","song.php?pause=true", true);
+xmlhttp.send();
+}
+
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("play_"+i);
 	link.onclick= function(){
@@ -308,6 +385,10 @@ var link = document.getElementById("play_"+i);
 		play_song(no, songNo);
 		}
 }
+var link = document.getElementById("play_rand");
+	link.onclick= function(){
+		play_rand();
+		}
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("stop_"+i);
 	link.onclick= function(){
@@ -316,6 +397,10 @@ var link = document.getElementById("stop_"+i);
 		stop_song(no, songNo);
 		}
 }
+var link = document.getElementById("stop_rand");
+	link.onclick= function(){
+		stop_rand();
+		}
 <?PHP
 }
 ?>
