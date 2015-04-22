@@ -42,7 +42,7 @@ $tmp="";
 	}
 if ($meeting_type=="direct"){
 if (isset($_SESSION['song_1'])){
-echo '<br /><input type="submit" id="play_1" value="Play Song '.$_SESSION['song_1'].'" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
+echo '<br /><input type="submit" id="play_1" value="Play Song '.$_SESSION['song_1'].'" /><input type="submit" id="stop_1" value="Stop Song '.$_SESSION['song_1'].'" disabled="disabled" />';
 }else{
 echo '<br /><input type="submit" id="play_1" value="select a song..." disabled="disabled" /><input type="submit" id="stop_1" value="Stop..." disabled="disabled" />';
 }
@@ -78,7 +78,7 @@ $tmp="";
 <?PHP
 if ($meeting_type=="direct"){
 if (isset($_SESSION['song_2'])){
-echo '<br /><input type="submit" id="play_2" value="Play Song '.$_SESSION['song_2'].'" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
+echo '<br /><input type="submit" id="play_2" value="Play Song '.$_SESSION['song_2'].'" /><input type="submit" id="stop_2" value="Stop Song '.$_SESSION['song_2'].'" disabled="disabled" />';
 }else{
 echo '<br /><input type="submit" id="play_2" value="select a song..." disabled="disabled" /><input type="submit" id="stop_2" value="Stop..." disabled="disabled" />';
 }
@@ -113,7 +113,7 @@ $tmp="";
 <?PHP
 if ($meeting_type=="direct"){
 if (isset($_SESSION['song_3'])){
-echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_3'].'" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
+echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_3'].'" /><input type="submit" id="stop_3" value="Stop Song '.$_SESSION['song_3'].'" disabled="disabled" />';
 }else{
 echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
 }
@@ -232,6 +232,7 @@ xmlhttp.onreadystatechange=function()
     resp=xmlhttp.responseText;
     if (resp!=""){
 	document.getElementById("play_"+id).value="Play Pause" + song;
+	document.getElementById("stop_"+id).value="Stop Song " + song;
 	document.getElementById("stop_"+id).disabled = false;
 	document.getElementById("play_"+id).onclick= function(){
 	var no=this.id.substr(5);
@@ -291,6 +292,7 @@ xmlhttp.onreadystatechange=function()
     {
     resp=xmlhttp.responseText;
     if (resp!=""){
+    document.getElementById("stop_"+id).value="Stop Song " + song;
     }
     }
    
