@@ -12,19 +12,24 @@ if (isset($_GET['song_3'])){
 if (isset($_GET['play'])){
 	if (is_numeric($_GET['play'])){
 	if ($_GET['play'] >=1 AND $_GET['play'] <=138) {
-	exec("kill $(pidof play)");
+	exec("mocp -s");
 	echo "Playing...";
-	exec("play -q /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a > /dev/null &");
+	exec("mocp -l /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a > /dev/null &");
 	}
 	}
 }
 if (isset($_GET['stop'])){
 	
 	if ($_GET['stop']=="true") {
-	$no=$_GET['play'];
-
-	exec("kill $(pidof play)");
+	exec("mocp -s");
 	echo "Stopped...";
+	}
+}
+if (isset($_GET['pause'])){
+	
+	if ($_GET['pause']=="true") {
+	exec("mocp -G");
+	echo "Paused...";
 	}
 }
 ?>

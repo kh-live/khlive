@@ -158,6 +158,7 @@ if ($meeting_type=="direct"){
 var song=document.getElementById("play_" +id);
 song.value="Play Song "+no;
 song.disabled = false;
+getElementById("stop_" +id).value= "Stop Song "+no;
 <?PHP
 }else{
 ?>
@@ -212,7 +213,7 @@ player.load();
 <?PHP
 }else{
 ?>
-function play_song(id, no){
+function play_song(id, song){
 if(id.length < 1) { return; }
 if(no.length < 1) { return; }
 
@@ -230,18 +231,21 @@ xmlhttp.onreadystatechange=function()
     {
     resp=xmlhttp.responseText;
     if (resp!=""){
-	//there was an error
-	document.getElementById("play_"+id).value=resp;
-	document.getElementById("play_"+id).disabled = true;
+	document.getElementById("play_"+id).value="Play Pause" + song;
 	document.getElementById("stop_"+id).disabled = false;
+	document.getElementById("play_"+id).onclick= function(){
+	var no=this.id.substr(5);
+	var songNo=this.value.substr(10);
+		pause_song(no, songNo);
+		}
     }
     }
    
     }
-xmlhttp.open("GET","song.php?play=" + no, true);
+xmlhttp.open("GET","song.php?play=" + song, true);
 xmlhttp.send();
 }
-function stop_song(id){
+function stop_song(id, song){
 if(id.length < 1) { return; }
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -257,15 +261,41 @@ xmlhttp.onreadystatechange=function()
     {
     resp=xmlhttp.responseText;
     if (resp!=""){
-	//there was an error
-	document.getElementById("play_"+id).value = "Played";
-	document.getElementById("stop_"+id).value = resp;
+	document.getElementById("play_"+id).value = "Play Song " + song;
 	document.getElementById("stop_"+id).disabled = true;
+	document.getElementById("play_"+id).onclick= function(){
+	var no=this.id.substr(5);
+	var songNo=this.value.substr(10);
+		play_song(no, songNo);
+		}
     }
     }
    
     }
 xmlhttp.open("GET","song.php?stop=true", true);
+xmlhttp.send();
+}
+function pause_song(id, song){
+if(id.length < 1) { return; }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+    }
+    }
+   
+    }
+xmlhttp.open("GET","song.php?pause=true", true);
 xmlhttp.send();
 }
 for (var i = 1; i <= 3; ++i) {
@@ -281,7 +311,7 @@ var link = document.getElementById("stop_"+i);
 	link.onclick= function(){
 	var no=this.id.substr(5);
 	var songNo=this.value.substr(10);
-		stop_song(no);
+		stop_song(no, songNo);
 		}
 }
 <?PHP
