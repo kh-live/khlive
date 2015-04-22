@@ -1,17 +1,18 @@
 <?PHP
+$max_song_no=139;
 if(session_id()==""){session_start();}
 if (isset($_GET['song_1'])){
-	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=138) $_SESSION['song_1']=$_GET['song_1'];
+	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=$max_song_no) $_SESSION['song_1']=$_GET['song_1'];
 }
 if (isset($_GET['song_2'])){
-	if ($_GET['song_2'] >=1 AND $_GET['song_2'] <=138) $_SESSION['song_2']=$_GET['song_2'];
+	if ($_GET['song_2'] >=1 AND $_GET['song_2'] <=$max_song_no) $_SESSION['song_2']=$_GET['song_2'];
 }
 if (isset($_GET['song_3'])){
-	if ($_GET['song_3'] >=1 AND $_GET['song_3'] <=138) $_SESSION['song_3']=$_GET['song_3'];
+	if ($_GET['song_3'] >=1 AND $_GET['song_3'] <=$max_song_no) $_SESSION['song_3']=$_GET['song_3'];
 }
 if (isset($_GET['play'])){
 	if (is_numeric($_GET['play'])){
-	if ($_GET['play'] >=1 AND $_GET['play'] <=138) {
+	if ($_GET['play'] >=1 AND $_GET['play'] <=$max_song_no) {
 	exec("/usr/bin/mocp -x");
 	echo "Playing...";
 	exec("/usr/bin/mocp -S");

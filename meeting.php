@@ -16,10 +16,12 @@ echo '<div id="page">
 <a href="javascript:showdiv('song-small','songs')">>> HIDE</a><br /><br />
 Song 1 : <select id="song1" onchange="javascript:update_song(1,this.value)">
 <?PHP
+//this is the max no of songs. will change when new ones are added
+$max_song_no=139;
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
-while ($i<=138){
+while ($i<=$max_song_no){
 $j=$i;
 if ($i<=9) $j="00".$j;
 if ($i<=99 AND $i>=10) $j="0".$j;
@@ -62,7 +64,7 @@ Song 2: <select id="song2" onchange="javascript:update_song(2,this.value)">
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
-while ($i<=138){
+while ($i<=$max_song_no){
 $j=$i;
 if ($i<=9) $j="00".$j;
 if ($i<=99 AND $i>=10) $j="0".$j;
@@ -97,7 +99,7 @@ if (isset($_SESSION['song_2'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
-while ($i<=138){
+while ($i<=$max_song_no){
 $j=$i;
 if ($i<=9) $j="00".$j;
 if ($i<=99 AND $i>=10) $j="0".$j;
@@ -127,14 +129,15 @@ if (isset($_SESSION['song_3'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['
  </audio><br /><br />
 Random songs:
 <audio id="rand_player" controls preload="auto" >
-<source src="kh-songs/iasn_E_<?PHP echo rand(100,138); ?>.m4a" type="audio/mp4" >
+<source src="kh-songs/iasn_E_<?PHP echo rand(100,$max_song_no); ?>.m4a" type="audio/mp4" >
  </audio>
  <?PHP
  }
  ?>
  <br /> <br />136 : The Kingdom is in place - Let it come!<br />
  137 : Grant us boldness<br />
- 138 : Jehovah is your Name
+ 138 : Jehovah is your Name<br />
+ 139 : Teach Them to Stand Firm
 </div>
 <div id="song-small" onclick="javascript:showdiv('songs','song-small')">
 <br />S<br />
@@ -198,7 +201,7 @@ if ($meeting_type!="direct"){
 document.getElementById('rand_player').addEventListener('ended',function(e){
 var player = document.getElementById('rand_player');
 
-var no=Math.floor((Math.random()*137)+1);
+var no=Math.floor((Math.random()*138)+1);
 if (no<=9){
 no="00"+no;
 }
