@@ -441,9 +441,11 @@ $fichier = fopen('./config/logger.conf', 'w');
 	    ob_start();
 ?>#!/bin/sh
 #FreeDNS updater script
-ifup ppp0 1>&- 2>&-
-cp -u "/var/www/kh-live/config/cron" "/etc/cron.d/khlive"
-echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+<?PHP if ($auto_ppp=="yes") echo 'ifup ppp0 1>&- 2>&-'; ?>
+
+<?PHP if ($auto_cron=="yes") echo 'cp -u "/var/www/kh-live/config/cron" "/etc/cron.d/khlive"'; ?>
+
+<?PHP if ($auto_gov=="yes") echo 'echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor'; ?>
 
 UPDATEURL="http://freedns.afraid.org/dynamic/update.php?<?PHP echo $moo_key ; ?>"
 DOMAIN="<?PHP echo $moo_adr ; ?>"
@@ -452,8 +454,10 @@ registered=$(nslookup $DOMAIN|tail -n2|grep A|sed s/[^0-9.]//g)
 
   current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
        [ "$current" != "$registered" ] && {
-          wget -q -O /dev/null $UPDATEURL
-		wget -q -O /dev/null http://<?PHP echo $server_in ; ?>/kh-live/update_ip.php
+<?PHP if ($auto_dns=="yes") echo 'wget -q -O /dev/null $UPDATEURL'; ?>
+
+<?PHP if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-live/update_ip.php'; ?>
+
            }
 <?PHP
 	          $message = ob_get_clean();
@@ -1534,7 +1538,31 @@ Direct input hw :<br />hardware for input (default)<br />
 <input class="field_login" type="text" name="alsa_in" value="<?PHP echo @$alsa_in;?>" /><br />
 Direct output hw :<br />hardware for output (default)<br />
 <input class="field_login" type="text" name="alsa_out" value="<?PHP echo @$alsa_out;?>" /><br />
-
+Auto config ppp0 :<br />keep alive ppp0 by sending ifup every 5min<br />
+<select class="field_login" name="auto_ppp" >
+<option value="no">No</option>
+<option value="yes" <?PHP if ($auto_ppp=="yes") echo 'selected=selected';?>>Yes</option>
+</select><br />
+Auto config governor :<br />auto change governor to performance every 5min<br />
+<select class="field_login" name="auto_gov" >
+<option value="yes">Yes</option>
+<option value="no" <?PHP if ($auto_gov=="no") echo 'selected=selected';?>>No</option>
+</select><br />
+Auto config cron :<br />update khlive cron file every 5min<br />
+<select class="field_login" name="auto_cron" >
+<option value="yes">Yes</option>
+<option value="no" <?PHP if ($auto_cron=="no") echo 'selected=selected';?>>No</option>
+</select><br />
+Auto config freedns :<br />update ip address at freedns every 5min<br />
+<select class="field_login" name="auto_dns" >
+<option value="yes">Yes</option>
+<option value="no" <?PHP if ($auto_dns=="no") echo 'selected=selected';?>>No</option>
+</select><br />
+Auto config kh-live.co.za :<br />update ip address at kh-live.co.za every 5min<br />
+<select class="field_login" name="auto_khlive" >
+<option value="yes">Yes</option>
+<option value="no" <?PHP if ($auto_khlive=="no") echo 'selected=selected';?>>No</option>
+</select><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />
