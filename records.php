@@ -1,12 +1,103 @@
 <?PHP
+$print='ok';
+
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
-header("HTTP/1.1 404 Not Found");
-include "404.php";
-exit(); 
+$a = session_id();
+if ($a == ''){
+session_start();
 }
+include "db/config.php";
+include "lang.php";
+
+echo '<html><head>
+<style type="text/css">
+body {
+    color: black;
+    font-family: sans-serif;
+    font-size: 16px;
+    margin: 0;
+    overflow-x: hidden;
+}
+#page {
+    background-color: white;
+    overflow-y: auto;
+    padding: 10px 10px 30px;
+}
+
+#feeds {
+    padding-left: 10px;
+}
+#feeds u {
+    color: red;
+    text-decoration: none;
+}
+#number_at {
+    background-color: grey;
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+    min-height: 30px;
+    padding: 10px;
+    text-align: center;
+}
+#sms_small {
+    background-color: grey;
+    color: white;
+    font-size: 20px;
+    margin-top: 20px;
+    min-height: 30px;
+    padding: 10px;
+    text-align: center;
+}
+#sms {
+    background-color: #eeeeee;
+    border: 1px solid grey;
+    display: none;
+    margin-top: 30px;
+    padding: 10px;
+    width: 400px;
+}
+</style>
+</head>
+<body>';
+}else{
+//if it's from the master server, we need to redirect to the slave server
+if ($server_beta=="master"){
+$print='ko';
+$url="";
+$db=file("db/servers");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$_SESSION['cong'])){
+	$url=$data[1];
+	}
+	}
+if ($url==""){
+echo 'Could not find your congregations server...';
+}else{
+
+echo '<div id="page"><iframe id="listen_frame" src="http://'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe></div>';
+
+}
+}
+}
+if ($print=='ok'){
 $selected_cong="";
 $selected_date="";
+// we need to set session type
+if(isset($_GET['user'])){
+$_SESSION['user']=$_GET['user'];
+$db=file("db/users");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+        if (strtoupper($data[0])==strtoupper($_SESSION['user'])){
+                $_SESSION['type']=$data[4];
+		$_SESSION['cong']=$data[3];
+}
+}
+}
+
 if(isset($_GET['cong'])){
 $selected_cong=$_GET['cong'];
 $_SESSION['selected_cong_r']=$selected_cong;
@@ -125,3 +216,9 @@ echo '</td></tr>';
 ?>
 </table>
 </div>
+<?PHP
+}
+if (strstr($test, ".php")){
+echo '</body></html>';
+}
+?>

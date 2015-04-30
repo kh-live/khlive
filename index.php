@@ -17,7 +17,7 @@ if ($a == ''){
 session_start();
 }
 //we only enable https on live systems as others don't have certifs in place
-if (strstr($_SERVER['HTTP_HOST'],"kh.sinux.ch")){
+if (strstr($_SERVER['HTTP_HOST'],"kh.sinux.ch") OR strstr($_SERVER['HTTP_HOST'],"kh-live.co.za")){
 if (isset($_SERVER['HTTPS'])){
   if($_SERVER['HTTPS']!="on"){
      $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];

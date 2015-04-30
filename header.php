@@ -37,20 +37,20 @@ $_SESSION['server_status']="ok";
 <div id="menu"><a href="./login"><?PHP echo $lng['home'];?></a>
  <?PHP
  if ($_SESSION['type']=="user"){
- echo ' - <a href="./listening">'.$lng['listening'].'</a>';
-if ($server_beta!="master") echo ' - <a href="./record">'.$lng['recordings'].'</a> - <a href="./video">Videos</a>';
+ echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a>';
+if ($server_beta!="master") echo ' - <a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="manager" AND $server_beta!="master"){
 echo ' - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./video">Videos</a> - <a href="./report">'.$lng['report'].'</a>';
 }
 if ($_SESSION['type']=="admin"){
-echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./users">'.$lng['users'].'</a>';
-if ($server_beta!="master") echo ' - <a href="./record">'.$lng['recordings'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./report">'.$lng['report'].'</a>';
+echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a>';
+if ($server_beta!="master") echo ' - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./report">'.$lng['report'].'</a>';
 }
 if ($_SESSION['type']=="root"){
-echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./configure">Configuration</a>';
+echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./configure">Configuration</a>';
 if ($server_beta!="master") {
-echo ' - <a href="./record">'.$lng['recordings'].'</a> - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./report">'.$lng['report'].'</a>';
+echo ' - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./report">'.$lng['report'].'</a>';
 }else{
 echo '  - <a href="./servers">Servers</a>';
 }
