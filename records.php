@@ -98,17 +98,17 @@ if (r==true)
   }
 else
   {
-  window.location="./<?PHP echo $url_parts['path'] ; ?>";
+  window.location="<?PHP echo $url_parts['path'] ; ?>";
   }
  
 }
 
 function update_cong(url){
-  window.location="./<?PHP echo $url_parts['path'] ; ?>?cong=" + url;
+  window.location="<?PHP echo $url_parts['path'] ; ?>?cong=" + url;
 }
 
 function update_date(url){
-  window.location="./<?PHP echo $url_parts['path'] ; ?>?date=" + url;
+  window.location="<?PHP echo $url_parts['path'] ; ?>?date=" + url;
 }
 </script>
 <div id="page">
