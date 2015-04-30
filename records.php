@@ -2,6 +2,7 @@
 $print='ok';
 
 $test=$_SERVER['REQUEST_URI'];
+$url_parts = parse_url($test)
 if (strstr($test, ".php")){
 $a = session_id();
 if ($a == ''){
@@ -97,17 +98,17 @@ if (r==true)
   }
 else
   {
-  window.location="./record";
+  window.location="./<?PHP echo $url_parts['path'] ; ?>";
   }
  
 }
 
 function update_cong(url){
-  window.location="./record?cong=" + url;
+  window.location="./<?PHP echo $url_parts['path'] ; ?>?cong=" + url;
 }
 
 function update_date(url){
-  window.location="./record?date=" + url;
+  window.location="./<?PHP echo $url_parts['path'] ; ?>?date=" + url;
 }
 </script>
 <div id="page">
