@@ -25,38 +25,14 @@ body {
     padding: 10px 10px 30px;
 }
 
-#feeds {
-    padding-left: 10px;
-}
-#feeds u {
-    color: red;
+#page a {
+    color: #eb691d;
     text-decoration: none;
 }
-#number_at {
-    background-color: grey;
-    color: white;
-    font-size: 20px;
-    margin-top: 20px;
-    min-height: 30px;
-    padding: 10px;
-    text-align: center;
-}
-#sms_small {
-    background-color: grey;
-    color: white;
-    font-size: 20px;
-    margin-top: 20px;
-    min-height: 30px;
-    padding: 10px;
-    text-align: center;
-}
-#sms {
-    background-color: #eeeeee;
-    border: 1px solid grey;
-    display: none;
-    margin-top: 30px;
-    padding: 10px;
-    width: 400px;
+
+#page table {
+    background-color: #eee;
+    width: 800px;
 }
 </style>
 </head>
@@ -77,7 +53,7 @@ if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
 
-echo '<div id="page"><iframe id="listen_frame" src="http://'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe></div>';
+echo '<div id="page"><iframe id="listen_frame" src="//'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe></div>';
 
 }
 }
