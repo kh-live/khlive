@@ -2,7 +2,7 @@
 $print='ok';
 
 $test=$_SERVER['REQUEST_URI'];
-$url_parts = parse_url($test)
+$url_parts = parse_url($test);
 if (strstr($test, ".php")){
 $a = session_id();
 if ($a == ''){
