@@ -143,6 +143,9 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 		var timeLeft='.$time_to_encore.';
 		function animate_progress(time){
 		var percentDone=Math.round(100 * time / timeLeft);
+		if (percentDone>100){
+		percentDone=100;
+		}
 		document.getElementById("progress_recording").value= percentDone;
 		document.getElementById("progress_percent").innerHTML= percentDone + "%";
 		var time2=time + 5;
