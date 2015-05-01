@@ -145,9 +145,9 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 		var percentDone=Math.round(100 * time / timeLeft);
 		document.getElementById("progress_recording").value= percentDone;
 		document.getElementById("progress_percent").innerHTML= percentDone + "%";
-		time=time + 5;
+		var time2=time + 5;
 		if (time<timeLeft){
-		setTimeout(function() { animate_progress(time); }, 5000);
+		setTimeout(function() { animate_progress(time2); }, 5000);
 		}else{
 		 window.location= "./meeting-ajax.php";
 		}
