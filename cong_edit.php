@@ -444,7 +444,7 @@ No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 none : the congregation streams to the server with Edcast (currently not working).<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate.<br />
-Alsa : Use the sound input/output on the server.<br />
+Direct : Use the sound input/output on the server.<br />
 <select name="voip_type">
 <option value="none" <?PHP if ($voip_type=="none") echo 'selected=selected';?>>none</option>
 <option value="sip" <?PHP if ($voip_type=="sip") echo 'selected=selected';?>>SIP</option>

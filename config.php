@@ -1563,6 +1563,8 @@ Auto config kh-live.co.za :<br />update ip address at kh-live.co.za every 5min<b
 <option value="yes">Yes</option>
 <option value="no" <?PHP if ($auto_khlive=="no") echo 'selected=selected';?>>No</option>
 </select><br />
+Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)<br />
+<input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />

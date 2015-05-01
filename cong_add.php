@@ -317,6 +317,7 @@ No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 none : the congregation streams to the server with Edcast .<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate (currently not working).<br />
+Direct : Use the sound input/output on the server.<br />
 <select name="voip_type">
 <option value="none">none</option>
 <option value="sip">SIP</option>
