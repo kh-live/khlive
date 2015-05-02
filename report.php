@@ -70,6 +70,7 @@ echo 'Date: <select id="date" onchange="javascript:update_date(this.value)">';
 $db=file($file);
 $listeners_in=array();
 $listeners_out=array();
+$listeners_at=array();
 $answers=array();
 $tmp_list=0;
 $tmp_txt="";
@@ -88,13 +89,14 @@ $streaming=0;
 		}
 		foreach($listeners_in as $listener=>$time){
 	$total_min=round(($listeners_out[$listener]-$listeners_in[$listener])/60)." min";
-	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td></tr>';
+	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td><td>'.@$listeners_at[$listener].'</td></tr>';
 	}
-	echo '<tr><td colspan="5">TOTAL LISTENERS : '.$total_list.'</td></tr>
-	<tr><td colspan="5">TOTAL Answers : '.$total_ans.'</td></tr>
-	<tr><td colspan="5">Stop Time : --</td></tr></table><br />';
+	echo '<tr><td colspan="6">TOTAL LISTENERS : '.$total_list.'</td></tr>
+	<tr><td colspan="6">TOTAL Answers : '.$total_ans.'</td></tr>
+	<tr><td colspan="6">Stop Time : --</td></tr></table><br />';
 	$listeners_in=array();
 	$listeners_out=array();
+	$listeners_at=array();
 	$answers=array();
 	$in_meeting=0;
 	}
@@ -108,12 +110,15 @@ $streaming=0;
 	}elseif ($data[2]=="meeting start"){
 	$downloads=array();
 	$in_meeting=1;
-	echo '<table><tr><td colspan="5"><b>Meeting : '.date("d.m.Y",$data[0]).'</b></td></tr><tr><td colspan="5">Start Time : '.date("H:i",$data[0]).'</td></tr>
-	<tr><td>User</td><td>start</td><td>stop</td><td>total</td><td>answers</td></tr>';
+	echo '<table><tr><td colspan="6"><b>Meeting : '.date("d.m.Y",$data[0]).'</b></td></tr><tr><td colspan="5">Start Time : '.date("H:i",$data[0]).'</td></tr>
+	<tr><td>User</td><td>start</td><td>stop</td><td>total</td><td>answers</td><td>Attendance reported</td></tr>';
 	//new listener
 	}elseif ($data[2]=="new listener" AND $streaming==1){
 	if (!isset($listeners_in[$data[3]])) $listeners_in[$data[3]]=$data[0];
 	$tmp_list++;
+	//attendance report
+	}elseif ($data[2]=="attendance report" AND $streaming==1){
+	$listeners_at[$data[3]]=$data[4];
 	//new answer
 	}elseif ($data[2]=="answer start" AND $in_meeting==1){
 		if (!isset($answers[$data[3]])) $answers[$data[3]]=0;
@@ -139,20 +144,21 @@ $streaming=0;
 		if ($tmp_list==0){
 		foreach($listeners_in as $listener=>$time){
 	$total_min=round(($listeners_out[$listener]-$listeners_in[$listener])/60)." min";
-	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td></tr>';
+	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td><td>'.@$listeners_at[$listener].'</td></tr>';
 	}
-	echo '<tr><td colspan="5">TOTAL LISTENERS : '.$total_list.'</td></tr>
-	<tr><td colspan="5">TOTAL Answers : '.$total_ans.'</td></tr>
-	<tr><td colspan="5">Stop Time : '.date("H:i",$data[0]).'</td></tr></table><br />';
+	echo '<tr><td colspan="6">TOTAL LISTENERS : '.$total_list.'</td></tr>
+	<tr><td colspan="6">TOTAL Answers : '.$total_ans.'</td></tr>
+	<tr><td colspan="6">Stop Time : '.date("H:i",$data[0]).'</td></tr></table><br />';
 	$listeners_in=array();
 	$listeners_out=array();
+	$listeners_at=array();
 	$answers=array();
 	$in_meeting=0;
 		//not all the listeners had left before the end of the meeting
 		}else{
-		$tmp_txt='<tr><td colspan="5">TOTAL LISTENERS : '.$total_list.'</td></tr>
-	<tr><td colspan="5">TOTAL Answers : '.$total_ans.'</td></tr>
-	<tr><td colspan="5">Stop Time : '.date("H:i",$data[0]).'</td></tr></table><br />';
+		$tmp_txt='<tr><td colspan="6">TOTAL LISTENERS : '.$total_list.'</td></tr>
+	<tr><td colspan="6">TOTAL Answers : '.$total_ans.'</td></tr>
+	<tr><td colspan="6">Stop Time : '.date("H:i",$data[0]).'</td></tr></table><br />';
 		}
 	}elseif ($data[2]=="new download" AND $in_meeting!=1){
 		if (!isset($downloads[$data[3]])){
@@ -163,11 +169,12 @@ $streaming=0;
 	if ($tmp_list==0 AND $tmp_txt!=""){
 	foreach($listeners_in as $listener=>$time){
 	$total_min=round(($listeners_out[$listener]-$listeners_in[$listener])/60)." min";
-	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td></tr>';
+	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td><td>'.@$listeners_at[$listener].'</td></tr>';
 	}
 	echo $tmp_txt;
 	$listeners_in=array();
 	$listeners_out=array();
+	$listeners_at=array();
 	$answers=array();
 	$in_meeting=0;
 	$tmp_txt="";
@@ -183,11 +190,11 @@ if ($in_meeting==1){
 		}
 		foreach($listeners_in as $listener=>$time){
 	$total_min=round(($listeners_out[$listener]-$listeners_in[$listener])/60)." min";
-	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td></tr>';
+	echo '<tr><td>'.$listener.'</td><td>'.date("H:i",$listeners_in[$listener]).'</td><td>'.date("H:i",$listeners_out[$listener]).'</td><td>'.$total_min.'</td><td>'.@$answers[$listener].'</td><td>'.@$listeners_at[$listener].'</td></tr>';
 	}
-	echo '<tr><td colspan="5">TOTAL LISTENERS : '.$total_list.'</td></tr>
-	<tr><td colspan="5">TOTAL Answers : '.$total_ans.'</td></tr>
-	<tr><td colspan="5">Stop Time : --</td></tr></table><br />';
+	echo '<tr><td colspan="6">TOTAL LISTENERS : '.$total_list.'</td></tr>
+	<tr><td colspan="6">TOTAL Answers : '.$total_ans.'</td></tr>
+	<tr><td colspan="6">Stop Time : --</td></tr></table><br />';
 	$listeners_in=array();
 	$listeners_out=array();
 	$answers=array();

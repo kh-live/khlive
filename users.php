@@ -21,6 +21,17 @@ $db=file("db/users");
 	}else{
 	$last_login="-";
 	}
+	if ($server_beta=="master"){
+		if ($_SESSION['type']!="root" AND $data[4]=="root" AND $_SESSION['cong']==$data[3] ){
+		//we dont let normal admins edit superusers
+		echo '<tr><td>'.$data[0].'</td><td>'.$data[2].'</td><td>'.@$data[8].'</td><td>'.$last_login.'</td><td>'.$data[3].'</td><td>Administrator</td><td>'.$data[6].'</td><td></td></tr>';
+		}elseif ($_SESSION['cong']==$data[3] OR $_SESSION['user']=="lionel"){
+		echo '<tr><td>'.$data[0].'</td>';
+	$tmp="user_".$data[4];
+	echo '<td>'.$data[2].'</td><td>'.@$data[8].'</td><td>'.$last_login.'</td><td>'.$data[3].'</td><td>'.$lng[$tmp].'</td><td>'.$data[6].'</td><td><a href="./user_edit?user='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./user_delete?user='.urlencode($data[0]).'&pin='.$data[5].'">'.$lng['delete'].'</a></td></tr>
+	';
+		}
+	}else{
 		if ($_SESSION['type']!="root" AND $data[4]=="root" AND $_SESSION['cong']==$data[3] ){
 		//we dont let normal admins edit superusers
 		echo '<tr><td>'.$data[0].'</td><td>'.$data[2].'</td><td>'.@$data[8].'</td><td>'.$last_login.'</td><td>'.$data[3].'</td><td>Administrator</td><td>'.$data[6].'</td><td></td></tr>';
@@ -32,6 +43,7 @@ $db=file("db/users");
 	';
 	
 		}
+	}
 	}
 	?>
 	</table>

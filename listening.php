@@ -115,7 +115,7 @@ xmlhttp.onreadystatechange=function()
    
     }
   }
-xmlhttp.open("GET","listener_joined.php?action=update_at&user=<?PHP echo $_SESSION['user'];?>&number=" + no, true);
+xmlhttp.open("GET","listener_joined.php?action=update_at&user=<?PHP echo $_SESSION['user'];?>&cong=<?PHP echo $_SESSION['cong'];?>&number=" + no, true);
 xmlhttp.send();
 }
 function cancel_answer(){

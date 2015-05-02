@@ -93,15 +93,22 @@ if ($_GET['action']=="phone_add"){
 			fclose($file);
 			}
   }elseif  ($_GET['action']=="update_at"){
-	if (isset($_GET['number']) AND isset($_GET['user'])){
+	if (isset($_GET['number']) AND isset($_GET['user']) AND isset($_GET['cong'])){
 	$number=$_GET['number'];
 	$user=$_GET['user'];
+	$cong=$_GET['cong'];
 	
 	$a = session_id();
 if ($a == ''){
 session_start();
 }
 	$_SESSION['number_at']=$number;
+		
+		$db=file("db/cong");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if ($data[0]==$cong) $cong2=$cong;
+	}
 	
 	$file=file('./db/live_users');
 	$new_file="";
@@ -117,6 +124,11 @@ session_start();
 			if(fputs($file2,$new_file)){
 			fclose($file2);
 			echo "ok";
+			}
+	$info=time().'**info**attendance report**'.$user."**".$number."**\n";
+	$file=fopen('./db/logs-'.strtolower($cong2).'-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
 			}
 	}
   }
