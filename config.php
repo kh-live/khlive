@@ -456,9 +456,11 @@ registered=$(nslookup $DOMAIN|tail -n2|grep A|sed s/[^0-9.]//g)
        [ "$current" != "$registered" ] && {
 <?PHP if ($auto_dns=="yes") echo 'wget -q -O /dev/null $UPDATEURL'; ?>
 
-<?PHP if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-live/update_ip.php'; ?>
 
            }
+	   
+<?PHP if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-live/update_ip.php'; ?>
+
 <?PHP
 	          $message = ob_get_clean();
 $fichier = fopen('./config/update.sh', 'w');
