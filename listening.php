@@ -255,8 +255,9 @@ function counter (i){
 
 //detect navigator
 $type_accept="";
-if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
+if(strstr($_SERVER['HTTP_USER_AGENT'],"Trident")){
 	//only mp3
+	//this is internet explorer 8+
 	$type_accept="mp3";
 }elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Firefox")){
 	//only ogg mp3 since v. 21
