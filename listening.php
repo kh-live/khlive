@@ -305,9 +305,19 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
     $type_txt="";
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
+    if (strstr($_SERVER['HTTP_HOST'],'192.168.')){
+    $server_out=$_SERVER['HTTP_HOST'];
+    }elseif (file_exists($tmp_dir.'global_ip')){
+    $server_out=file_get_contents($tmp_dir.'global_ip');
+    }
     if ($type==$type_accept OR $type_accept=="all" OR $type_accept=="mob"){
     $buffer.='<audio controls autoplay> <source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a></audio><br /><br />';
 	}else{
+	if ($type=="mp3"){
+	$buffer.='Please use a compatible web-browser! Such as Google Chrome or Internet Explorer.<br />';
+	}else{
+	$buffer.='Please use a compatible web-browser! Such as Google Chrome or Firefox.<br />';
+	}
     $buffer.=$lng['alern_link'].' <a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
     }
     if ($type_accept=="mob"){

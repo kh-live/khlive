@@ -1496,7 +1496,7 @@ Server state :<br />enable testing functions - the meeting is faked live, all er
 </select><br />
 Server_in : <br />adress to test if the server is live - localhost used for : icecast actions urls + ices instance + ezstream instance<br />
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
-server_out : <br />production address (to generate links for streams)<br />
+server_out : <br />Server name (must be the same as set on kh-live.co.za)<br />
 <input class="field_login" type="text" name="server_out" value="<?PHP echo $server_out;?>" /><br />
 mooo.com address : <br />
 <input class="field_login" type="text" name="moo_adr" value="<?PHP echo @$moo_adr;?>" /><br />
