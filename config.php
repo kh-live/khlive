@@ -1560,7 +1560,7 @@ Auto config freedns :<br />update ip address at freedns every 5min<br />
 <option value="yes">Yes</option>
 <option value="no" <?PHP if ($auto_dns=="no") echo 'selected=selected';?>>No</option>
 </select><br />
-Auto config kh-live.co.za :<br />update ip address at kh-live.co.za every 5min<br />
+Auto config kh-live.co.za :<br />update ip address at kh-live.co.za every 5min<br />and linkup users changes with kh-live.co.za<br />
 <select class="field_login" name="auto_khlive" >
 <option value="yes">Yes</option>
 <option value="no" <?PHP if ($auto_khlive=="no") echo 'selected=selected';?>>No</option>

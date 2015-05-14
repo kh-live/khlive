@@ -6,6 +6,7 @@ global $lng;
 global $asterisk_bin;
 global $master_key;
 global $api_key;
+global $auto_khlive;
 		if ($rights!="0" AND $congregation!="0" AND $user!="" AND $password!="" AND strlen($password)>=8 AND $name!="" AND $pin>=9999 AND $pin<=100000){
 			$db=file("db/users");
 			foreach($db as $line){
@@ -14,7 +15,7 @@ global $api_key;
 			if ($data[5]==$pin) $error="ko";
 			}
 			//remote check
-			if ($server_beta!="master" AND $api=="0"){
+			if ($server_beta!="master" AND $api=="0" AND $auto_khlive=="yes"){
 			$key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_check**".$user.'###'.$congregation;
@@ -49,7 +50,7 @@ exec($asterisk_bin.' -rx "database put '.$congregation.' '.$pin.' '.$user.'"');
 if ($api=="0"){
 if ($server_beta!="master"){
 //we need to sync with master server only if we are not called by api (otherwise it loops)
-
+if ($auto_khlive=="yes"){
 $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
@@ -58,7 +59,7 @@ $key=$master_key;
 	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
-	
+}	
 }else{
 //we need to sync with slave server only with the function isn't called from api!
 //which server to contact?
@@ -103,6 +104,7 @@ global $lng;
 global $asterisk_bin;
 global $master_key;
 global $api_key;
+global $auto_khlive;
 $skip=0;
 $error='ok';
 			$db=file("db/users");
@@ -139,7 +141,7 @@ include "iax-gen.php";
 if ($api=="0"){
 if ($server_beta!="master"){
 //we need to sync with master server only if we are not called by api (otherwise it loops)
-
+if ($auto_khlive=="yes"){
 $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
@@ -148,7 +150,7 @@ $key=$master_key;
 	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
-	
+	}
 }else{
 //we need to sync with slave server only with the function isn't called from api!
 //which server to contact?
