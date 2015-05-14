@@ -282,33 +282,27 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
 <?PHP	
 	$db=file("db/streams");
 	$live=file("db/live_streams");
-	$no_streams=0;
-	$no_streams_live=0;
+
 	$buffer="";
     foreach($db as $line){
     $data=explode ("**",$line);
-    	$is_live=0;
 	if ($data[1]==$_SESSION['cong']){
-	$no_streams+=1;
+
 	$feed=$data[0];
 	$type=$data[2];
+}
+}
 
-    foreach($live as $live_line){
-    $live_data=explode ("**",$live_line);
-	if ($live_data[0]==$feed){
-	$is_live=1;
-	}
-	}
-	if ($is_live==1){
-	
-    $no_streams_live+=1;
+	if(strstr($_SESSION['meeting_status'],"live")){
+	echo $lng['yeslive'].' :<br /><br />';
     $type_txt="";
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
+    
     if (strstr($_SERVER['HTTP_HOST'],'192.168.')){
     $server_out=$_SERVER['HTTP_HOST'];
-    }elseif (file_exists($tmp_dir.'global_ip')){
-    $server_out=file_get_contents($tmp_dir.'global_ip');
+    }elseif (file_exists($temp_dir.'global_ip')){
+    $server_out=file_get_contents($temp_dir.'global_ip');
     }
     if ($type==$type_accept OR $type_accept=="all" OR $type_accept=="mob"){
     $buffer.='<audio controls autoplay> <source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a></audio><br /><br />';
@@ -324,17 +318,8 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"MSIE")){
     $buffer.='<a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a><br /><br />';
     }
     }else{
-	$buffer.='<u>'.$lng['not_available'].'</u><br /><br />';
-    }
-    }
-    }
-    if ($no_streams==0){
-    echo $lng['nofeed_setup'].'<br /><br />';
-    }
-    if ($no_streams_live==0){
 	echo $lng['nolive'].' :<br /><br />';
-    }else{
-	echo $lng['yeslive'].' :<br /><br />';
+	$buffer.='<u>'.$lng['not_available'].'</u><br /><br />';
     }
 	echo $buffer;
 ?>
@@ -347,7 +332,7 @@ $db=file("db/cong");
         $data=explode ("**",$line);
 	if ($data[0]==$_SESSION['cong']) $cong_answer=$data[11];
 	}
-if ($no_streams_live>>0 OR $server_beta=='true' ){ //for testing we trick it to believe it's live
+if (strstr($_SESSION['meeting_status'],"live") OR $server_beta=='true' ){ //for testing we trick it to believe it's live
 ?>
 <br /><div id="number_at">
 Please let us know how many people are listening on your side (yourself included) : <br />
