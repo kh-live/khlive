@@ -14,6 +14,8 @@ include "lang.php";
 //in case of i frame we need to set some session variables that we get through a get arg
 $_SESSION['user']=$_GET['user'];
 $_SESSION['cong']=$_GET['cong'];
+$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
+$_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
 echo '<html><head>
 <style type="text/css">
 body {
@@ -309,9 +311,9 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"Trident")){
     $buffer.='<audio controls autoplay> <source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a></audio><br /><br />';
 	}else{
 	if ($type=="mp3"){
-	$buffer.='Please use a compatible web-browser! Such as Google Chrome or Internet Explorer.<br />';
+	$buffer.='<b>Please use a compatible web-browser! Such as Google Chrome or Internet Explorer.</b><br />';
 	}else{
-	$buffer.='Please use a compatible web-browser! Such as Google Chrome or Firefox.<br />';
+	$buffer.='<b>Please use a compatible web-browser! Such as Google Chrome or Firefox.</b><br />';
 	}
     $buffer.=$lng['alern_link'].' <a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
     }
