@@ -5,109 +5,28 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
-
+include 'functions.php';
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['delete']){
 		if ($_POST['cong_confirmed']!=""){
 			$cong_confirmed=urldecode($_POST['cong_confirmed']);//sanitize
-			$db=file("db/cong");
-			$file_content="";
-	foreach($db as $line){
-        $data=explode ("**",$line);
-		if ($data[0]==$cong_confirmed){
-		$cong_no=@$data[1];
-		}else{
-		$file_content.=$line;
-		}
-	}
-			$file=fopen('./db/cong','w');
-			if(fputs($file,$file_content)){
+		$deleting=cong_del($cong_confirmed, "del");
+if ($deleting=='ok'){
+echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
+$info=time().'**info**local cong del successful**'.$cong_confirmed."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
 			fclose($file);
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-			
-			$db=file("config/meetme.conf");
-			$file_content="";
-	foreach($db as $line){
-		if (strstr($line,$cong_no)){
-		}else{
-		$file_content.=$line;
-		}
 	}
-			$file=fopen('config/meetme.conf','w');
-			if(fputs($file,$file_content)){
+}else{
+echo $deleting;
+$info=time().'**error**local cong del fail**'.$cong_confirmed."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
 			fclose($file);
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-			
-			$db=file("db/streams");
-			$file_content="";
-	foreach($db as $line){
-        $data=explode ("**",$line);
-		if ($data[1]==$cong_confirmed){
-		}else{
-		$file_content.=$line;
-		}
 	}
-			$file=fopen('./db/streams','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
+}	
 			
-			$db=file("config/icecast.xml");
-			$file_content="";
-			$line_to_skip=0;
-	foreach($db as $line){
-		if (strstr($line,'<!--mount-'.$cong_confirmed.'-->')){
-		 $line_to_skip=12;
-		}elseif($line_to_skip>>0){
-		$line_to_skip--;
-		}else{
-		$file_content.=$line;
-		}
-		//fix this algo so it's not dependent on the amount of lines
-	}
-			$file=fopen('config/icecast.xml','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-			
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-			
-			$db=file("config/extensions_custom.conf");
-			$file_content="";
-			$skip=0;
-	foreach($db as $line){
-		if (strstr($line,';'.$cong_confirmed.'-start')){
-		 $skip=1;
-		 }elseif(strstr($line,';'.$cong_confirmed.'-stop')){
-		 $skip=0;
-		}elseif($skip==1){
-		//do nothing
-		}else{
-		$file_content.=$line;
-		}
-	}
-			$file=fopen('config/extensions_custom.conf','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
-			unlink('config/asterisk-ices-'.$cong_confirmed.'.xml');
-			unlink('config/stream_'.$cong_confirmed.'.call');
-			echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-			}else{
-			echo '<div id="error_msg">'.$lng['error'].'</div>';
-			}
-include "sip-gen.php";
-
-include "iax-gen.php";
 		}else{
 		echo '<div id="error_msg">'.$lng['error'].'</div>';
 		}

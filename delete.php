@@ -23,7 +23,7 @@ session_start();
                         if(fputs($file,$info)){
                         fclose($file);
                         }
-        header('Location: ./record');
+        header('Location: '.$_SERVER['HTTP_REFERER']);
 	}else{
 	//log
         echo "error";

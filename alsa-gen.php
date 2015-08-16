@@ -17,9 +17,9 @@ $fichier = fopen('./config/oss.conf', 'w');
 }
             if (fwrite($fichier, $message)){
 	    exec($asterisk_bin.' -rx "core reload"');
-            echo "File saved successfully<br />" ;
+		// success
 	fclose ($fichier);
 	    }else{
-	    // error saving
+	echo "error saving alsa file<br />" ;
 	    }
 ?>
