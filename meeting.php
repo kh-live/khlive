@@ -17,7 +17,7 @@ echo '<div id="page">
 Song 1 : <select id="song1" onchange="javascript:update_song(1,this.value)">
 <?PHP
 //this is the max no of songs. will change when new ones are added
-$max_song_no=139;
+$max_song_no=142;
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';
@@ -137,7 +137,10 @@ Random songs:
  <br /> <br />136 : The Kingdom is in place - Let it come!<br />
  137 : Grant us boldness<br />
  138 : Jehovah is your Name<br />
- 139 : Teach Them to Stand Firm
+ 139 : Teach Them to Stand Firm<br />
+ 140 : The life of a Pioneer<br />
+ 141 : Searching for Friends of Peace<br />
+ 142 : Preaching to all sorts of People<br />
 </div>
 <div id="song-small" onclick="javascript:showdiv('songs','song-small')">
 <br />S<br />

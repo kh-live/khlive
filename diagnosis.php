@@ -16,10 +16,11 @@ Context: test-menu
 Extension: test_meeting_".$cong_name."
 Priority: 1
 ";
-$file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
+$file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
-			$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
+			rename('/tmp/meeting_'.$cong_name.'_admin.call', $asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call');
+	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"live");
 			fclose($file);
 			$_SESSION['meeting_status']="live";
@@ -88,12 +89,22 @@ $file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+	}elseif($_POST['submit']=="Reboot"){
+	$info=time().'**info**reboot**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+		exec('sudo reboot', $reboot);	
 	}
 }
 ?>
 <div id="page">
 <?PHP
 //admin or root
+if (is_array($reboot)){
+echo '<br /><br />rebooting ...<br /><br />'.print_r($reboot);
+}else{
 echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
 echo '<form action="" method="post">';
 if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meeting_status'],"down")){
@@ -139,13 +150,13 @@ if(!isset($_POST['submit']) AND $server_beta==true){
 	}else{
 	$iax='<b style="color:red;">disconnected</b><br /><i style="font-size:12px;background-color:grey;">'.$iax_result.'</i>';
 	}*/
-	exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
+	/*exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
 	$sip_result=implode(" , ",$sip_result);
 	if (strstr($sip_result, "Monitored: 1 online,")){
 	$sip='<b style="color:green;">connected</b>';
 	}else{
 	$sip='<b style="color:red;">disconnected</b><br /><i style="font-size:12px;background-color:grey;">'.$sip_result.'</i>';
-	}
+	}*/
 echo '<div id="diags"><h2>Diagnosis</h2>
 <b>Internet connectivity :</b><br />
 Dns server : '.$dns.'<br />
@@ -153,9 +164,15 @@ Dns server : '.$dns.'<br />
 Local router : '.$local.'<br />';
 /*<b>VOIP internet link connectivity:</b><br />
 IAX trunk : '.$iax.'<br />*/
-echo '<b>SIP local link connectivity:</b><br />
-Congregation computer : '.$sip.'<br />
+/*<b>SIP local link connectivity:</b><br />
+Congregation computer : '.$sip.'<br />*/
+echo '<h1>Reboot</h1>
+<p>do not reboot if there is a meeting live! You might loose connection until the server restarts!</p>
+<form action="" method="post">
+<input name="submit" type="submit" value="Reboot" />
+</form>
 </div>';
+}
 }
 echo "</div>";
 ?>
