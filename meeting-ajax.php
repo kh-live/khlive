@@ -385,7 +385,7 @@ $meeting_type=$data[5];
 	echo 'Asterisk died. contact your administrator!';
 	}elseif ($meeting_type=="direct"){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
-	$already_meeting=0;
+	$already_meeting='';
 	$path=$temp_dir;
 	if (is_dir($path)){
      if ($dh = @opendir($path)) {
@@ -394,7 +394,9 @@ $meeting_type=$data[5];
                if (!is_dir($path . $file)){
 			if ($file!="global_ip"){
 			$content=implode("",file($path . $file));
-			if ($content=='live') $already_meeting=$file;
+			if (strstr($content, 'live')) {
+			$already_meeting=$file;
+			}
                          }
                      }
             }
@@ -402,12 +404,12 @@ $meeting_type=$data[5];
        closedir($dh);
        }
        }
-       if ($already_meeting==0){
+       if ($already_meeting==''){
 	echo '<form action="" method="post">
 	<input name="submit" id="input_login" type="submit" value="Start meeting">
 	</form>';
 	}else{
-	echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting.'</b><br /><br />';
+	echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting.'</b><br />Terminate that one first before you can start yours.<br />';
 	}
 	}else{
 	echo 'Click on the button bellow to start the meeting.<br />

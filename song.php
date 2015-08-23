@@ -1,5 +1,5 @@
 <?PHP
-$max_song_no=139;
+$max_song_no=142;
 if(session_id()==""){session_start();}
 if (isset($_GET['song_1'])){
 	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=$max_song_no) $_SESSION['song_1']=$_GET['song_1'];
