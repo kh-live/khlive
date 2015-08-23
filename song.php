@@ -14,9 +14,13 @@ if (isset($_GET['play'])){
 	if (is_numeric($_GET['play'])){
 	if ($_GET['play'] >=1 AND $_GET['play'] <=$max_song_no) {
 	exec("/usr/bin/mocp -x");
-	echo "Playing...";
 	exec("/usr/bin/mocp -S");
 	exec("/usr/bin/mocp -l /var/www/kh-live/kh-songs/iasn_E_".$_GET['play'].".m4a");
+	if(strstr($_SESSION['meeting_status'],"live")){
+	echo "Playing...";
+	}else{
+	echo "not_live";
+	}
 	}
 	}elseif ($_GET['play']=="rand"){
 	exec("/usr/bin/mocp -x");

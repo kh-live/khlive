@@ -246,6 +246,9 @@ xmlhttp.onreadystatechange=function()
 	var songNo=this.value.substr(10);
 		pause_song(no, songNo);
 		}
+	if (resp=="not_live"){
+	alert('The meeting is not started yet! Don\'t forget to start it!');
+	}
     }
     }
    

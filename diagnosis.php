@@ -103,7 +103,7 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 <?PHP
 //admin or root
 if (is_array($reboot)){
-echo '<br /><br />rebooting ...<br /><br />'.print_r($reboot);
+echo '<br /><br />rebooting ...<br /><br />';
 }else{
 echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
 echo '<form action="" method="post">';
