@@ -42,6 +42,7 @@
 	<option name="auth_header" value="icecast-auth-user: 1"/>
 </authentication>
 </mount>
+<!--mount-end-start_cong-->
 <!--lastmount-->
 <security>
         <chroot>0</chroot>

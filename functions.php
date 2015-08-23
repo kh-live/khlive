@@ -526,8 +526,11 @@ $db=file("config/icecast.xml");
 	foreach($db as $line){
 		if (strstr($line,'<!--mount-'.$cong_confirmed.'-->')){
 		 $skip='ok';
-		}elseif(strstr($line,'<!--mount-end-'.$cong_confirmed.'-->')){
+		}elseif(strstr($line,'<!--mount-end-'.$cong_confirmed.'-->') ){
 		$skip='';
+		}elseif(strstr($line, '<!--lastmount-->')){
+		$skip='';
+		$file_content.="<!--lastmount-->\n";
 		}elseif ($skip==''){
 		$file_content.=$line;
 		}

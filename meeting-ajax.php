@@ -312,9 +312,10 @@ Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
 }
-$file=fopen($asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call','w');
+$file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
+			rename('/tmp/meeting_'.$cong_name.'_admin.call', $asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call');
 			//fixit what if the call fails???
 			//dont fill shm here it is done in the dialplan (line 142)
 			//log accordingly

@@ -9,6 +9,7 @@ exit();
 if (isset($_GET['action'])){
 	if ($_GET['action']=="ok"){
 	ob_start();
+	//we need to make astdatadir configurable for PI or alpine
 ?>
 [directories]
 astetcdir => /etc/asterisk
@@ -282,7 +283,8 @@ exten => start,1,Wait(1)
  same => n,Set(ADMIN_KICKED_OUT=1)
  same => n, Hangup()
  same => n(NOADMIN), Set(DB(${CURRENT_CONG}/admin)=1)
- same => n,TrySystem(cp <?PHP echo $web_server_root ;?>kh-live/config/stream_${CURRENT_CONG}.call <?PHP echo $asterisk_spool ;?>outgoing/)
+  same => n,TrySystem(cp <?PHP echo $web_server_root ;?>kh-live/config/stream_${CURRENT_CONG}.call /tmp/)
+ same => n,TrySystem(mv /tmp/stream_${CURRENT_CONG}.call <?PHP echo $asterisk_spool ;?>outgoing/)
  same => n,TrySystem(echo live > <?PHP echo $temp_dir ;?>meeting_${CURRENT_CONG})
  same => n,Goto(STARTMEETME,1)
  same => n(USER),Set(ADMINDB=${DB(${CURRENT_CONG}/admin)})
@@ -370,6 +372,7 @@ exten => meet_me_<?PHP echo $cong_name; ?>,1,Answer()
  same => n,Meetme(<?PHP echo $cong_id; ?>,qlMx,<?PHP echo $meetme_user_pin; ?>)
  same => n,Hangup()
 exten => meet_me_<?PHP echo $cong_name; ?>_admin,1,Answer()
+ same => n,TrySystem(rm <?PHP echo$asterisk_spool;?>outgoing/meeting_<?PHP echo $cong_name; ?>_admin.call)
  same => n,Set(LISTENED_TO_RECORD=0)
  same => n,Set(CURRENT_CONG=<?PHP echo $cong_name; ?>)
  same => n,Set(CURRENT_CONF=<?PHP echo $cong_id; ?>)
@@ -447,6 +450,8 @@ $fichier = fopen('./config/logger.conf', 'w');
 
 <?PHP if ($auto_gov=="yes") echo 'echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor'; ?>
 
+<?PHP if ($auto_dns=="yes") {
+?>
 UPDATEURL="http://freedns.afraid.org/dynamic/update.php?<?PHP echo $moo_key ; ?>"
 DOMAIN="<?PHP echo $moo_adr ; ?>"
 
@@ -454,12 +459,11 @@ registered=$(nslookup $DOMAIN|tail -n2|grep A|sed s/[^0-9.]//g)
 
   current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
        [ "$current" != "$registered" ] && {
-<?PHP if ($auto_dns=="yes") echo 'wget -q -O /dev/null $UPDATEURL'; ?>
-
-
+wget -q -O /dev/null $UPDATEURL
            }
 	   
-<?PHP if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-live/update_ip.php'; ?>
+<?PHP }
+if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-live/update_ip.php'; ?>
 
 <?PHP
 	          $message = ob_get_clean();
@@ -475,6 +479,7 @@ $fichier = fopen('./config/update.sh', 'w');
 ?>*/5 * * * * root /var/www/kh-live/config/update.sh
 5 0 * * * root /var/www/kh-live/config/downloader.sh
 <?PHP
+//it is very important to finish the cron file with a new line (otherwise it is not executed by cron)
 	          $message = ob_get_clean();
 $fichier = fopen('./config/cron', 'w');
             if (fwrite($fichier, $message)){
@@ -1274,6 +1279,7 @@ $fichier = fopen('./config/indications.conf', 'w');
 	<option name="auth_header" value="icecast-auth-user: 1"/>
 </authentication>
 </mount>
+<!--mount-end-<?PHP echo $cong_name ; ?>-->
 <?PHP
 }
 //not sure if we need changeowner on alpine...
