@@ -1533,6 +1533,8 @@ lame_bin :<br />lame binary path + file_name<br />
 <input class="field_login" type="text" name="lame_bin" value="<?PHP echo $lame_bin;?>" /><br />
 ezstream_bin : <br />ezstream binary path + file_name<br />
 <input class="field_login" type="text" name="ezstream_bin" value="<?PHP echo $ezstream_bin;?>" /><br />
+ices_bin : <br />ices binary path + file_name<br />
+<input class="field_login" type="text" name="ices_bin" value="<?PHP echo $ices_bin;?>" /><br />
 test_url : <br />test url ex kh.sinux.ch check if nslookup works<br />
 <input class="field_login" type="text" name="test_url" value="<?PHP echo $test_url;?>" /><br />
 test_ip :<br />local ip to ping<br />
