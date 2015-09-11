@@ -189,9 +189,10 @@ if(isset($_POST['submit'])){
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+			//it takes about 5 sec to stop the meeting this way
 	echo ' Stopping...<br /><br />
 		<script>
-		setTimeout(function(){ window.location= "./meeting-ajax.php"},5000);
+		setTimeout(function(){ window.location= "./meeting-ajax.php"},10000);
 		</script>';
 	}
 }elseif($_POST['submit']=="Disconnect"){
