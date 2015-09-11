@@ -176,7 +176,7 @@ if(isset($_POST['submit'])){
 	
 		foreach ($stream_pid_list as $pid_line){
 			
-			if (strstr($pid_line, "arecord") AND strstr($pid_line, $_SESSION['cong'])){
+			if (strstr($pid_line, "arecord")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0]+1;
 			exec('kill '.$pid );
