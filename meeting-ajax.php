@@ -191,7 +191,7 @@ if(isset($_POST['submit'])){
 			}
 	echo ' Stopping...<br /><br />
 		<script>
-		 window.location= "./meeting-ajax.php";
+		setTimeout(function(){ window.location= "./meeting-ajax.php"},5000);
 		</script>';
 	}
 }elseif($_POST['submit']=="Disconnect"){
