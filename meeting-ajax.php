@@ -188,6 +188,10 @@ if(isset($_POST['submit'])){
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+	echo ' Stopping...<br /><br />
+		<script>
+		 window.location= "./meeting-ajax.php";
+		</script>';
 	}
 }elseif($_POST['submit']=="Disconnect"){
 $client=$_POST['user'];
@@ -365,7 +369,7 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 	if ($stream_type=='mp3'){
 	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -r -m m -s 8.0 --bitwidth 16 - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml"." > /dev/null &");
 	}else{
-	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml"." > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml"." > /dev/null &");
 	}
 		  echo 'Starting...<br /><br />';
 			  $_SESSION['meeting_just_started']=1;
