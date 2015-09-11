@@ -84,6 +84,9 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 		if ($data[0]==$_SESSION['cong']) {
 		$meeting_type=$data[5];
 		$sip_caller_ip=@$data[13];
+		$record=$data[10];
+		$stream_quality=$data[12];
+		$bitrate=15+(3*$stream_quality);
 		}
 	}
 	
@@ -399,33 +402,7 @@ if (isset($_SESSION['meeting_just_started'])){
 			}
 		}
 //otherwise
-//aren't we doing that on line 79 already?
-$db=file("db/cong");
-foreach($db as $line){
-$data=explode ("**",$line);
-if ($data[0]==$_SESSION['cong']) {
-$_SESSION['cong_phone_no']=$data[4];
-$meeting_type=$data[5];
-}
-}
-	if (isset($_SESSION['cong_phone_no'])){
-	if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
-	$tmp_sip="";
-	if ($sip_caller_ip!="") $tmp_sip=" ( ".$sip_caller_ip." ) ";
-	
-	//check if the call can be placed first warn if it can't
-		if ($meeting_type=="sip"){
-	exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
-	$tmp_unspec="(Unspecified)";
-	}elseif ($meeting_type=="iax"){
-		exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
-		$tmp_unspec="(null)";
-		}
-	
-	$sip_result=implode(" , ",$sip_result);
-	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
-	echo 'Asterisk died. contact your administrator!';
-	}elseif ($meeting_type=="direct" OR $meeting_type=='direct-stream'){
+if ($meeting_type=="direct" OR $meeting_type=='direct-stream'){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 	$already_meeting='';
 	$path=$temp_dir;
@@ -453,6 +430,36 @@ $meeting_type=$data[5];
 	}else{
 	echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting.'</b><br />Terminate that one first before you can start yours.<br />';
 	}
+		}elseif ($meeting_type='none'){
+	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
+	
+	}else{
+//aren't we doing that on line 79 already?
+$db=file("db/cong");
+foreach($db as $line){
+$data=explode ("**",$line);
+if ($data[0]==$_SESSION['cong']) {
+$_SESSION['cong_phone_no']=$data[4];
+$meeting_type=$data[5];
+}
+}
+	if (isset($_SESSION['cong_phone_no'])){
+	if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
+	$tmp_sip="";
+	if ($sip_caller_ip!="") $tmp_sip=" ( ".$sip_caller_ip." ) ";
+	
+	//check if the call can be placed first warn if it can't
+		if ($meeting_type=="sip"){
+	exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
+	$tmp_unspec="(Unspecified)";
+	}elseif ($meeting_type=="iax"){
+		exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
+		$tmp_unspec="(null)";
+		}
+	
+	$sip_result=implode(" , ",$sip_result);
+	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
+	echo 'Asterisk died. contact your administrator!';
 	}else{
 	echo 'Click on the button bellow to start the meeting.<br />
 	We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b>'.$tmp_sip.'<br />';
@@ -484,13 +491,12 @@ $meeting_type=$data[5];
 	}
 	}
 	}
-	}else{
-	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
+
 	}
 	}
 	}
-	
 	}
+ }
 }
 ?>
 </body>

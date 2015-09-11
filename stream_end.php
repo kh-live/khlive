@@ -45,7 +45,7 @@ if (isset($cong)) unset($cong);
         $data=explode ("**",$line);
 	if ($data[0]==$cong) $type=$data[5];
 	}
-	if ($type=="none"){
+	if ($type=="none" OR $type=='direct-stream'){
 		$file=fopen($temp_dir.'meeting_'.$cong,'w');
 			fputs($file,"down");
 		fclose($file);
