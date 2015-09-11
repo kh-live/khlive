@@ -244,7 +244,7 @@ include ("./login.php");
 	}
 	$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 	$_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
-	}elseif ( OR $server_beta=="stream"){
+	}elseif ($server_beta=="stream"){
 	if (!file_exists($temp_dir.'meeting_'.$_SESSION['cong'])){
 	//if the file doesn't exist, it means the computer restarted (if the temp_dir =/dev/shm)
 	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
