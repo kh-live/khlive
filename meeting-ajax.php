@@ -363,18 +363,18 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			}
 	}
 	}else{
-	echo 'bitrate : '.$bitrate;
 	//this is direct-stream
 	//we must start a script then log
 	if ($stream_type=='mp3'){
 	if ($record=='yes'){
-	exec('arecord -f S16_LE -r 8000 | '.$lame_bin.' -f -b 16 --preset cbr '.$bitrate.' -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec('arecord -f S16_LE -r 8000 | '.$lame_bin.' -f -b 16 -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
-	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." -f -b 16 --preset cbr ".$bitrate." -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." -f -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}
 	}else{
 	if ($record=='yes'){
-	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml | ".$lame_bin.' -f -b 16 --preset cbr '.$bitrate.' -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin.' -f -b 16 -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
 	}else{
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}
