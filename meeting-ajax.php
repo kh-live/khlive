@@ -425,7 +425,7 @@ $meeting_type=$data[5];
 	$sip_result=implode(" , ",$sip_result);
 	if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
 	echo 'Asterisk died. contact your administrator!';
-	}elseif ($meeting_type=="direct"){
+	}elseif ($meeting_type=="direct" OR $meeting_type=='direct-stream'){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 	$already_meeting='';
 	$path=$temp_dir;
