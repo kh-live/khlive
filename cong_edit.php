@@ -102,12 +102,23 @@ No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 none : the congregation streams to the server with Edcast (currently not working).<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate.<br />
-Direct : Use the sound input/output on the server.<br />
+Direct input : Use the sound input/output on the server. this requires USB stack to be limited to 1.1<br />
+Direct stream : Use the sound input/output on the server only if voip is disabled.<br />
 <select name="voip_type">
 <option value="none" <?PHP if ($voip_type=="none") echo 'selected=selected';?>>none</option>
+<?PHP
+if ($server_beta!='stream'){
+?>
 <option value="sip" <?PHP if ($voip_type=="sip") echo 'selected=selected';?>>SIP</option>
 <option value="iax" <?PHP if ($voip_type=="iax") echo 'selected=selected';?>>IAX</option>
 <option value="direct" <?PHP if ($voip_type=="direct") echo 'selected=selected';?>>direct input</option>
+<?PHP
+}else{
+?>
+<option value="direct-stream" <?PHP if ($voip_type=="direct-stream") echo 'selected=selected';?>>direct stream</option>
+<?PHP
+}
+?>
 </select><br /><br />
 <b>Voip account number (Phone no)</b><br />
 <input class="field_login" type="text" name="phone_no" value="<?PHP echo $phone_no;?>" />

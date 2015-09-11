@@ -93,6 +93,7 @@ include_once "db/config.php";
 			fclose($file);
 			}
 	}elseif($_REQUEST['action']=="sms_a"){
+	/*this never happens! because action is set to answering at beggining - it actually does happen... weird*/
 	$file_content=time()."**".$cong."**".$client."**read\n";
 	$file=fopen('./db/answers','a');
 			if(fputs($file,$file_content)){

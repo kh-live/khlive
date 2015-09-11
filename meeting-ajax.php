@@ -88,7 +88,7 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 	}
 	
 	if (strstr($_SESSION['meeting_status'],"live") OR $server_beta=='true'){ //for testing we trick it to believe it's live
-	if(isset($_POST['submit'])){
+if(isset($_POST['submit'])){
 	if($_POST['submit']=="Stop meeting"){
 	echo 'Are you sure you want to stop the meeting ?<br /><br />
 	<form action="" method="post">
@@ -106,6 +106,7 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 	}elseif ($meeting_type=="direct" AND $server_audio=="dsp"){
 	$client='Console/'.$server_audio;
 	}
+	if ($meeting_type!='direct-stream'){
 			exec($asterisk_bin.' -rx "core show channels concise"',$conf_db);
 		foreach ($conf_db as $line){
 		$data=explode("!",$line);
@@ -164,7 +165,27 @@ $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong
 			fclose($file);
 			}
 			}
-	//find a way to wait for the phone call to finish before refreshing -> done with meta refresh
+	}else{
+	//this is direct-stream
+	//we must only kill the script then log
+	exec('ps -eo pid,user,args',$stream_pid_list);
+	
+		foreach ($stream_pid_list as $pid_line){
+			
+			if (strstr($pid_line, "arecord") AND strstr($pid_line, $_SESSION['cong'])){
+			$pids=explode("asterisk",$pid_line);
+			$pid=$pids[0]+1;
+			exec('kill '.$pid );
+			}
+		}
+	
+	$_SESSION['meeting_just_stopped']=1;
+			$info=time().'**info**meeting stop**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
 }elseif($_POST['submit']=="Disconnect"){
 $client=$_POST['user'];
 $db=file("db/cong");
@@ -198,6 +219,7 @@ exec($asterisk_bin.' -rx "meetme list '.$cong_no.'concise"',$conf_db);
 			}
 			$_SESSION['meeting_just_started']='';
 			echo '<b style="color:green;">The meeting was started successfuly!</b><br />';
+			//we must move that to dev/shm otherwise we'll loose the info when session is closed
 			$_SESSION['meeting_start_time']=time();
 			}
 		}
@@ -312,6 +334,7 @@ Extension: meet_me_".$cong_name."_admin
 Priority: 1
 ";
 }
+if ($meeting_type!='direct-stream'){
 $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -323,6 +346,25 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			fputs($file,"live");
 			fclose($file);*/
 			  echo 'Starting...<br /><br />';
+			  $_SESSION['meeting_just_started']=1;
+			$info=time().'**info**meeting start**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
+	}else{
+	//this is direct-stream
+	//we must start a script then log
+	if ($record=='yes'){
+	exec('arecord -f S16_LE -r 8000 | '.$lame_bin.' -f -b 16 -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'-'.date('His',time()).'.mp3');
+	}
+	if ($stream_type=='mp3'){
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -r -m m -s 8.0 --bitwidth 16 - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml");
+	}else{
+	exec("arecord -f S16_LE -r 8000 | ices -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml");
+	}
+		  echo 'Starting...<br /><br />';
 			  $_SESSION['meeting_just_started']=1;
 			$info=time().'**info**meeting start**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');

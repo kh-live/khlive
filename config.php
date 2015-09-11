@@ -1,5 +1,5 @@
 <?PHP
-$gen_version='1.5';
+$gen_version='1.6';
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
 header("HTTP/1.1 404 Not Found");
@@ -1496,7 +1496,8 @@ else
 <form action="./configure" method="post">
 Server state :<br />enable testing functions - the meeting is faked live, all errors are displayed,the listening page doesnt refresh<br />
 <select class="field_login" name="server_beta" >
-<option value="false" <?PHP if ($server_beta=="false") echo 'selected=selected';?>>Production</option>
+<option value="false" <?PHP if ($server_beta=="false") echo 'selected=selected';?>>Production (voip enabled)</option>
+<option value="stream" <?PHP if ($server_beta=="stream") echo 'selected=selected';?>>Production (no voip)</option>
 <option value="true" <?PHP if ($server_beta=="true") echo 'selected=selected';?>>Testing</option>
 <option value="master" <?PHP if ($server_beta=="master") echo 'selected=selected';?>>Master (only use on kh-live.co.za)</option>
 </select><br />
