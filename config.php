@@ -1581,6 +1581,11 @@ Auto config kh-live.co.za :<br />update ip address at kh-live.co.za every 5min<b
 </select><br />
 Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)<br />
 <input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />
+Where to play the songs: <br />server -> uses server sound card. client<br /> -> streams the song to the client :<br />
+<select class="song_dev" name="auto_khlive" >
+<option value="client">client</option>
+<option value="server" <?PHP if ($song_dev=="server") echo 'selected=selected';?>>server</option>
+</select><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />

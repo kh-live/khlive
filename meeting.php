@@ -42,7 +42,7 @@ $tmp="";
 		$meeting_type=$data[5];
 		}
 	}
-if ($meeting_type=="direct"){
+if ($song_dev=="server"){
 if (isset($_SESSION['song_1'])){
 echo '<br /><input type="submit" id="play_1" value="Play Song '.$_SESSION['song_1'].'" /><input type="submit" id="stop_1" value="Stop Song '.$_SESSION['song_1'].'" disabled="disabled" />';
 }else{
@@ -78,7 +78,7 @@ $tmp="";
 ?>
 </select>
 <?PHP
-if ($meeting_type=="direct"){
+if ($song_dev=="server"){
 if (isset($_SESSION['song_2'])){
 echo '<br /><input type="submit" id="play_2" value="Play Song '.$_SESSION['song_2'].'" /><input type="submit" id="stop_2" value="Stop Song '.$_SESSION['song_2'].'" disabled="disabled" />';
 }else{
@@ -113,7 +113,7 @@ $tmp="";
 ?>
 </select>
 <?PHP
-if ($meeting_type=="direct"){
+if ($song_dev=="server"){
 if (isset($_SESSION['song_3'])){
 echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_3'].'" /><input type="submit" id="stop_3" value="Stop Song '.$_SESSION['song_3'].'" disabled="disabled" />';
 }else{
@@ -160,7 +160,7 @@ function update_song(id, no){
 if(id.length < 1) { return; }
 if(no.length < 1) { return; }
 <?PHP
-if ($meeting_type=="direct"){
+if ($song_dev=="server"){
 ?>
 var song=document.getElementById("play_" +id);
 song.value="Play Song "+no;
@@ -199,7 +199,7 @@ xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
 xmlhttp.send();
 }
 <?PHP
-if ($meeting_type!="direct"){
+if ($song_dev!="server"){
 ?>
 document.getElementById('rand_player').addEventListener('ended',function(e){
 var player = document.getElementById('rand_player');
