@@ -141,6 +141,7 @@
 	margin-right:-320px;
 	padding: 5px;
 	transition:margin-right 0.3s;
+	height:430px;
 }
 #songs audio{
 	width:100%;
@@ -159,7 +160,7 @@
 	width:30px;
 	background-color:#AAAAAA;
 	border: 1px solid rgba(0, 0, 0, 0.3);
-	height:410px;
+	height:440px;
 	z-index:200;
 	text-align:center;
 }
