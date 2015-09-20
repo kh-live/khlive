@@ -3,6 +3,7 @@ if (isset($cong2)) unset($cong2);
 if (isset($cong)) unset($cong);
  if (isset($_POST['action'])){
 	if ($_POST['action']=="listener_add"){
+	//this is called by icecast when someone asks for the stream
 	$mount=$_POST['mount'];
 	$server=$_POST['server'];
 	$port=$_POST['port'];
@@ -12,9 +13,9 @@ if (isset($cong)) unset($cong);
 	$query=explode("?",$mount);
 	$params=explode("&",$query[1]);
 	$user_string=explode("=",$params[0]);
-	$user=$user_string[1];
+	$user=urldecode($user_string[1]);
 	$cong_string=explode("=",$params[1]);
-	$congregation=$cong_string[1];
+	$congregation=urldecode($cong_string[1]);
 	$mount=$query[0]; //overwrites mount
 	
 	$db=file("db/users");
@@ -57,10 +58,11 @@ if (isset($cong)) unset($cong);
  if (isset($_GET['action'])){
 
 if ($_GET['action']=="phone_add"){
-	$cong=$_GET['cong'];
-	$client=$_GET['client'];
-	$type=$_GET['type'];
-	$conf_id=$_GET['confid'];
+	//this is called by asterisk when someone connects over the phone
+	$cong=urldecode($_GET['cong']);
+	$client=urldecode($_GET['client']);
+	$type=urldecode($_GET['type']);
+	$conf_id=urldecode($_GET['confid']);
 	$db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
@@ -93,10 +95,11 @@ if ($_GET['action']=="phone_add"){
 			fclose($file);
 			}
   }elseif  ($_GET['action']=="update_at"){
+	// this is called by ajax script on user side
 	if (isset($_GET['number']) AND isset($_GET['user']) AND isset($_GET['cong'])){
-	$number=$_GET['number'];
-	$user=$_GET['user'];
-	$cong=$_GET['cong'];
+	$number=urldecode($_GET['number']);
+	$user=urldecode($_GET['user']);
+	$cong=urldecode($_GET['cong']);
 	
 	$a = session_id();
 if ($a == ''){
