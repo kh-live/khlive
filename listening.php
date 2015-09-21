@@ -254,32 +254,6 @@ function counter (i){
 </script>
 <div id="page">
 <?PHP echo '<h2>'.$lng['listening'].'</h2>'.$lng['listening_text'].'<br /><br />';
-
-//detect navigator
-$type_accept="";
-if(strstr($_SERVER['HTTP_USER_AGENT'],"Trident")){
-	//only mp3
-	//this is internet explorer 8+
-	$type_accept="mp3";
-}elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Firefox")){
-	//only ogg mp3 since v. 21
-	$type_accept="all";
-}elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Mobile")){
-	//everything
-	$type_accept="mob";
-}elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Opera")){
-	//only ogg
-	$type_accept="ogg";
-}elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Chrome")){
-	 //accept everything, attention string contains safari must be before Safari
-	 $type_accept="all";
-}elseif(strstr($_SERVER['HTTP_USER_AGENT'],"Safari")){
-	//only mp3
-	$type_accept="mp3";
-}else{
-	//everything
-	$type_accept="all";
-}
 ?>
 <div id="feeds">
 <?PHP	
@@ -291,8 +265,8 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"Trident")){
     $data=explode ("**",$line);
 	if ($data[1]==$_SESSION['cong']){
 
-	$feed=$data[0];
-	$type=$data[2];
+	$feeds[]=$data[0];
+	$types[]=$data[2];
 }
 }
 
@@ -307,19 +281,21 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],"Trident")){
     }elseif (file_exists($temp_dir.'global_ip')){
     $server_out=file_get_contents($temp_dir.'global_ip');
     }
-    if ($type==$type_accept OR $type_accept=="all" OR $type_accept=="mob"){
-    $buffer.='<audio controls autoplay> <source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a></audio><br /><br />';
-	}else{
-	if ($type=="mp3"){
-	$buffer.='<b>Please use a compatible web-browser! Such as Google Chrome or Internet Explorer.</b><br />';
-	}else{
-	$buffer.='<b>Please use a compatible web-browser! Such as Google Chrome or Firefox.</b><br />';
-	}
+
+    $buffer.='<audio controls autoplay>';
+    $i=0;
+    foreach ($feeds as $feed){
+    $type=$types[$i];
+    if ($type=="mp3") $type_txt="audio/mpeg";
+    if ($type=="ogg") $type_txt="audio/ogg";
+    $buffer.='<source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
+    $i++;
+    }
+    $buffer.='</audio><br /><br />';
+
     $buffer.=$lng['alern_link'].' <a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
-    }
-    if ($type_accept=="mob"){
-    $buffer.='<a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a><br /><br />';
-    }
+    
+
     }else{
 	echo $lng['nolive'].' :<br /><br />';
 	$buffer.='<u>'.$lng['not_available'].'</u><br /><br />';

@@ -246,9 +246,11 @@ if ($stream_server=="") $stream_server=$server_in;
 			return 'error stream name exists';
 			}
 		}
-
+	if ($stream_type!='both'){
 	$info=$stream_path.'**'.$cong_name.'**'.$stream_type."** **\n"; //sanitize input - last field was for the stream friendly name which we dont really need. remove from other pages then clear.
-			
+		}else{
+	$info=$stream_path.'**'.$cong_name."**ogg** **\n/stream-".$cong_name.'**'.$cong_name."**mp3** **\n"; //sanitize input - last field was for the stream friendly name which we dont really need. remove from other pages then clear.
+}
 			$file=fopen('./db/streams','a');
 			if(fputs($file,$info)){
 			fclose($file);

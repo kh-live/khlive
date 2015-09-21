@@ -968,6 +968,7 @@ $fichier = fopen('./db/config.php', 'w');
 	    }
 	}
 }
+//db/streams is not regenerated...
 include "db/config.php";
 ?>
 <script>
