@@ -364,9 +364,7 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
-						echo '<script>
-		setTimeout(function(){ window.location= "./meeting-ajax.php"},10000);
-		</script>';
+				
 			}
 	}
 	}else{
@@ -404,10 +402,14 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+					echo '<script>
+		setTimeout(function(){ window.location= "./meeting-ajax.php"},10000);
+		</script>';
 	}
 }
 }else{
 //if the meeting just stopped
+$skip=0;
 if (isset($_SESSION['meeting_just_stopped'])){
 			if ($_SESSION['meeting_just_stopped']==1){
 			$info=time().'**info**meeting stop**'.$_SESSION['user']."**\n";
@@ -416,6 +418,7 @@ if (isset($_SESSION['meeting_just_stopped'])){
 			fclose($file);
 			}
 			$_SESSION['meeting_just_stopped']='';
+			$skip=1;
 			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br />';
 			}
 		}
@@ -433,12 +436,6 @@ if (isset($_SESSION['meeting_just_started'])){
 		}
 //otherwise
 if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
-$skip=0;
-if (isset($_SESSION['meeting_just_stopped'])){
-			if ($_SESSION['meeting_just_stopped']==1){
-			$skip=1;
-			}
-		}
 		if ($skip==0){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 	$already_meeting='';
