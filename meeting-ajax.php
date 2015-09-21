@@ -66,6 +66,8 @@ include "db/config.php";
 //this is not set until later...
 if(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop it"){
  echo '<meta http-equiv="refresh" content=5>';
+}elseif(strstr($_SESSION['meeting_status'],"live") AND @$_SESSION['meeting_just_stopped']==1){
+//meeting finished we don't refresh
 }else{
 if (@$_POST['submit']!="Yes, Stop it"){
  echo '<meta http-equiv="refresh" content='.$timer.'>';
@@ -403,7 +405,7 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			fclose($file);
 			}
 					echo '<script>
-		setTimeout(function(){ window.location= "./meeting-ajax.php"},10000);
+		setTimeout(function(){ window.location= "./meeting-ajax.php"},15000);
 		</script>';
 	}
 }
