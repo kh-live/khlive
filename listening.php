@@ -292,10 +292,7 @@ function counter (i){
     $i++;
     }
     $buffer.='</audio><br /><br />';
-
-    $buffer.='<a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
     
-
     }else{
 	echo $lng['nolive'].' :<br /><br />';
 	$buffer.='<u>'.$lng['not_available'].'</u><br /><br />';
