@@ -364,6 +364,9 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
+						echo '<script>
+		setTimeout(function(){ window.location= "./meeting-ajax.php"},10000);
+		</script>';
 			}
 	}
 	}else{
@@ -429,7 +432,14 @@ if (isset($_SESSION['meeting_just_started'])){
 			}
 		}
 //otherwise
-if (($meeting_type=="direct" OR $meeting_type=='direct-stream') AND @$_SESSION['meeting_just_stopped']!=1){
+if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
+$skip=0;
+if (isset($_SESSION['meeting_just_stopped'])){
+			if ($_SESSION['meeting_just_stopped']==1){
+			$skip=1;
+			}
+		}
+		if ($skip==0){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 	$already_meeting='';
 	$path=$temp_dir;
@@ -456,6 +466,7 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream') AND @$_SESSION['
 	</form>';
 	}else{
 	echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting.'</b><br />Terminate that one first before you can start yours.<br />';
+	}
 	}
 		}elseif ($meeting_type=='none'){
 	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';

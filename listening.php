@@ -293,7 +293,7 @@ function counter (i){
     }
     $buffer.='</audio><br /><br />';
 
-    $buffer.=$lng['alern_link'].' <a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
+    $buffer.='<a href="http://'.$server_out.':'.$port.$feed.'.m3u?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'">'.$lng['click2listen'].'</a><br /><br />';
     
 
     }else{
