@@ -312,7 +312,38 @@ exten=> test_meeting_".$cong_name.",1,Answer()
 			//we need to releoad the dialplan as we've made changes to it. We dont need to do anything about meetme.cong as it is reload everytime we start a meetme()
 			exec($asterisk_bin.' -rx "dialplan reload"');
 			
-
+if ($stream_type=="both"){
+$info2="<!--mount-".$cong_name."-->
+<mount>
+	<mount-name>/stream-".$cong_name."</mount-name>
+	<username>source</username>
+        <password>".$voip_pwd."</password>
+<authentication type=\"url\">
+	<option name=\"mount_add\" value=\"http://".$server_in."/kh-live/stream_start.php\"/>
+        <option name=\"mount_remove\" value=\"http://".$server_in."/kh-live/stream_end.php\"/>
+	<option name=\"listener_add\" value=\"http://".$server_in."/kh-live/listener_joined.php\"/>
+        <option name=\"listener_remove\" value=\"http://".$server_in."/kh-live/listener_left.php\"/>
+	<option name=\"auth_header\" value=\"icecast-auth-user: 1\"/>
+</authentication>
+</mount>
+<!--mount-end-".$cong_name."-->
+<!--mount-".$cong_name."-->
+<mount>
+	<mount-name>/stream-".$cong_name.".ogg</mount-name>
+	<username>source</username>
+        <password>".$voip_pwd."</password>
+<authentication type=\"url\">
+	<option name=\"mount_add\" value=\"http://".$server_in."/kh-live/stream_start.php\"/>
+        <option name=\"mount_remove\" value=\"http://".$server_in."/kh-live/stream_end.php\"/>
+	<option name=\"listener_add\" value=\"http://".$server_in."/kh-live/listener_joined.php\"/>
+        <option name=\"listener_remove\" value=\"http://".$server_in."/kh-live/listener_left.php\"/>
+	<option name=\"auth_header\" value=\"icecast-auth-user: 1\"/>
+</authentication>
+</mount>
+<!--mount-end-".$cong_name."-->
+<!--lastmount-->
+";
+}else{
 // we might need to change the stream to url in case we stream on another server. but then the meeting wont start on local...
 //no need to change as the congregation has to be created on remote server too.
 $info2="<!--mount-".$cong_name."-->
@@ -331,7 +362,7 @@ $info2="<!--mount-".$cong_name."-->
 <!--mount-end-".$cong_name."-->
 <!--lastmount-->
 ";
-
+}
 	$db=file("config/icecast.xml");
 			$file_content="";
 	foreach($db as $line){
@@ -369,7 +400,7 @@ Priority: 1
 			}
 			
 
-if ($stream_type=="mp3"){
+if ($stream_type=="mp3" OR $stream_type=="both"){
 //we stream in mp3
 	$bitrate=15+(3*$stream_quality);
 	$info4 = "<ezstream>
@@ -389,14 +420,14 @@ if ($stream_type=="mp3"){
     <svrinfopublic>0</svrinfopublic>
 </ezstream>";
 
-	$file=fopen('./config/asterisk-ices-'.$cong_name.'.xml','w');
+	$file=fopen('./config/asterisk-ezstream-'.$cong_name.'.xml','w');
 			if(fputs($file,$info4)){
 			fclose($file);
 			}else{
-			return 'error saving asterisk-ices.xml mp3';
+			return 'error saving asterisk-ezstream.xml mp3';
 			}
 			
-	$info5="#!/bin/sh\ncat /dev/fd/3 | ".$lame_bin." --preset cbr ".$bitrate." -r -m m -s 8.0 --bitwidth 16 - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$cong_name.".xml";
+	$info5="#!/bin/sh\ncat /dev/fd/3 | ".$lame_bin." --preset cbr ".$bitrate." -r -m m -s 8.0 --bitwidth 16 - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$cong_name.".xml";
 
 	$file=fopen('./config/mp3stream-'.$cong_name.'.sh','w');
 			if(fputs($file,$info5)){
@@ -406,7 +437,8 @@ if ($stream_type=="mp3"){
 			}
 			//the file needs to have exec rights to work as an agi script we might not need to give 5 to nobody
 			chmod('./config/mp3stream-'.$cong_name.'.sh', 0755);
-}else{
+}
+if ($stream_type=="ogg" OR $stream_type=="both"){
 //we stream in ogg
 $info4="<?xml version=\"1.0\"?>
 <ices>
@@ -564,6 +596,7 @@ $db=file("config/extensions_custom.conf");
 			}
 			
 unlink('config/asterisk-ices-'.$cong_confirmed.'.xml');
+unlink('config/asterisk-ezstream-'.$cong_confirmed.'.xml');
 unlink('config/stream_'.$cong_confirmed.'.call');
 include "sip-gen.php";
 include "iax-gen.php";

@@ -149,9 +149,17 @@ stream_to_server :<br />server to send the stream to. usually localhost.<br />
 <b>Stream type</b><br />
 ogg: compatible with Chrome Firefox and Opera<br />
 mp3 : compatible with IE Chrome Safari and Firefox (V.21+, Vista+).<br />
+both : will stream in both formats at the same time. Only in NO VOIP mode. Cong must be in direct stream mode.<br />
 <select name="stream_type">
 <option value="ogg" <?PHP if ($stream_type=="ogg") echo 'selected=selected';?>>ogg</option>
 <option value="mp3" <?PHP if ($stream_type=="mp3") echo 'selected=selected';?>>mp3</option>
+<?PHP
+if ($server_beta=='stream' AND $voip_type=="direct-stream"){
+?>
+<option value="both" <?PHP if ($stream_type=="both") echo 'selected=selected';?>>both</option>
+<?PHP
+}
+?>
 </select><br /><br /><br />
 <b>Congregation pwd (Voip/Stream)</b><br />
 Generated automaticaly (do not use weaker password).<br />

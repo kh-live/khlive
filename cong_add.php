@@ -110,7 +110,8 @@ stream_to_server :<br />server to send the stream to. usually localhost.<br />
 </select><br /><br />
 <b>Stream type</b><br />
 ogg: compatible with Chrome Firefox and Opera<br />
-mp3 : compatible with IE Chrome Safari and Firefox (V.21+, Vista+). Unstable...<br />
+mp3 : compatible with IE Chrome Safari and Firefox (V.21+, Vista+).<br />
+both : will stream in both formats at the same time. Only available when editing the cong.<br />
 <select name="stream_type">
 <option value="ogg">ogg</option>
 <option value="mp3">mp3</option>

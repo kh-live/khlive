@@ -231,6 +231,9 @@ exec($asterisk_bin.' -rx "meetme list '.$cong_no.'concise"',$conf_db);
 			echo '<b style="color:green;">The meeting was started successfuly!</b><br />';
 			//we must move that to dev/shm otherwise we'll loose the info when session is closed
 			$_SESSION['meeting_start_time']=time();
+			echo '<script>
+		setTimeout(function(){ window.location= "./meeting-ajax.php"},5000);
+		</script>';
 			}
 		}
 		//failed to stop the meeting
@@ -368,17 +371,27 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 	//we must start a script then log
 	if ($stream_type=='mp3'){
 	if ($record=='yes'){
-	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	exec('arecord -f S16_LE -r 8000 | '.$lame_bin." -f -b 16 -m m -S - /var/www/kh-live/records/".$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
 	}else{
-	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	}
-	}else{
+	}elseif ($stream_type=='ogg'){
 	if ($record=='yes'){
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	exec("arecord -f S16_LE -r 8000 | ".$lame_bin.' -f -b 16 -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
 	}else{
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	}
+	}else{
+	// this is both
+	if ($record=='yes'){
+	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
+	exec('arecord -f S16_LE -r 8000 | '.$lame_bin." -f -b 16 -m m -S - /var/www/kh-live/records/".$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
+	}else{
+	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	}
 	}
 		  echo 'Starting...<br /><br />';
@@ -400,7 +413,7 @@ if (isset($_SESSION['meeting_just_stopped'])){
 			fclose($file);
 			}
 			$_SESSION['meeting_just_stopped']='';
-			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />';
+			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br />';
 			}
 		}
 // if the meeting failed to start
@@ -416,7 +429,7 @@ if (isset($_SESSION['meeting_just_started'])){
 			}
 		}
 //otherwise
-if ($meeting_type=="direct" OR $meeting_type=='direct-stream'){
+if (($meeting_type=="direct" OR $meeting_type=='direct-stream') AND @$_SESSION['meeting_just_stopped']!=1){
 	echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 	$already_meeting='';
 	$path=$temp_dir;
@@ -444,7 +457,7 @@ if ($meeting_type=="direct" OR $meeting_type=='direct-stream'){
 	}else{
 	echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting.'</b><br />Terminate that one first before you can start yours.<br />';
 	}
-		}elseif ($meeting_type='none'){
+		}elseif ($meeting_type=='none'){
 	echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
 	
 	}else{
