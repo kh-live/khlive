@@ -64,10 +64,10 @@ date_default_timezone_set ('Africa/Johannesburg');
 include "db/config.php";
 //when stopping, it takes 23 secondes to hangup the call (or more on alpine linux)
 //this is not set until later...
-if(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop it"){
- echo '<meta http-equiv="refresh" content=5>';
-}elseif(@$_SESSION['meeting_just_stopped']==1){
+if(@$_SESSION['meeting_just_stopped']==1){
 //meeting finished we don't refresh
+}elseif(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop it"){
+ echo '<meta http-equiv="refresh" content=5>';
 }else{
 if (@$_POST['submit']!="Yes, Stop it"){
  echo '<meta http-equiv="refresh" content='.$timer.'>';
