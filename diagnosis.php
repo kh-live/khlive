@@ -58,7 +58,7 @@ $db=file("db/cong");
 	foreach ($tmp_results as $file){
 	if (strstr($file, "mp3")){
 	$content.=$web_server_root."kh-live/records/".$file."\n";
-	$content_ogg=.= 'file '.$web_server_root."kh-live/records/".$file."\n";
+	$content_ogg.= 'file '.$web_server_root."kh-live/records/".$file."\n";
 	}
 	}
 $mp3_file=$web_server_root."kh-live/records/".$tmp_results[0];
