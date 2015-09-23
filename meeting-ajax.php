@@ -426,7 +426,7 @@ if (isset($_SESSION['meeting_just_stopped'])){
 			}
 			$_SESSION['meeting_just_stopped']='';
 			$skip=1;
-			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br />';
+			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br /><br />';
 			
 			
 $tmp_results=array();
@@ -456,7 +456,7 @@ $tmp_results=array();
 	   }else{
 	    $info.=" B";
 	   }
-	    echo 'Right click on the following link to save the latest meeting : <a href="./download.php?file='.$file.'" download>'.$file.'</a> ('.$info.')';
+	    echo 'Right click on the following link to save the latest meeting : <a href="./download.php?file='.$file.'" download>'.$file.'</a> (Size : '.$info.')';
 			}
 		}
 // if the meeting failed to start
