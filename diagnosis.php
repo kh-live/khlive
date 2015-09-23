@@ -94,7 +94,7 @@ $file=fopen('/tmp/test_mp3.xml','w');
 			}
 	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
-	exec("ffmpeg -f concat -i /tmp/list_ogg.txt -c copy -| ffmpeg -i pipe:0 -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("ffmpeg -f concat -i /tmp/list_ogg.txt -c copy pipe:| ffmpeg -i pipe: -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
 	exec("ffmpeg -i ".$mp3_file." -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
