@@ -89,7 +89,7 @@ $file=fopen('/tmp/test_mp3.xml','w');
 			}
 	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
-	exec("ffmpeg -i ".$mp3_file." -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("lame --decode -t ".$mp3_file." - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
 	exec("ffmpeg -i ".$mp3_file." -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
