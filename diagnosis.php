@@ -37,18 +37,10 @@ $db=file("db/cong");
 	}
 if ($stream_type=='mp3'){
 	exec("/usr/bin/mocp -x");
-	exec("/usr/bin/mocp -S");
-	exec("/usr/bin/mocp -c");
-	exec("/usr/bin/mocp -a /var/www/kh-live/kh-songs/");
-	exec("/usr/bin/mocp -t shuffle");
-	exec("/usr/bin/mocp -p | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("/usr/bin/mocp -F -a /var/www/kh-live/kh-songs/ -t shuffle -p | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
 	exec("/usr/bin/mocp -x");
-	exec("/usr/bin/mocp -S");
-	exec("/usr/bin/mocp -c");
-	exec("/usr/bin/mocp -a /var/www/kh-live/kh-songs/");
-	exec("/usr/bin/mocp -t shuffle");
-	exec("/usr/bin/mocp -p | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("/usr/bin/mocp -F -a /var/www/kh-live/kh-songs/ -t shuffle -p | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
 	/*exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
@@ -113,7 +105,7 @@ if ($server_beta=='false'){
 			
 			if (strstr($pid_line, "mocp")){
 			$pids=explode("asterisk",$pid_line);
-			$pid=$pids[0]+1;
+			$pid=$pids[0];
 			exec('kill '.$pid );
 			}
 		}
@@ -152,7 +144,7 @@ if ($server_beta=='false'){
 <div id="page">
 <?PHP
 //admin or root
-if (is_array($reboot)){
+if (is_array(@$reboot)){
 echo '<br /><br />rebooting ...<br /><br />';
 }else{
 echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
