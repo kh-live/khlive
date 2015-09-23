@@ -8,6 +8,7 @@ exit();
 $cong_name=$_SESSION['cong'];
 if(isset($_POST['submit'])){
 	if($_POST['submit']=="Start test"){
+if ($server_beta=='false'){
 //start meeting
 	$info="Channel: Local/meet_me_".$cong_name."_admin@test-menu
 MaxRetries: 0
@@ -20,6 +21,40 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			rename('/tmp/meeting_'.$cong_name.'_admin.call', $asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call');
+			}
+}elseif($server_beta=='stream'){
+$db=file("db/cong");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+		if ($data[0]==$_SESSION['cong']) {
+		$meeting_type=$data[5];
+		$sip_caller_ip=@$data[13];
+		$record=$data[10];
+		$stream_quality=$data[12];
+		$bitrate=15+(3*$stream_quality);
+		$stream_type=$data[7];
+		}
+	}
+if ($stream_type=='mp3'){
+	exec("/usr/bin/mocp -x");
+	exec("/usr/bin/mocp -S");
+	exec("/usr/bin/mocp -c");
+	exec("/usr/bin/mocp -a /var/www/kh-live/kh-songs/");
+	exec("/usr/bin/mocp -t shuffle");
+	exec("/usr/bin/mocp -p | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
+	}elseif ($stream_type=='ogg'){
+	exec("/usr/bin/mocp -x");
+	exec("/usr/bin/mocp -S");
+	exec("/usr/bin/mocp -c");
+	exec("/usr/bin/mocp -a /var/www/kh-live/kh-songs/");
+	exec("/usr/bin/mocp -t shuffle");
+	exec("/usr/bin/mocp -p | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	}else{
+	// this is both
+	/*exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");*/
+	}
+}
 	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
 			fputs($file,"live");
 			fclose($file);
@@ -39,8 +74,10 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
-	}
+	
+
 }elseif($_POST['submit']=="Stop test"){
+if ($server_beta=='false'){
 //Local/meet_me_'.$cong_name.'_admin@test-menu
 //doesnt work on debian
 	$client='_'.$cong_name;
@@ -52,15 +89,6 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 		exec($asterisk_bin.' -rx "channel request hangup '.$kill.'"');
 		}
 		}
-	
-			$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
-			fputs($file,"down");
-			fclose($file);
-			$_SESSION['meeting_status']="down";
-			$file=fopen($temp_dir.'test_meeting_'.$_SESSION['cong'],'w');
-			fputs($file,"down");
-			fclose($file);
-			$_SESSION['test_meeting_status']="down";
 		/*if we are streaming mp3 we mus still kill the stream proc*/
 		exec('ps -eo pid,user,args',$stream_pid_list);
 		$next="";
@@ -78,7 +106,28 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			$next="ok";
 			}
 		}
+}elseif($server_beta=='stream'){
+	exec('ps -eo pid,user,args',$stream_pid_list);
+	
+		foreach ($stream_pid_list as $pid_line){
+			
+			if (strstr($pid_line, "mocp")){
+			$pids=explode("asterisk",$pid_line);
+			$pid=$pids[0]+1;
+			exec('kill '.$pid );
+			}
+		}
+		
+}
 		echo 'Stopping...<br /><br />';
+		$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
+			fputs($file,"down");
+			fclose($file);
+			$_SESSION['meeting_status']="down";
+			$file=fopen($temp_dir.'test_meeting_'.$_SESSION['cong'],'w');
+			fputs($file,"down");
+			fclose($file);
+			$_SESSION['test_meeting_status']="down";
 		$info=time().'**info**test stop**'.$_SESSION['user']."**\n";
 	$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
@@ -89,7 +138,8 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
-	}elseif($_POST['submit']=="Reboot"){
+
+}elseif($_POST['submit']=="Reboot"){
 	$info=time().'**info**reboot**'.$_SESSION['cong'].'**'.$_SESSION['user']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
