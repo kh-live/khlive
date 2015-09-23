@@ -35,8 +35,8 @@ $db=file("db/cong");
 		$stream_type=$data[7];
 		}
 	}
-if ($stream_type=='mp3'){
-$tmp_results=array();
+	
+	$tmp_results=array();
  if ($dh = @opendir("./records")) {
        while (($file = readdir($dh)) !== false) {
            if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
@@ -52,8 +52,39 @@ $tmp_results=array();
 	   closedir($dh);
 	}
 	rsort($tmp_results);
-$file=$tmp_results[0];
-	exec("mpg321 -s -Z -B /var/www/kh-live/records/ |".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
+	$content='';
+	foreach ($tmp_results as $file){
+	if (strstr($file, "mp3")){
+	$content.=$web_server_root."/kh-live/records/".$file."\n";
+	}
+	}
+$file=fopen('/tmp/list.txt','w');
+			if(fputs($file,$content)){
+			fclose($file);
+			}	
+if ($stream_type=='mp3'){
+
+	$content="<ezstream>
+    <url>http://".$server_in.":".$port."/stream-".$_SESSION['cong']."</url>
+    <sourcepassword>".$voip_password."</sourcepassword>
+    <format>MP3</format>
+    <filename>/tmp/list.txt</filename>
+    <stream_once>1</stream_once>
+    <svrinfoname>My Stream</svrinfoname>
+    <svrinfourl>http://".$server_out.":".$port."/stream-".$_SESSION['cong']."</svrinfourl>
+    <svrinfogenre>Live calls</svrinfogenre>
+    <svrinfodescription>Stream from ".str_replace("_"," ", $_SESSION['cong'])." Meeting</svrinfodescription>
+    <svrinfobitrate>".$bitrate."</svrinfobitrate>
+    <svrinfoquality>1</svrinfoquality>
+    <svrinfochannels>1</svrinfochannels>
+    <svrinfosamplerate>8000</svrinfosamplerate>
+    <svrinfopublic>0</svrinfopublic>
+</ezstream>";
+$file=fopen('/tmp/test_mp3.xml','w');
+			if(fputs($file,$content)){
+			fclose($file);
+			}
+	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
 	exec("/usr/bin/mocp -x");
 	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
