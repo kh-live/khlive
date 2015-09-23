@@ -259,7 +259,7 @@ exec($asterisk_bin.' -rx "meetme list '.$cong_no.'concise"',$conf_db);
 	<input name="submit" id="input_login" type="submit" value="Stop meeting">
 	</form><br /><br />';
 	}else{
-	echo '<b style="color:orange;">This is a test meeting.</b> Stop it using the button on diagnosis page.';
+	echo '<b style="color:orange;">This is a test meeting.</b><br />Don\'t forget to stop it using the button on diagnosis page.<br /><br />';
 	}
 	}
 }
@@ -427,6 +427,36 @@ if (isset($_SESSION['meeting_just_stopped'])){
 			$_SESSION['meeting_just_stopped']='';
 			$skip=1;
 			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br />';
+			
+			
+$tmp_results=array();
+ if ($dh = @opendir("./records")) {
+       while (($file = readdir($dh)) !== false) {
+           if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
+	   if (strstr($file,$_SESSION['cong']) OR $_SESSION['type']=="root") {
+		if ($selected_cong!=""){
+			if(strstr($file,$selected_cong)) $tmp_results[]=$file;
+		}else{
+	   $tmp_results[]=$file;
+		}
+	   }
+	   }
+	   }
+	   closedir($dh);
+	}
+	rsort($tmp_results);
+	$file=$tmp_results[0];
+	$info=filesize("./records/".$file);
+		if ($info>=1048576){
+	   $info=round($info/1048576,1);
+	   $info.=" MB";
+	   }elseif($info>=1024){
+	   $info=round($info/1024,1);
+	   $info.=" kB";
+	   }else{
+	    $info.=" B";
+	   }
+	    echo 'Right click on the following link to save the latest meeting : <a href="./download.php?file='.$file.'" download>'.$file.'</a> ('.$info.')';
 			}
 		}
 // if the meeting failed to start
