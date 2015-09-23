@@ -92,7 +92,7 @@ $file=fopen('/tmp/test_mp3.xml','w');
 	exec("lame --decode -t ".$mp3_file." - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
-	exec("ffmpeg -i ".$mp3_file." -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("lame --decode -t ".$mp3_file." - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}
 }
@@ -152,7 +152,7 @@ if ($server_beta=='false'){
 	
 		foreach ($stream_pid_list as $pid_line){
 			
-			if (strstr($pid_line, "ezstream") OR strstr($pid_line, "ffmpeg")){
+			if (strstr($pid_line, "ezstream") OR strstr($pid_line, "lame")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0];
 			exec('kill '.$pid );
