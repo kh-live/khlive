@@ -36,15 +36,31 @@ $db=file("db/cong");
 		}
 	}
 if ($stream_type=='mp3'){
-	exec("/usr/bin/mocp -x");
-	exec("/usr/bin/mocp -F -a /var/www/kh-live/kh-songs/ -t shuffle -p | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
+$tmp_results=array();
+ if ($dh = @opendir("./records")) {
+       while (($file = readdir($dh)) !== false) {
+           if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
+	   if (strstr($file,$_SESSION['cong']) OR $_SESSION['type']=="root") {
+		if ($selected_cong!=""){
+			if(strstr($file,$selected_cong)) $tmp_results[]=$file;
+		}else{
+	   $tmp_results[]=$file;
+		}
+	   }
+	   }
+	   }
+	   closedir($dh);
+	}
+	rsort($tmp_results);
+$file=$tmp_results[0];
+	exec("mpg321 -s -Z -B /var/www/kh-live/records/ |".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
 	exec("/usr/bin/mocp -x");
-	exec("/usr/bin/mocp -F -a /var/www/kh-live/kh-songs/ -t shuffle -p | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
-	/*exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
-	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");*/
+	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	}
 }
 	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
@@ -103,7 +119,7 @@ if ($server_beta=='false'){
 	
 		foreach ($stream_pid_list as $pid_line){
 			
-			if (strstr($pid_line, "mocp")){
+			if (strstr($pid_line, "mpg321")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0];
 			exec('kill '.$pid );
