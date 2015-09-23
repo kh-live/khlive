@@ -5,6 +5,30 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+if (isset($_GET['clear'])){
+$client_id=$_GET['clear'];
+$listener='';
+$db=file("db/live_users");
+			$file_content="";
+	foreach($db as $line){
+        $data=explode ("**",$line);
+		if ($data[0]==$client_id){
+		$listener==$data[1];
+		}else{
+		$file_content.=$line;
+		}
+	}
+			$file=fopen('./db/live_users','w');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			echo 'listener cleared';
+			}
+			$info=time().'**info**listener cleared**'.$listener.'('.$client_id.') by '.$_SESSION['user']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+}
 ?>
 <div id="page">
 <h2><?PHP echo $lng['users'];?></h2>
@@ -54,14 +78,14 @@ $db=file("db/users");
 <?PHP echo $lng['live_users_txt'];?><br /><br />
 <table>
 <?PHP
-echo '<tr><td><b>'.$lng['user'].'</b></td><td><b>'.$lng['congregation'].'</b></td><td><b>'.$lng['stream'].'</b></td><td><b>'.$lng['date_started'].'</b></td><td><b>'.$lng['status'].'</b></td></tr>';
+echo '<tr><td><b>'.$lng['user'].'</b></td><td><b>'.$lng['congregation'].'</b></td><td><b>'.$lng['stream'].'</b></td><td><b>'.$lng['date_started'].'</b></td><td><b>'.$lng['status'].'</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 $db=file("db/live_users");
 	if (count($db)==0){
-	echo '<tr><td>'.$lng['no_live_users'].'</td><td></td><td></td><td></td><td></td>';
+	echo '<tr><td>'.$lng['no_live_users'].'</td><td></td><td></td><td></td><td></td><td></td>';
 	}else{
     foreach($db as $line){
         $data=explode ("**",$line);
-	echo '<tr><td>'.$data[1].'</td><td>'.$data[2].'</td><td>'.$data[3].'</td><td>'.date('H:i:s-d/m/Y',$data[4]).'</td><td>'.$data[5].'</td>';
+	echo '<tr><td>'.$data[1].'</td><td>'.$data[2].'</td><td>'.$data[3].'</td><td>'.date('H:i:s-d/m/Y',$data[4]).'</td><td>'.$data[5].'</td><td><a href="./users?clear='.$data[0].'">Clear</a></td>';
 	}
 	}
 	?>
