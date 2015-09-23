@@ -252,10 +252,15 @@ exec($asterisk_bin.' -rx "meetme list '.$cong_no.'concise"',$conf_db);
 		}
 	//not allowed to stop the meeting if it was started by the stream.
 	if ($meeting_type!="none"){
+
+       if (@$_SESSION['test_meeting_status']!="live"){
 	echo 'Use this button to stop the meeting<br /><br />
 	<form action="" method="post">
 	<input name="submit" id="input_login" type="submit" value="Stop meeting">
 	</form><br /><br />';
+	}else{
+	echo '<b style="color:orange;">This is a test meeting.</b> Stop it using the button on diagnosis page.';
+	}
 	}
 }
 	
