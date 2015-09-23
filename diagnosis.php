@@ -33,6 +33,7 @@ $db=file("db/cong");
 		$stream_quality=$data[12];
 		$bitrate=15+(3*$stream_quality);
 		$stream_type=$data[7];
+		$voip_password=$data[8];
 		}
 	}
 	
