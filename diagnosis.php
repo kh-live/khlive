@@ -59,6 +59,7 @@ $db=file("db/cong");
 	$content.=$web_server_root."kh-live/records/".$file."\n";
 	}
 	}
+$mp3_file=$web_server_root."kh-live/records/".$tmp_results[0];
 $file=fopen('/tmp/list.txt','w');
 			if(fputs($file,$content)){
 			fclose($file);
@@ -87,12 +88,11 @@ $file=fopen('/tmp/test_mp3.xml','w');
 			}
 	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
-	exec("/usr/bin/mocp -x");
-	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("ffmpeg -i ".$mp3_file." -acodec libvorbis - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
-	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
-	exec("mpg321 -s -Z -B /var/www/kh-live/records/ | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("ffmpeg -i ".$mp3_file." -acodec libvorbis - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}
 }
 	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');
@@ -151,7 +151,7 @@ if ($server_beta=='false'){
 	
 		foreach ($stream_pid_list as $pid_line){
 			
-			if (strstr($pid_line, "ezstream")){
+			if (strstr($pid_line, "ezstream") OR strstr($pid_line, "ffmpeg")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0];
 			exec('kill '.$pid );
@@ -196,6 +196,9 @@ if (is_array(@$reboot)){
 echo '<br /><br />rebooting ...<br /><br />';
 }else{
 echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
+if($server_beta=='stream'){
+echo 'Make sure you have some mp3s in the recordings folder<br /><br />';
+}
 echo '<form action="" method="post">';
 if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meeting_status'],"down")){
 	echo '<input name="submit" type="submit" value="Start test">';
