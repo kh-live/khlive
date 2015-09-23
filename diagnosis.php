@@ -54,16 +54,22 @@ $db=file("db/cong");
 	}
 	rsort($tmp_results);
 	$content='';
+	$content_ogg='';
 	foreach ($tmp_results as $file){
 	if (strstr($file, "mp3")){
 	$content.=$web_server_root."kh-live/records/".$file."\n";
+	$content_ogg=.= 'file '.$web_server_root."kh-live/records/".$file."\n";
 	}
 	}
 $mp3_file=$web_server_root."kh-live/records/".$tmp_results[0];
 $file=fopen('/tmp/list.txt','w');
 			if(fputs($file,$content)){
 			fclose($file);
-			}	
+			}
+$file=fopen('/tmp/list_ogg.txt','w');
+			if(fputs($file,$content_ogg)){
+			fclose($file);
+			}			
 if ($stream_type=='mp3'){
 
 	$content="<ezstream>
@@ -88,7 +94,7 @@ $file=fopen('/tmp/test_mp3.xml','w');
 			}
 	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
-	exec("ffmpeg -i ".$mp3_file." -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
+	exec("ffmpeg -f concat -i /tmp/list_ogg.txt -c copy -| ffmpeg -i - -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
 	exec("ffmpeg -i ".$mp3_file." -f s16le -acodec pcm_s16le - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
