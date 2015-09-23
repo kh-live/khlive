@@ -13,7 +13,7 @@ $db=file("db/live_users");
 	foreach($db as $line){
         $data=explode ("**",$line);
 		if ($data[0]==$client_id){
-		$listener==$data[1];
+		$listener=$data[1];
 		}else{
 		$file_content.=$line;
 		}
