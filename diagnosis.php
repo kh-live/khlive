@@ -55,7 +55,7 @@ $db=file("db/cong");
 	$content='';
 	foreach ($tmp_results as $file){
 	if (strstr($file, "mp3")){
-	$content.=$web_server_root."/kh-live/records/".$file."\n";
+	$content.=$web_server_root."kh-live/records/".$file."\n";
 	}
 	}
 $file=fopen('/tmp/list.txt','w');
@@ -150,7 +150,7 @@ if ($server_beta=='false'){
 	
 		foreach ($stream_pid_list as $pid_line){
 			
-			if (strstr($pid_line, "mpg321")){
+			if (strstr($pid_line, "ezstream")){
 			$pids=explode("asterisk",$pid_line);
 			$pid=$pids[0];
 			exec('kill '.$pid );
