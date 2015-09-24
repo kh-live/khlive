@@ -433,12 +433,8 @@ $tmp_results=array();
  if ($dh = @opendir("./records")) {
        while (($file = readdir($dh)) !== false) {
            if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
-	   if (strstr($file,$_SESSION['cong']) OR $_SESSION['type']=="root") {
-		if ($selected_cong!=""){
-			if(strstr($file,$selected_cong)) $tmp_results[]=$file;
-		}else{
+	   if (strstr($file,$_SESSION['cong'])) {
 	   $tmp_results[]=$file;
-		}
 	   }
 	   }
 	   }
@@ -456,7 +452,7 @@ $tmp_results=array();
 	   }else{
 	    $info.=" B";
 	   }
-	    echo 'Right click on the following link to save the latest meeting : <a href="./download.php?file='.$file.'" download>'.$file.'</a> (Size : '.$info.')';
+	    echo 'Right click on the following link to save the latest meeting : <br /><br /><a href="./download.php?file='.$file.'" download>'.$file.'</a><br /><br /> (Size : '.$info.')';
 			}
 		}
 // if the meeting failed to start
