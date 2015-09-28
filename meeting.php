@@ -413,4 +413,43 @@ var link = document.getElementById("stop_rand");
 <?PHP
 }
 ?>
+var showWarning='no';
+window.onbeforeunload = testT;
+function confirmExit()
+{
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp.search('down')!= -1)
+    {
+    //meeting not live. ok
+    showWarning="no";
+    }else{
+	showWarning="yes";
+    
+    }
+    }
+  }
+   tstmp = new Date();    
+   
+xmlhttp.open("GET","api.php?check=<?PHP echo $_SESSION['cong'] ; ?>&tmp=" +  tstmp.getTime() ,false);
+xmlhttp.send();
+	}
+function testT()
+{
+confirmExit();
+ if (showWarning=="yes"){
+return "Please don't forget to STOP the meeting before closing the page!";
+}
+}
 </script>

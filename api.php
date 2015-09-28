@@ -231,6 +231,17 @@ $query=explode("**", $decrypted);
 		$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($api_key), $string, MCRYPT_MODE_CBC, md5(md5($api_key))));
 		echo $encrypted;
 		exit;
+}elseif (isset($_GET['check'])){
+	$cong=$_GET['check'];
+	if ($test=@file($temp_dir.'meeting_'.$cong)){
+	if (strstr($test,"down")){
+	echo "down";
+	}else{
+	echo "live";
+	}
+	}else{
+	echo "error";
+	}
 }
 //$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 //$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted), MCRYPT_MODE_CBC, md5(md5($key))), "\0");

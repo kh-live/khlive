@@ -426,7 +426,7 @@ if (isset($_SESSION['meeting_just_stopped'])){
 			}
 			$_SESSION['meeting_just_stopped']='';
 			$skip=1;
-			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br /><br />';
+			echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br /><br /><br />';
 			
 			
 $tmp_results=array();
