@@ -233,7 +233,7 @@ $query=explode("**", $decrypted);
 		exit;
 }elseif (isset($_GET['check'])){
 	$cong=$_GET['check'];
-	if ($test=@file($temp_dir.'meeting_'.$cong)){
+	if ($test=file_get_contents($temp_dir.'meeting_'.$cong)){
 	if (strstr($test,"down")){
 	echo "down";
 	}else{
