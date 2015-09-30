@@ -1,7 +1,6 @@
 Options +FollowSymlinks
 RewriteEngine on
 RewriteRule ^([^/.]+)/?$ index.php?page=$1 [QSA]
-RewriteRule ^css/(.*)--(.*).css$ $2.css [QSA]
 
 <FilesMatch "\.(mp3)$">
   ForceType application/octet-stream

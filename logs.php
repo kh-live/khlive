@@ -66,7 +66,7 @@ echo 'Date: <select id="date" onchange="javascript:update_date(this.value)">';
 	}else{
 	$selected_cong=$selected_cong."-";
 	}
-	$file="db/logs-".$selected_cong.$selected_date;
+	$file="db/logs-".strtolower($selected_cong).$selected_date;
 
 	if (!file_exists($file)){
 	echo 'There is no data for this month. Try another one...';

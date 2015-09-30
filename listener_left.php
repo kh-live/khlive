@@ -11,9 +11,9 @@ if (isset($cong)) unset($cong);
 	$query=explode("?",$mount);
 	$params=explode("&",$query[1]);
 	$user_string=explode("=",$params[0]);
-	$user=$user_string[1];
+	$user=urldecode($user_string[1]);
 	$cong_string=explode("=",$params[1]);
-	$congregation=$cong_string[1];
+	$congregation=urldecode($cong_string[1]);
 	$mount=$query[0]; //overwrites mount
 	
 	$db=file("db/users");

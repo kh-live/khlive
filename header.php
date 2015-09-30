@@ -9,10 +9,12 @@ exit();
 <!DOCTYPE html>
 <head>
 <title>KH Live!</title>
-<link rel="stylesheet" type="text/css" href="<?PHP echo $site_css_default;?>" media="all" />
-<link rel="stylesheet" type="text/css" href="<?PHP echo $site_css_mobile;?>" media="only screen and (max-width:840px)" />
-<link type="text/css" rel="stylesheet" href="<?PHP echo $site_css;?>" media="only screen and (min-width:841px)" />
-<meta name="viewport" content="width=320" />
+<style type="text/css">
+<?PHP
+include "./style.css";
+?>
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
 <?PHP
 if($page=="listening"){
 if(strstr($_SESSION['meeting_status'],"live") OR $server_beta=="true" ){// for testing we trick it to belive it's live

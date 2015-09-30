@@ -1,4 +1,178 @@
 /**********CSS*******/
+body{
+	margin:0;
+	padding:0;
+	font-size:16px;
+	color:black;
+	font-family: sans-serif;
+	background-color:#eee;
+	overflow-x:hidden;
+}
+#login, #quick_login{
+	width:100%;
+	text-align:center;
+}
+#login{
+	display:none;
+}
+#login form, #pad{
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+	background-color:white;
+	width:180px;
+		padding:10px;
+		margin:10px auto;
+		border-radius:3px;
+			text-align:center;
+}
+#login a, #quick_login a{
+color :rgba(0,0,0,0.4);
+text-decoration:none;
+}
+#login a:hover, #quick_login a:hover{
+color :rgba(0,0,0,0.6);
+text-decoration:underline;
+}
+.pad_number {
+	background-color: rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+	list-style-type:none;
+	display:inline-block;
+	width:40px;
+	height:40px;
+	border-radius:50%;
+	border: 1px solid rgba(255,255,255,0.2);
+	text-align:center;
+	font-size:36px;
+	margin:5px;
+	color: rgba(255, 255, 255, 0.6);
+    text-shadow:  0 -1px 0 #000;
+	transition:background-color 0.1s;
+}
+.pad_number:hover {
+	background-color:rgba(0,0,0,0.2);
+	cursor:pointer;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.7);
+}
+#hash{
+	background:linear-gradient( rgba(235,105,29,0.8), rgba(235,105,29,0.5));
+	text-shadow:  0 -1px 0 #fff;
+	color: rgba(235,105,29, 0.3);
+}
+#hash:hover{
+	background:linear-gradient( rgba(235,105,29,1), rgba(235,105,29,0.7));
+}
+#login-message{
+	color :#EB691D;
+	height:14px;
+	width:200px;
+	margin: 0 auto;
+	font-size:14px;
+	padding-bottom:20px;
+	text-align:center;
+}
+#hint{
+	text-align:center;
+	padding: 20px;
+}
+#titles{
+	width:200px;
+		margin:0 auto;
+		height:80px;
+		padding:20px 10px;
+		text-align:center;
+}
+#title1{
+	font-size:40px;
+	display:inline;
+	    color: rgba(255, 255, 255, 0.6);
+    text-shadow: 1px 2px 3px #fff, 0 0 0 #000;
+	font-weight:400;
+}
+#title2{
+	font-size:30px;
+	display:inline;
+		    color: rgba(255, 255, 255, 0.3);
+    text-shadow: 1px 2px 3px #fff, 0 0 0 #000;
+	font-style:italic;
+	font-weight:300;
+}
+#input_login{
+	width:180px;
+	height:36px;
+	margin: 10px 0px;
+	font-size:13px;
+	font-weight:700;
+	background:linear-gradient( rgba(235,105,29,0.8), rgba(235,105,29,0.5));
+	border: 1px solid rgba(0,0,0,0.1);
+	text-shadow:  0 -1px 0 #fff;
+	color: rgba(235,105,29, 0.2);
+	border-radius:2px;
+	box-shadow: 0 0px 2px rgba(0,0,0,0.5);
+}
+#input_login:hover{
+cursor:pointer;
+box-shadow: 0 0px 4px rgba(0,0,0,0.7);
+background:linear-gradient( rgba(235,105,29,1), rgba(235,105,29,0.7));
+}
+.field_login{
+	width:180px;
+	height: 44px;
+	border: none;
+	font-size:16px;
+	padding:0 8px;
+	margin:10px 0px;
+	background-color: rgba(0, 0, 0, 0.1);
+	color:rgba(0, 0, 0, 0.5);
+	 box-shadow:  inset 0px 0px 3px rgba(0, 0, 0, 0.2);
+}
+.field_login:hover{
+	 box-shadow:  inset 0px 0px 3px rgba(0, 0, 0, 0.4);
+}
+.field_login:focus{
+	border: 1px solid #EB691D;
+	color:rgba(0, 0, 0, 0.9);
+	background-color: white;
+	box-shadow:none;
+}
+#menu a{
+	color:#EB691D;
+	text-decoration:none;
+	font-weight:bold;
+}
+#menu a:hover{
+	color:red;
+}
+#page a {
+	color:#EB691D;
+	text-decoration:none;
+
+}
+#page a:hover{
+	color:red;
+}
+#feeds{
+	position:relative;
+	padding-left:10px;
+}
+#feeds u{
+	color:red;
+	text-decoration:none;
+}
+.live_user{
+	width:190px;
+	height:200px;
+	float:left;
+}
+.stop{
+	color:red;
+}
+#listen_frame{
+	width:100%;
+	height:700px;
+	border:0px;
+}
+@media all and (min-width: 841px) {
+/**********CSS*******/
 
 #title_mobile, #title_mobile2{
 	display:none;
@@ -172,11 +346,6 @@ border: 1px solid rgba(0, 0, 0, 1);
 	height:500px;
 	border:0px;
 }
-#listen_frame{
-	width:100%;
-	height:700px;
-	border:0px;
-}
 #error_msg{
 	position:absolute;
 	top: 52px;
@@ -207,4 +376,198 @@ border: 1px solid rgba(0, 0, 0, 1);
 	text-align:center;
 	padding-top:5px;
 	background-color:white;
+}
+}
+@media all and (max-width: 840px) {
+/**********CSS mobile*******/
+#title3 {
+	position:absolute;
+	font-size:30px;
+	color:#aaa;
+	left:20px;
+	z-index:103;
+}
+#title4 {
+	position:absolute;
+	font-size:20px;
+	left:68px;
+	top:9px;
+	z-index:103;
+}
+#title_mobile{
+	font-size:26px;
+		    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 1px 2px 3px #fff, 0 0 0 #000;
+	display:inline;
+}
+#lines{
+display:none;
+}
+
+#title_mobile2{
+	position:absolute;
+	font-size:20px;
+	top:9px;
+	left:115px;
+	color:#aaa;
+	z-index:103;
+}
+#menu {
+	font-size: 15px;
+	color:#EB691D;
+	width:100%;
+	text-align:center;
+	min-height:20px;
+	border-bottom: 1px solid grey;
+	padding-top:10px;
+	z-index:102;
+	background-color:white;
+}
+#logout{
+	font-size: 15px;
+	color:#EB691D;
+	height:31px;
+	width:100%;
+	text-align:right;
+	z-index:102;
+	background-color:white;
+}
+#logout a{
+	color:#EB691D;
+	text-decoration:none;
+	font-weight:bold;
+	top:8px;
+	right:20px;
+	position:absolute;
+}
+#live{
+	font-size: 14px;
+	color:white;
+	width:100%;
+	height:20px;
+	background-color:#aaa;
+	text-align:left;
+	z-index:101;
+}
+#live u {
+	padding-left:20px;
+	color:#38f31a;
+	text-decoration:none;
+}
+#live i {
+	padding-left:20px;
+	color:red;
+}
+#page{
+	top:80px;
+	padding:10px;
+	z-index:100;
+	overflow-y:auto;
+	padding-bottom:30px;
+	background-color:white;
+}
+#page table {
+	background-color:#eee;
+	width:300px;
+}
+#sms_small{
+	color:white;
+	background-color:grey;
+	min-height:30px;
+	font-size:20px;
+	text-align:center;
+	margin-top:20px;
+	padding:10px;
+}
+#sms_small:hover{
+	text-decoration:underline;
+	cursor:pointer;
+}
+#sms{
+	display:none;
+	border:1px solid grey;
+	width: 400px;
+	margin-top:30px;
+	padding:10px;
+	background-color:#eeeeee
+}
+#p_no{
+	width:390px;
+}
+#answer{
+	width:390px;
+	height:100px;
+}
+#send{
+	float:right;
+}
+#songs{
+	position:absolute;
+	top:100px;
+	right:0px;
+	width:320px;
+	background-color:#CCCCCC;
+	border: 1px solid black;
+	z-index:200;
+	margin-right:-320px;
+	padding: 5px;
+	transition:margin-right 0.3s;
+}
+#songs audio{
+	width:100%;
+}
+#songs a {
+	color:white;
+	text-decoration:none;
+	font-weight:bolder;
+	font-size:16px;
+	float:right;
+}
+#song-small{
+	position:absolute;
+	top:100px;
+	right:10px;
+	width:30px;
+	background-color:#AAAAAA;
+	border: 1px solid black;
+	height:410px;
+	z-index:200;
+	text-align:center;
+}
+#song-small:hover{
+background-color:#BBBBBB;
+cursor:pointer;
+}
+#meeting{
+	width:100%;
+	height:500px;
+	border:0px;
+}
+#error_msg{
+	top: 52px;
+	color:red;
+	text-align:center;
+	width:100%;
+	z-index:110;
+}
+#ok_msg{
+	top: 52px;
+	color:green;
+	text-align:center;
+	width:100%;
+	z-index:110;
+}
+#footer{
+	display:block;
+	width:100%;
+	border-top: 1px solid grey;
+	height: 20px;
+	z-index:102;
+	color:#EB691D;
+	font-size:12px;
+	text-align:center;
+	padding-top:5px;
+	background-color:white;
+
+}
 }

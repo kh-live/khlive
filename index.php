@@ -31,9 +31,6 @@ $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 }
 header('Content-type: text/html; charset=ISO-8859-15');
 $login_error="";
-$site_css_default="css/".$version."--default.css";
-$site_css="css/".$version."--style.css";
-$site_css_mobile="css/".$version."--mobile.css";
 
 $lang="";
 include ("./lang.php");
