@@ -6,7 +6,7 @@ session_start();
  if (isset($_GET['file'])){
 	$file_name=basename($_GET['file']);
 	if (file_exists("./records/".$file_name)){
-	$tmptmp=explode('-', $filename);
+	$tmptmp=explode('-', $file_name);
 	 $cong=$tmptmp[0];
 	 $client=@$_SESSION['user'];
 	 $info=time().'**info**new download**'.$client.'**'.$cong."**".$file_name."**\n";
