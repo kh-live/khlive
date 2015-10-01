@@ -11,34 +11,6 @@ header('Access-Control-Allow-Origin: http://kh-live.co.za');
 }
 include "db/config.php";
 include "lang.php";
-
-/*echo '<html><head>
-<style type="text/css">
-body {
-    color: black;
-    font-family: sans-serif;
-    font-size: 16px;
-    margin: 0;
-    overflow-x: hidden;
-}
-#page {
-    background-color: white;
-    overflow-y: auto;
-    padding: 10px 10px 30px;
-}
-
-#page a {
-    color: #eb691d;
-    text-decoration: none;
-}
-
-#page table {
-    background-color: #eee;
-    width: 800px;
-}
-</style>
-</head>
-<body>';*/
 }else{
 //if it's from the master server, we need to redirect to the slave server
 if ($server_beta=="master"){
@@ -58,6 +30,7 @@ echo 'Could not find your congregations server...';
 echo '<div id="records_frame">Connecting...</div>';
 echo '
 <script type="text/javascript">
+function update_rec(url, user, cong, dateR){
 	if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
@@ -75,8 +48,18 @@ xmlhttp.onreadystatechange=function()
     }
   }
   tstmp = new Date();
-xmlhttp.open("GET","http://'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'&tmp=" +  tstmp.getTime() , true);
+xmlhttp.open("GET","http://" + url + "/kh-live/records.php?user=" + user + "&date=" + dateR + "&cong=" + cong + "&tmp=" +  tstmp.getTime() , true);
 xmlhttp.send();
+}
+update_rec('.$url.','.$_SESSION['user'].','.$_SESSION['cong'].', );
+
+function update_cong(cong){
+  update_rec('.$url.','.$_SESSION['user'].', cong, );
+}
+
+function update_date(dateR){
+ update_rec('.$url.','.$_SESSION['user'].', ,dateR);
+}
 </script>';
 }
 }
@@ -86,6 +69,7 @@ $selected_cong="";
 $selected_date="";
 // we need to set session type
 if(isset($_GET['user'])){
+/*warning doing this bypasses login*/
 $_SESSION['user']=$_GET['user'];
 $db=file("db/users");
     foreach($db as $line){
@@ -98,13 +82,17 @@ $db=file("db/users");
 }
 
 if(isset($_GET['cong'])){
+	if ($_GET['cong']!=""){
 $selected_cong=$_GET['cong'];
 $_SESSION['selected_cong_r']=$selected_cong;
 $_SESSION['selected_date_r']="";
+	}
 }
 if(isset($_GET['date'])){
+	if ($_GET['date']!=""){
 $selected_date=$_GET['date'];
 $_SESSION['selected_date_r']=$selected_date;
+	}
 }
 if(isset($_SESSION['selected_cong_r'])) $selected_cong=$_SESSION['selected_cong_r'];
 if(isset($_SESSION['selected_date_r'])) $selected_date=$_SESSION['selected_date_r'];
@@ -205,7 +193,7 @@ echo '<table><tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td
 	   }
 	   if($go=="ok"){
                      echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="./download.php?file='.$file.'" download>'.$lng['download'].'</a>';
-if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
+if (($_SESSION['type']=="admin" OR $_SESSION['type']=="root") AND !strstr($test, ".php")){
 echo '- <a href="javascript:show_confirm(\''.$file.'\')">'.$lng['delete'].'</a>';
 }
 echo '</td></tr>';
@@ -216,8 +204,5 @@ echo '</td></tr>';
 </table>
 </div>
 <?PHP
-}
-if (strstr($test, ".php")){
-/*echo '</body></html>';*/
 }
 ?>
