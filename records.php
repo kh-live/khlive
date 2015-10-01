@@ -51,14 +51,14 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","http://" + url + "/kh-live/records.php?user=" + user + "&date=" + dateR + "&cong=" + cong + "&tmp=" +  tstmp.getTime() , true);
 xmlhttp.send();
 }
-update_rec('.$url.','.$_SESSION['user'].','.$_SESSION['cong'].', );
+update_rec("'.$url.'","'.$_SESSION['user'].'","'.$_SESSION['cong'].'","" );
 
 function update_cong(cong){
-  update_rec('.$url.','.$_SESSION['user'].', cong, );
+  update_rec("'.$url.'","'.$_SESSION['user'].'", cong,"" );
 }
 
 function update_date(dateR){
- update_rec('.$url.','.$_SESSION['user'].', ,dateR);
+ update_rec("'.$url.'","'.$_SESSION['user'].'", "",dateR);
 }
 </script>';
 }
