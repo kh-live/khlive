@@ -7,11 +7,12 @@ if (strstr($test, ".php")){
 $a = session_id();
 if ($a == ''){
 session_start();
+header('Access-Control-Allow-Origin: http://kh-live.co.za');
 }
 include "db/config.php";
 include "lang.php";
 
-echo '<html><head>
+/*echo '<html><head>
 <style type="text/css">
 body {
     color: black;
@@ -37,7 +38,7 @@ body {
 }
 </style>
 </head>
-<body>';
+<body>';*/
 }else{
 //if it's from the master server, we need to redirect to the slave server
 if ($server_beta=="master"){
@@ -53,9 +54,30 @@ $db=file("db/servers");
 if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
-
-echo '<div id="page"><iframe id="listen_frame" src="//'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe></div>';
-
+/*<iframe id="listen_frame" src="//'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe>*/
+echo '<div id="records_frame">Connecting...</div>';
+echo '
+<script type="text/javascript">
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    document.getElementById(\'records_frame\').innerHTML=resp;
+    }
+  }
+  tstmp = new Date();
+xmlhttp.open("GET","http://'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'&tmp=" +  tstmp.getTime() , true);
+xmlhttp.send();
+</script>';
 }
 }
 }
@@ -196,6 +218,6 @@ echo '</td></tr>';
 <?PHP
 }
 if (strstr($test, ".php")){
-echo '</body></html>';
+/*echo '</body></html>';*/
 }
 ?>
