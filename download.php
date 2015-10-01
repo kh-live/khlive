@@ -8,9 +8,6 @@ session_start();
 	if (file_exists("./records/".$file_name)){
 	$tmptmp=explode('-', $filename);
 	 $cong=$tmptmp[0];
-	 if (!isset($_SESSION['cong'])){
-	 $_SESSION['cong']=$cong;
-	 }
 	 $client=@$_SESSION['user'];
 	 $info=time().'**info**new download**'.$client.'**'.$cong."**".$file_name."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
@@ -19,7 +16,7 @@ session_start();
 			}
 			
 	$info=time().'**info**new download**'.$client."**".$file_name."**\n";
-	$file=fopen('./db/logs-'.strtolower($_SESSION['cong']).'-'.date("Y",time()).'-'.date("m",time()),'a');
+	$file=fopen('./db/logs-'.$cong.'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
