@@ -6,9 +6,12 @@ session_start();
  if (isset($_GET['file'])){
 	$file_name=basename($_GET['file']);
 	if (file_exists("./records/".$file_name)){
-	 if (strstr($file_name,$_SESSION['cong']) OR $_SESSION['type']=="root") {
-	 $cong=$_SESSION['cong'];
-	 $client=$_SESSION['user'];
+	$tmptmp=explode('-', $filename);
+	 $cong=$tmptmp[0];
+	 if (!isset($_SESSION['cong'])){
+	 $_SESSION['cong']=$cong;
+	 }
+	 $client=@$_SESSION['user'];
 	 $info=time().'**info**new download**'.$client.'**'.$cong."**".$file_name."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
@@ -41,10 +44,7 @@ header('Content-disposition: attachment; filename=movie.mpg');
 header('Content-type: video/mpeg');
 readfile('movie.mpg');
 	*/
-			
-	}else{
-	include ("404.php");
-	}
+
  }else{
 	include ("404.php");
 	}

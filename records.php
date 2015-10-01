@@ -27,7 +27,8 @@ if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
 /*<iframe id="listen_frame" src="//'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe>*/
-echo '<div id="records_frame">Connecting...</div>';
+echo '<div id="records_frame"><div id="page">
+<h2>'.$lng['recordings'].'</h2>Connecting...</div></div>';
 echo '
 <script type="text/javascript">
 function update_rec(url, user, cong, dateR){
@@ -45,6 +46,8 @@ xmlhttp.onreadystatechange=function()
     {
     resp=xmlhttp.responseText;
     document.getElementById(\'records_frame\').innerHTML=resp;
+    }else{
+    document.getElementById(\'records_frame\').innerHTML="<div id=\"page\"><h2>'.$lng['recordings'].'</h2>Loading, Please wait...</div>";
     }
   }
   tstmp = new Date();
