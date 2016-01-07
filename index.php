@@ -18,7 +18,7 @@ session_start();
 }
 //we only enable https on live systems as others don't have certifs in place
 //for kh-live we can't enable ssl yet as certifs have to be installed on all server and ssl must be enabled for icecast (otherwise we get a mixed content worning)
-if (strstr($_SERVER['HTTP_HOST'],"kh.sinux.ch") /*OR strstr($_SERVER['HTTP_HOST'],"kh-live.co.za")*/){
+if (strstr($_SERVER['HTTP_HOST'],"testing.sinux.ch") /*OR strstr($_SERVER['HTTP_HOST'],"kh-live.co.za")*/){
 if (isset($_SERVER['HTTPS'])){
   if($_SERVER['HTTPS']!="on"){
      $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
