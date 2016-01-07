@@ -181,7 +181,7 @@ if(isset($_POST['submit'])){
 			
 			if (strstr($pid_line, "arecord")){
 			$pids=explode("asterisk",$pid_line);
-			$pid=$pids[0]+1;
+			$pid=$pids[0]; /*$pid=$pids[0]+1; why +1? it should be the pid line not next one...*/
 			exec('kill '.$pid );
 			}
 		}
