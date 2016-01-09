@@ -8,7 +8,7 @@ exit();
 include 'functions.php';
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['save']){
-		if ($_POST['user_confirmed']!="" AND $_POST['congregation']!="0" AND $_POST['rights']!="0" AND $_POST['user']!="" AND $_POST['name']!="" AND $_POST['pin']>=9999 AND $_POST['pin']<=100000){
+		if ($_POST['user_confirmed']!="" AND $_POST['congregation']!="0" AND $_POST['rights']!="0" AND $_POST['user']!="" AND $_POST['name']!="" AND $_POST['pin']>=9999 AND $_POST['pin']<=100000 AND (strlen($_POST['password'])>=8 OR $_POST['password']=='')){
 			$user_confirmed=urldecode($_POST['user_confirmed']);
 			$user_new=$_POST['user'];//sanitize input
 			$congregation_new=$_POST['congregation'];//sanitize input
