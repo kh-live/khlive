@@ -194,7 +194,7 @@ if ($server_beta=='false'){
 <?PHP
 //admin or root
 if (is_array(@$reboot)){
-echo '<br /><br />rebooting ...<br /><br />';
+echo '<br /><br />rebooting ...<br /><br />Click <a href="./">here</a> to refresh the page once the server has rebooted.';
 }else{
 echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
 if($server_beta=='stream'){
