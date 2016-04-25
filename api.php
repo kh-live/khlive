@@ -35,6 +35,7 @@ $query=explode("**", $decrypted);
 		$content.=$line;
 		}
 		}
+		if ($content!=''){
 		$file=fopen("./db/servers",'w');
 	if (fputs($file,$content)){
 	fclose($file);
@@ -42,6 +43,10 @@ $query=explode("**", $decrypted);
 		}
 		//we log that the ip has been updated
 		$info=time().'**info**ip updated**'.$server_name.'@'.$new_ip."**\n";
+		}else{
+		$string=$new_ip."@@@ko";
+		$info=time().'**error**ip update colision**'.$server_name.'@'.$new_ip."**\n";
+		}
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);

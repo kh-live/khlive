@@ -446,7 +446,7 @@ $fichier = fopen('./config/logger.conf', 'w');
 #FreeDNS updater script
 <?PHP if ($auto_ppp=="yes") echo 'ifup ppp0 1>&- 2>&-'; ?>
 
-<?PHP if ($auto_cron=="yes") echo 'cp -u "/var/www/kh-live/config/cron" "/etc/cron.d/khlive"'; ?>
+<?PHP if ($auto_cron=="yes") echo 'cp -u "'.$web_server_root.'kh-live/config/cron" "/etc/cron.d/khlive"'; ?>
 
 <?PHP if ($auto_gov=="yes") echo 'echo performance > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor'; ?>
 
@@ -476,8 +476,8 @@ $fichier = fopen('./config/update.sh', 'w');
 	    }
 	    
 	     ob_start();
-?>*/5 * * * * root /var/www/kh-live/config/update.sh
-5 0 * * * root /var/www/kh-live/config/downloader.sh
+?>*/5 * * * * root <?PHP echo $web_server_root; ?>kh-live/config/update.sh
+5 0 * * * root <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
 <?PHP
 //it is very important to finish the cron file with a new line (otherwise it is not executed by cron)
 	          $message = ob_get_clean();
