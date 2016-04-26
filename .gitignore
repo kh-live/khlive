@@ -9,3 +9,5 @@
 /khlive-update.tar
 /kh-live_latest.tar
 *.tar
+z_archives/users
+*.old

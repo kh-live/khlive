@@ -235,6 +235,21 @@ echo 'Restarting apache server'
 service apache2 restart
 echo 'Restarting icecast2 server'
 service icecast2 restart
+echo 'If you have a USB sound card. Plug it in now. make sure it is connected to some speakers. We will do a sound check once it is installed.'
+read -r -p "Do you want to install the USB sound card now? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY])
+       echo 'Installing sound card...'
+usermod -a -G audio ${KH_USER}
+cp /root/update_dir/khlive/asound.conf /etc/asound.conf
+echo 'Testing sound card...'
+speaker-test -c 2 -l 5
+alsamixer
+        ;;
+    *)
+       echo 'skipping sound card...'
+        ;;
+esac
 echo 'Installation finished.'
 echo 'You need to reboot now to change your ip address.'
 echo 'Your new IP will be : '$IP_ADDR
