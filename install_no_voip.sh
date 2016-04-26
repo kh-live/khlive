@@ -25,7 +25,7 @@ echo 'updating app database'
 apt-get update
 echo 'installing required software'
 #remember to say no when asked to configure icecast2
-apt-get install screen wget nano tar dos2unix apache2 php5 libapache2-mod-php5 php5-mcrypt icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git -y
+apt-get install screen wget nano tar dos2unix apache2 php5 libapache2-mod-php5 php5-mcrypt icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
 echo 'adding group to run the servers : '$KH_GRP
 groupadd $KH_GRP
 echo 'adding user to run the servers : '$KH_USER
@@ -57,6 +57,7 @@ mkdir ${APACHE_ROOT}kh-live
 mv ${APACHE_ROOT}kh-live/index.tdl.php ${APACHE_ROOT}index.php
 rm ${APACHE_ROOT}index.html
 rm ${APACHE_ROOT}kh-live/khlive_latest.tar
+sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' ${APACHE_ROOT}kh-live/config/update.sh
 if [ $APACHE_ROOT != "/var/www/" ]
 then
 sed -i "s:web_server_root='/var/www/':web_server_root='"$APACHE_ROOT"':" ${APACHE_ROOT}kh-live/db/config.php
@@ -93,7 +94,7 @@ sed -i 's:;   write list = root, @lpadmin:[khsongs]\
 comment= KH songs\
 path='$APACHE_ROOT'kh-live/kh-songs/\
 browseable=Yes\
-writeable=Yes\
+writeable=yes\
 only guest=no\
 create mask=0777\
 directory mask=0777\
@@ -103,7 +104,7 @@ force user = '$KH_USER'\
 comment= KH downloads\
 path='$APACHE_ROOT'kh-live/downloads/\
 browseable=Yes\
-writeable=Yes\
+writeable=No\
 only guest=no\
 create mask=0777\
 directory mask=0777\
@@ -113,7 +114,7 @@ force user = '$KH_USER'\
 comment= KH recordings\
 path='$APACHE_ROOT'kh-live/records/\
 browseable=Yes\
-writeable=Yes\
+writeable = No\
 only guest=no\
 create mask=0777\
 directory mask=0777\
@@ -208,6 +209,18 @@ esac
        echo 'skipping orchestral songs...'
         ;;
 esac
+read -r -p "Now that we are done with songs do you want to write protect the windows share? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+    echo 'write protecting share...'
+    sed -i 's:writeable=yes:writeable=no:' /etc/samba/smb.conf
+    killall -HUP smbd
+       ;;
+    *)
+       echo 'skipping write protect...'
+        ;;
+esac
+
 echo 'Automatic updater installation'
 mkdir /root/update_dir
 (cd /root/update_dir && git clone https://github.com/kh-live/khlive.git)
