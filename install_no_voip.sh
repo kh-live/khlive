@@ -254,6 +254,8 @@ case $response in
     [yY][eE][sS]|[yY])
        echo 'Installing sound card...'
 usermod -a -G audio ${KH_USER}
+mkdir /home/${KH_USER}
+chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
 cp /root/update_dir/khlive/asound.conf /etc/asound.conf
 echo 'Testing sound card...'
 speaker-test -c 2 -l 5
