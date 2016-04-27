@@ -380,14 +380,14 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 	if ($stream_type=='mp3'){
 	if ($record=='yes'){
 	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
-	exec('arecord -f S16_LE -r 8000 | '.$lame_bin." -f -b 16 -m m -S - /var/www/kh-live/records/".$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
+	exec('arecord -f S16_LE -r 8000 | '.$lame_bin." -f -b 16 -m m -S - ".$web_server_root."kh-live/records/".$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
 	}else{
 	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
 	}
 	}elseif ($stream_type=='ogg'){
 	if ($record=='yes'){
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
-	exec("arecord -f S16_LE -r 8000 | ".$lame_bin.' -f -b 16 -m m -S - /var/www/kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
+	exec("arecord -f S16_LE -r 8000 | ".$lame_bin.' -f -b 16 -m m -S - '.$web_server_root.'kh-live/records/'.$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
 	}else{
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}
@@ -396,7 +396,7 @@ $file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
 	if ($record=='yes'){
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
-	exec('arecord -f S16_LE -r 8000 | '.$lame_bin." -f -b 16 -m m -S - /var/www/kh-live/records/".$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
+	exec('arecord -f S16_LE -r 8000 | '.$lame_bin." -f -b 16 -m m -S - ".$web_server_root."kh-live/records/".$_SESSION['cong'].'-'.date('Ymd',time()).'_'.date('His',time()).'.mp3'." > /dev/null &");
 	}else{
 	exec("arecord -f S16_LE -r 8000 | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	exec("arecord -f S16_LE -r 8000 | ".$lame_bin." --preset cbr ".$bitrate." -b 16 -m m -S - - | ".$ezstream_bin." -c ".$web_server_root."/kh-live/config/asterisk-ezstream-".$_SESSION['cong'].".xml > /dev/null &");
