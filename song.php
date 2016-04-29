@@ -1,7 +1,7 @@
 <?PHP
 $max_song_no=150;
 if(session_id()==""){session_start();}
-include "db/config.php"
+include "db/config.php";
 if (isset($_GET['song_1'])){
 	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=$max_song_no) $_SESSION['song_1']=$_GET['song_1'];
 }
