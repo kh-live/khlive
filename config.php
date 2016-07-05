@@ -457,7 +457,7 @@ DOMAIN="<?PHP echo $moo_adr ; ?>"
 
 registered=$(nslookup $DOMAIN|tail -n2|grep A|sed s/[^0-9.]//g)
 
-  current=$(wget -q -O - http://checkip.dyndns.org|sed s/[^0-9.]//g)
+  current=$(wget -q -O - http://kh-live.co.za/ip.php|sed s/[^0-9.]//g)
        [ "$current" != "$registered" ] && {
 wget -q -O /dev/null $UPDATEURL
            }

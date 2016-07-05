@@ -26,6 +26,10 @@ apt-get update
 echo 'installing required software'
 #remember to say no when asked to configure icecast2
 apt-get install screen wget nano tar dos2unix apache2 php5 libapache2-mod-php5 php5-mcrypt icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
+mkdir /home/${KH_USER}
+mkdir /home/${KH_USER}/.moc
+chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
+chown ${KH_USER}:${KH_GRP} /home/${KH_USER}/.moc
 echo 'adding group to run the servers : '$KH_GRP
 groupadd $KH_GRP
 echo 'adding user to run the servers : '$KH_USER

@@ -39,6 +39,13 @@ $query=explode("**", $decrypted);
 		$file=fopen("./db/servers",'w');
 	if (fputs($file,$content)){
 	fclose($file);
+	
+	//we still need to update cpanel dns
+	$tmp=explode(".", $server_name);
+	$hostname=str_replace("_","",$tmp[0]);
+	if (file_exists('./dyndns.php')){
+	include "dyndns.php";
+	}
 		$string=$new_ip."@@@ok";
 		}
 		//we log that the ip has been updated
