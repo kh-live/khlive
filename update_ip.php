@@ -22,12 +22,14 @@ if ($current_ip!=$previous_ip){
 	fputs($file,$current_ip);
 	fclose($file);
 	}else{
-	echo "current_ip :".$current_ip."\n";
-	echo "received_ip :".$dec[0]."\n";
-	echo "error wrong ip";
+	$file=fopen($temp_dir.'error_ip','w');
+	fputs($file,$string."--".$response."--".$decrypted."--".$key2);
+	fclose($file);
 	}
 	}else{
-	echo "error synchronising ip";
+	$file=fopen($temp_dir.'error_ip','w');
+	fputs($file,$string."--".$response."--".$decrypted."--".$key2);
+	fclose($file);
 	}
 }
 ?>
