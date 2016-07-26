@@ -283,8 +283,6 @@ if ($_SESSION['type']=="root"){
 	include ("./logs.php");
 	}elseif($page=="download"){
 	include ("./software.php");
-	}elseif($page=="diagnosis"){
-	include ("./diagnosis.php");
 	}elseif ($page=="video_edit"){
 	include ("./video_edit.php");
 	}elseif ($page=="configure"){
@@ -307,6 +305,8 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./user_add.php");
 	}elseif ($page=="user_delete"){
 	include ("./user_delete.php");
+	}elseif($page=="diagnosis"){
+	include ("./diagnosis.php");
 	}elseif ($page=="user_edit"){
 	include ("./user_edit.php");
 	}
