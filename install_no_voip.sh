@@ -227,6 +227,7 @@ esac
 
 echo 'Automatic updater installation'
 mkdir /root/update_dir
+git config --global http.postbuffer "10m"
 (cd /root/update_dir && git clone https://github.com/kh-live/khlive.git)
 sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' /root/update_dir/khlive/update_script_debian.sh
 sed -i 's/asterisk:asterisk/'$KH_USER':'$KH_GRP'/' /root/update_dir/khlive/update_script_debian.sh

@@ -2,7 +2,7 @@
 $lng['PIN']='PIN';
 $lng['welcome_instructions']='To listen to the meeting click on the link "listen" above.';
 $lng['listening']='Listen';
-$lng['listening_text']='The meeting should start automatically. If it doesn\'t, try to press the "play" button.<br /> Note that there is a delay of at least 30sec with the actual meeting.';
+$lng['listening_text']='Please press the "play" button if the meeting doesn\'t start automatically.<br /> Note that there is a delay of at least 30sec with the actual meeting.';
 $lng['user']='User';
 $lng['meeting']='Meeting';
 $lng['password']='Password';

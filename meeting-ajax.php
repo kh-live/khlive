@@ -478,7 +478,7 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
        while (($file = readdir($dh)) !== false) {
            if (($file != '.') && ($file != '..')){
                if (!is_dir($path . $file)){
-			if ($file!="global_ip"){
+			if (strstr($file, "meeting_")){
 			$content=implode("",file($path . $file));
 			if (strstr($content, 'live')) {
 			$already_meeting=$file;

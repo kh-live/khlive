@@ -272,9 +272,6 @@ function counter (i){
 
 	if(strstr($_SESSION['meeting_status'],"live")){
 	echo $lng['yeslive'].' :<br /><br />';
-    $type_txt="";
-    if ($type=="mp3") $type_txt="audio/mpeg";
-    if ($type=="ogg") $type_txt="audio/ogg";
     
     if (strstr($_SERVER['HTTP_HOST'],'192.168.')){
     $server_out=$_SERVER['HTTP_HOST'];
@@ -286,6 +283,7 @@ function counter (i){
     $i=0;
     foreach ($feeds as $feed){
     $type=$types[$i];
+	$type_txt="";
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
     $buffer.='<source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
