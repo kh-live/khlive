@@ -5,7 +5,7 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
-if (($_SESSION['type']=="root") {
+if ($_SESSION['type']=="root") {
 if (isset($_GET['tempcong'])){
 $_SESSION['cong']=urldecode($_GET['tempcong']);
 }
@@ -16,7 +16,7 @@ $_SESSION['cong']=urldecode($_GET['tempcong']);
 <?PHP
 echo $lng['welcome'].' <b>'.$_SESSION['full_name'].'</b> !<br />';
 echo $lng['cong_part'].' : <b>'.$_SESSION['cong'].'</b>.<br />';
-if (($_SESSION['type']=="root") {
+if ($_SESSION['type']=="root") {
 echo 'You can change your cong for this session using the drop down menu : <br />';
 ?>
 <script type="text/javascript">
