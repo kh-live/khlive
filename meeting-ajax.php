@@ -103,6 +103,15 @@ if(isset($_POST['submit'])){
 	</form><br /><br />';
 	}elseif($_POST['submit']=="Yes, Stop it"){
 	$_SESSION['meeting_stop_time']=time();
+	if (is_file($temp_dir.'song_1_'.$_SESSION['cong'])){
+unlink($temp_dir.'song_1_'.$_SESSION['cong']);
+}
+if (is_file($temp_dir.'song_2_'.$_SESSION['cong'])){
+unlink($temp_dir.'song_2_'.$_SESSION['cong']);
+}
+if (is_file($temp_dir.'song_3_'.$_SESSION['cong'])){
+unlink($temp_dir.'song_3_'.$_SESSION['cong']);
+}
 	/*this only works if the call was initiated on sip*/
 	if ($meeting_type=="sip"){
 	$client='SIP/'.$_SESSION['cong_phone_no'];

@@ -5,6 +5,15 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+if (is_file($temp_dir.'song_1_'.$_SESSION['cong'])){
+$_SESSION['song_1']=file_get_contents($temp_dir.'song_1_'.$_SESSION['cong']);
+}
+if (is_file($temp_dir.'song_2_'.$_SESSION['cong'])){
+$_SESSION['song_2']=file_get_contents($temp_dir.'song_2_'.$_SESSION['cong']);
+}
+if (is_file($temp_dir.'song_3_'.$_SESSION['cong'])){
+$_SESSION['song_3']=file_get_contents($temp_dir.'song_3_'.$_SESSION['cong']);
+}
 echo '<div id="page">
 <h2>'.$lng['meeting'].'</h2>
 	<iframe id="meeting" src="meeting-ajax.php" >';
