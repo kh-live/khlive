@@ -52,7 +52,20 @@ echo '<br /><input type="submit" id="play_1" value="select a song..." disabled="
 ?>
 <audio id="song1_audio" controls preload="none" >
 <?PHP
-if (isset($_SESSION['song_1'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.m4a" type="audio/mp4" >';
+if (isset($_SESSION['song_1'])){
+if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_1'].".mp3")){
+ echo '<source src="kh-songs/iasnm_E_'.$_SESSION['song_1'].'.mp3" type="audio/mpeg" >';
+
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$_SESSION['song_1'].".mp3")){
+	 echo '<source src="kh-songs/snnw_E_'.$_SESSION['song_1'].'.mp3" type="audio/mpeg" >';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_1'].".mp3")){
+	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.mp3" type="audio/mpeg" >';
+	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_1'].".mp3");
+	}else{
+	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.m4a" type="audio/mp4" >';
+	}
+
+ }
 ?>
  </audio>
  <?PHP
@@ -88,7 +101,20 @@ echo '<br /><input type="submit" id="play_2" value="select a song..." disabled="
 ?>
 <audio id="song2_audio" controls preload="none" >
 <?PHP
-if (isset($_SESSION['song_2'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_2'].'.m4a" type="audio/mp4" >';
+if (isset($_SESSION['song_2'])){
+if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_2'].".mp3")){
+ echo '<source src="kh-songs/iasnm_E_'.$_SESSION['song_2'].'.mp3" type="audio/mpeg" >';
+
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$_SESSION['song_2'].".mp3")){
+	 echo '<source src="kh-songs/snnw_E_'.$_SESSION['song_2'].'.mp3" type="audio/mpeg" >';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_2'].".mp3")){
+	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_2'].'.mp3" type="audio/mpeg" >';
+	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_2'].".mp3");
+	}else{
+	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_2'].'.m4a" type="audio/mp4" >';
+	}
+
+ }
 ?>
  </audio>
  <?PHP
@@ -124,31 +150,45 @@ echo '<br /><br />Random Songs:<br /><input type="submit" id="play_rand" value="
 ?>
 <audio id="song3_audio" controls preload="none" >
 <?PHP
-if (isset($_SESSION['song_3'])) echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_3'].'.m4a" type="audio/mp4" >';
+if (isset($_SESSION['song_3'])){
+if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_3'].".mp3")){
+ echo '<source src="kh-songs/iasnm_E_'.$_SESSION['song_3'].'.mp3" type="audio/mpeg" >';
+
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$_SESSION['song_3'].".mp3")){
+	 echo '<source src="kh-songs/snnw_E_'.$_SESSION['song_3'].'.mp3" type="audio/mpeg" >';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_3'].".mp3")){
+	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_3'].'.mp3" type="audio/mpeg" >';
+	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_3'].".mp3");
+	}else{
+	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_3'].'.m4a" type="audio/mp4" >';
+	}
+
+ }
 ?>
  </audio><br /><br />
 Random songs:
 <audio id="rand_player" controls preload="auto" >
-<source src="kh-songs/iasn_E_<?PHP echo rand(100,$max_song_no); ?>.m4a" type="audio/mp4" >
+<?PHP
+$rand_song = rand(100,$max_song_no);
+if (isset($rand_song)){
+if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$rand_song.".mp3")){
+ echo '<source src="kh-songs/iasnm_E_'.$rand_song.'.mp3" type="audio/mpeg" >';
+
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$rand_song.".mp3")){
+	 echo '<source src="kh-songs/snnw_E_'.$rand_song.'.mp3" type="audio/mpeg" >';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$rand_song.".mp3")){
+	 echo '<source src="kh-songs/iasn_E_'.$rand_song.'.mp3" type="audio/mpeg" >';
+	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$rand_song.".mp3");
+	}else{
+	 echo '<source src="kh-songs/iasn_E_'.$rand_song.'.m4a" type="audio/mp4" >';
+	}
+
+ }
+ ?>
  </audio>
  <?PHP
  }
  ?>
- <br /> <br />136 : The Kingdom is in place - Let it come!<br />
- 137 : Grant us boldness<br />
- 138 : Jehovah is your Name<br />
- 139 : Teach Them to Stand Firm<br />
- 140 : The life of a Pioneer<br />
- 141 : Searching for Friends of Peace<br />
- 142 : Preaching to all sorts of People<br />
- 143 : Light in a Darkened World<br />
- 144 : It Means Their Life<br />
- 145 : Preparing to Preach<br />
- 146 : You Did It for Me<br />
- 147 : A Special Possession<br />
- 148 : You Gave Your Only-Begotten Son<br />
- 149 : Grateful for the Ransom<br />
- 150 : Reaching Out<br />
 </div>
 <div id="song-small" onclick="javascript:showdiv('songs','song-small')">
 <br />S<br />
@@ -212,7 +252,7 @@ if ($song_dev!="server"){
 document.getElementById('rand_player').addEventListener('ended',function(e){
 var player = document.getElementById('rand_player');
 
-var no=Math.floor((Math.random()*138)+1);
+var no=Math.floor((Math.random()*135)+1);
 if (no<=9){
 no="00"+no;
 }
