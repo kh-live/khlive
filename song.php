@@ -3,13 +3,46 @@ $max_song_no=154;
 if(session_id()==""){session_start();}
 include "db/config.php";
 if (isset($_GET['song_1'])){
-	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=$max_song_no) $_SESSION['song_1']=$_GET['song_1'];
+	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=$max_song_no){
+	$_SESSION['song_1']=$_GET['song_1'];
+if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_1'].".mp3")){
+ echo 'iasnm-mp3';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$_SESSION['song_1'].".mp3")){
+	 echo 'snnw-mp3';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_1'].".mp3")){
+	 echo 'iasn-mp3';
+	}else{
+	 echo 'iasn-m4a';
+	}
+	}
 }
 if (isset($_GET['song_2'])){
-	if ($_GET['song_2'] >=1 AND $_GET['song_2'] <=$max_song_no) $_SESSION['song_2']=$_GET['song_2'];
+	if ($_GET['song_2'] >=1 AND $_GET['song_2'] <=$max_song_no){
+	$_SESSION['song_2']=$_GET['song_2'];
+	if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_2'].".mp3")){
+ echo 'iasnm-mp3';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$_SESSION['song_2'].".mp3")){
+	 echo 'snnw-mp3';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_2'].".mp3")){
+	 echo 'iasn-mp3';
+	}else{
+	 echo 'iasn-m4a';
+	}
+	}
 }
 if (isset($_GET['song_3'])){
-	if ($_GET['song_3'] >=1 AND $_GET['song_3'] <=$max_song_no) $_SESSION['song_3']=$_GET['song_3'];
+	if ($_GET['song_3'] >=1 AND $_GET['song_3'] <=$max_song_no){
+	$_SESSION['song_3']=$_GET['song_3'];
+	if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_3'].".mp3")){
+ echo 'iasnm-mp3';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/snnw_E_".$_SESSION['song_3'].".mp3")){
+	 echo 'snnw-mp3';
+	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_3'].".mp3")){
+	 echo 'iasn-mp3';
+	}else{
+	 echo 'iasn-m4a';
+	}
+	}
 }
 if (isset($_GET['play'])){
 	if (is_numeric($_GET['play'])){

@@ -60,7 +60,6 @@ if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_1'].".m
 	 echo '<source src="kh-songs/snnw_E_'.$_SESSION['song_1'].'.mp3" type="audio/mpeg" >';
 	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_1'].".mp3")){
 	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.mp3" type="audio/mpeg" >';
-	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_1'].".mp3");
 	}else{
 	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_1'].'.m4a" type="audio/mp4" >';
 	}
@@ -109,7 +108,6 @@ if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_2'].".m
 	 echo '<source src="kh-songs/snnw_E_'.$_SESSION['song_2'].'.mp3" type="audio/mpeg" >';
 	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_2'].".mp3")){
 	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_2'].'.mp3" type="audio/mpeg" >';
-	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_2'].".mp3");
 	}else{
 	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_2'].'.m4a" type="audio/mp4" >';
 	}
@@ -158,7 +156,6 @@ if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_3'].".m
 	 echo '<source src="kh-songs/snnw_E_'.$_SESSION['song_3'].'.mp3" type="audio/mpeg" >';
 	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_3'].".mp3")){
 	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_3'].'.mp3" type="audio/mpeg" >';
-	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$_SESSION['song_3'].".mp3");
 	}else{
 	 echo '<source src="kh-songs/iasn_E_'.$_SESSION['song_3'].'.m4a" type="audio/mp4" >';
 	}
@@ -207,22 +204,7 @@ if(d2.length < 1) { return; }
 function update_song(id, no){
 if(id.length < 1) { return; }
 if(no.length < 1) { return; }
-<?PHP
-if ($song_dev=="server"){
-?>
-var song=document.getElementById("play_" +id);
-song.value="Play Song "+no;
-song.disabled = false;
-document.getElementById("stop_" +id).value= "Stop Song "+no;
-<?PHP
-}else{
-?>
-var song=document.getElementById("song" +id+ "_audio");
-song.src="kh-songs/iasn_E_" +no+".m4a";
-song.type="audio/mp4";
-<?PHP
-}
-?>
+
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
@@ -236,16 +218,42 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     resp=xmlhttp.responseText;
-    if (resp!=""){
-	//there was an error
-	var error = alert(resp);
-    }
     }
    
     }
 xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
 xmlhttp.send();
 }
+<?PHP
+if ($song_dev=="server"){
+?>
+var song=document.getElementById("play_" +id);
+song.value="Play Song "+no;
+song.disabled = false;
+document.getElementById("stop_" +id).value= "Stop Song "+no;
+<?PHP
+}else{
+?>
+var song=document.getElementById("song" +id+ "_audio");
+if (resp=="iasnm-mp3"){
+song.src="kh-songs/iasnm_E_" +no+".mp3";
+song.type="audio/mpeg";
+}
+if (resp=="snnw-mp3"){
+song.src="kh-songs/snnw_E_" +no+".mp3";
+song.type="audio/mpeg";
+}
+if (resp=="iasn-mp3"){
+song.src="kh-songs/iasn_E_" +no+".mp3";
+song.type="audio/mpeg";
+}
+if (resp=="iasn-m4a"){
+song.src="kh-songs/iasn_E_" +no+".m4a";
+song.type="audio/mp4";
+}
+<?PHP
+}
+?>
 <?PHP
 if ($song_dev!="server"){
 ?>
