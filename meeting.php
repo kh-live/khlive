@@ -218,13 +218,7 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     resp=xmlhttp.responseText;
-    }
-   
-    }
-xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
-xmlhttp.send();
-
-<?PHP
+    <?PHP
 if ($song_dev=="server"){
 ?>
 var song=document.getElementById("play_" +id);
@@ -251,10 +245,16 @@ if (resp=="iasn-m4a"){
 song.src="kh-songs/iasn_E_" +no+".m4a";
 song.type="audio/mp4";
 }
-}
+
 <?PHP
 }
 ?>
+    }
+   
+    }
+xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
+xmlhttp.send();
+}
 <?PHP
 if ($song_dev!="server"){
 ?>
