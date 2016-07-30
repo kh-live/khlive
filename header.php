@@ -47,7 +47,7 @@ echo ' - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./record">'.$lng
 }
 if ($_SESSION['type']=="admin"){
 echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a>';
-if ($server_beta!="master") echo ' - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./report">'.$lng['report'].'</a> - <a href="./diagnosis">Diagnosis</a>';
+if ($server_beta!="master") echo ' - <a href="./download">'.$lng['file_transfer'].'</a>  - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./report">'.$lng['report'].'</a> - <a href="./diagnosis">Diagnosis</a>';
 }
 if ($_SESSION['type']=="root"){
 echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./configure">Configuration</a>';

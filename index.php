@@ -281,8 +281,6 @@ if ($_SESSION['type']=="root"){
 	include ("./cong_delete.php");
 	}elseif ($page=="logs"){
 	include ("./logs.php");
-	}elseif($page=="download"){
-	include ("./software.php");
 	}elseif ($page=="video_edit"){
 	include ("./video_edit.php");
 	}elseif ($page=="configure"){
@@ -309,6 +307,8 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./diagnosis.php");
 	}elseif ($page=="user_edit"){
 	include ("./user_edit.php");
+	}elseif($page=="download"){
+	include ("./software.php");
 	}
 	}
 //manger links only

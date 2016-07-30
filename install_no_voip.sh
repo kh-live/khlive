@@ -135,55 +135,40 @@ echo '(Did you expand filesystem?)'
 read -r -p ". Do you want to install the original songs? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
-    read -r -p "Download from [w]eb ( 625Mo ) or use [L]ocal file? [w/L] " response
+    read -r -p "Download from [w]eb ( 658Mo ) or use [L]ocal file? [w/L] " response
 case $response in
     [wW][eE][bB]|[wW]) 
        echo 'downloading original songs...'
-       (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/d5/iasn_E.m4a.zip)
+       (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/c0/iasn_E.mp3.zip)
         ;;
     *)
        echo 'skipping download...'
         ;;
 esac
-       (cd ${APACHE_ROOT}kh-live/kh-songs && unzip iasn_E.m4a.zip)
-       rm ${APACHE_ROOT}kh-live/kh-songs/iasn_E.m4a.zip
+       (cd ${APACHE_ROOT}kh-live/kh-songs && unzip iasn_E.mp3.zip)
+       rm ${APACHE_ROOT}kh-live/kh-songs/iasn_E.mp3.zip
        chown -R ${KH_USER}:${KH_GRP} ${APACHE_ROOT}kh-live/*
         ;;
     *)
        echo 'skipping original songs...'
         ;;
 esac
-echo 'Installing New songs 136-150 :'
+echo 'Installing New songs 136-154 :'
 read -r -p "Do you want to install the new songs? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
-     read -r -p "Download from [w]eb ( 83Mo ) or use [L]ocal file? [w/L] " response
+     read -r -p "Download from [w]eb ( 117Mo ) or use [L]ocal file? [w/L] " response
 case $response in
     [wW][eE][bB]|[wW]) 
        echo 'downloading new songs...'
-       (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/3a/snnw_E.m4a.zip)
+       (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/95/snnw_E.mp3.zip)
         ;;
     *)
        echo 'skipping download...'
         ;;
 esac
-	(cd ${APACHE_ROOT}kh-live/kh-songs && unzip snnw_E.m4a.zip)
-       rm ${APACHE_ROOT}kh-live/kh-songs/snnw_E.m4a.zip
-       (cd ${APACHE_ROOT}kh-live/kh-songs && mv snnw_E_136.m4a iasn_E_136.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_137.m4a iasn_E_137.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_138.m4a iasn_E_138.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_139.m4a iasn_E_139.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_140.m4a iasn_E_140.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_141.m4a iasn_E_141.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_142.m4a iasn_E_142.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_143.m4a iasn_E_143.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_144.m4a iasn_E_144.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_145.m4a iasn_E_145.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_146.m4a iasn_E_146.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_147.m4a iasn_E_147.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_148.m4a iasn_E_148.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_149.m4a iasn_E_149.m4a)
-(cd ${APACHE_ROOT}kh-live/kh-songs &&  mv snnw_E_150.m4a iasn_E_150.m4a)
+	(cd ${APACHE_ROOT}kh-live/kh-songs && unzip snnw_E.mp3.zip)
+       rm ${APACHE_ROOT}kh-live/kh-songs/snnw_E.mp3.zip
 chown -R ${KH_USER}:${KH_GRP} ${APACHE_ROOT}kh-live/*
         ;;
     *)
@@ -194,19 +179,18 @@ echo 'Installing Orchestral songs 1-135 :'
 read -r -p "Do you want to install the orchestral songs? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
-        read -r -p "Download from [w]eb ( 317Mo ) or use [L]ocal file? [w/L] " response
+        read -r -p "Download from [w]eb ( 569Mo ) or use [L]ocal file? [w/L] " response
 case $response in
     [wW][eE][bB]|[wW]) 
        echo 'downloading orchestral songs...'
-      (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/d3/iasnm_E.m4a.zip)
+      (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/a8/iasnm_E.mp3.zip)
         ;;
     *)
        echo 'skipping download...'
         ;;
 esac
-       (cd ${APACHE_ROOT}kh-live/kh-songs && unzip iasnm_E.m4a.zip)
-       rm ${APACHE_ROOT}kh-live/kh-songs/iasnm_E.m4a.zip
-       (cd ${APACHE_ROOT}kh-live/kh-songs && find . -type f -name "iasnm*.m4a" -exec bash -c 'mv "$0" "${0/iasnm/iasn}"' {} \;)
+       (cd ${APACHE_ROOT}kh-live/kh-songs && unzip iasnm_E.mp3.zip)
+       rm ${APACHE_ROOT}kh-live/kh-songs/iasnm_E.mp3.zip
        chown -R ${KH_USER}:${KH_GRP} ${APACHE_ROOT}kh-live/*
         ;;
     *)

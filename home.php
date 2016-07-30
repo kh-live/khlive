@@ -17,7 +17,7 @@ $_SESSION['cong']=urldecode($_GET['tempcong']);
 echo $lng['welcome'].' <b>'.$_SESSION['full_name'].'</b> !<br />';
 echo $lng['cong_part'].' : <b>'.$_SESSION['cong'].'</b>.<br />';
 if ($_SESSION['type']=="root") {
-echo 'You can change your cong for this session using the drop down menu : <br />';
+echo '<br />You can change your cong for this session using the drop down menu : <br />';
 ?>
 <script type="text/javascript">
 function changeCong(){
