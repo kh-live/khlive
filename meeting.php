@@ -223,7 +223,7 @@ xmlhttp.onreadystatechange=function()
     }
 xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
 xmlhttp.send();
-}
+
 <?PHP
 if ($song_dev=="server"){
 ?>
@@ -250,6 +250,7 @@ song.type="audio/mpeg";
 if (resp=="iasn-m4a"){
 song.src="kh-songs/iasn_E_" +no+".m4a";
 song.type="audio/mp4";
+}
 }
 <?PHP
 }
