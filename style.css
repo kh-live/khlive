@@ -8,6 +8,18 @@ body{
 	background-color:#eee;
 	overflow-x:hidden;
 }
+#please_wait{
+	display:none;
+	background-color:rgba(0,0,0,0.8);
+	color:white;
+	width:100%;
+	height:100%;
+	z-index:9999;
+	position:fixed;
+	top:0;
+	left:0;
+	text-align:center;
+}
 #login, #quick_login{
 	width:100%;
 	text-align:center;

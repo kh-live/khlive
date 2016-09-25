@@ -49,7 +49,8 @@ include_once "db/config.php";
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-	if ($ij<>1){
+	if ($ij<=0){
+	//This is also called from meeting.php when there is two users with the same name.
 	echo " not listening to the meeting. Press play above.";
 	exit;
 	}

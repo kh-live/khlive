@@ -135,7 +135,7 @@ echo '(Did you expand filesystem?)'
 read -r -p ". Do you want to install the original songs? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
-    read -r -p "Download from [w]eb ( 658Mo ) or use [L]ocal file? [w/L] " response
+    read -r -p "Download from [w]eb ( 628Mo ) or use [L]ocal file? [w/L] " response
 case $response in
     [wW][eE][bB]|[wW]) 
        echo 'downloading original songs...'
@@ -157,7 +157,7 @@ echo 'Installing New songs 136-154 :'
 read -r -p "Do you want to install the new songs? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
-     read -r -p "Download from [w]eb ( 117Mo ) or use [L]ocal file? [w/L] " response
+     read -r -p "Download from [w]eb ( 102Mo ) or use [L]ocal file? [w/L] " response
 case $response in
     [wW][eE][bB]|[wW]) 
        echo 'downloading new songs...'
@@ -179,7 +179,7 @@ echo 'Installing Orchestral songs 1-135 :'
 read -r -p "Do you want to install the orchestral songs? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
-        read -r -p "Download from [w]eb ( 569Mo ) or use [L]ocal file? [w/L] " response
+        read -r -p "Download from [w]eb ( 619Mo ) or use [L]ocal file? [w/L] " response
 case $response in
     [wW][eE][bB]|[wW]) 
        echo 'downloading orchestral songs...'

@@ -52,7 +52,7 @@ if ($server_beta!="master") echo ' - <a href="./download">'.$lng['file_transfer'
 if ($_SESSION['type']=="root"){
 echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./configure">Configuration</a>';
 if ($server_beta!="master") {
-echo ' - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./report">'.$lng['report'].'</a>';
+echo ' - <a href="./song_man">Manage Songs</a> - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./report">'.$lng['report'].'</a>';
 }else{
 echo '  - <a href="./servers">Servers</a>';
 }
