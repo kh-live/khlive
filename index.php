@@ -320,6 +320,14 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./meeting.php");
 	}elseif($page=="report"){
 	include ("./report.php");
+	}elseif($page=="scheduler"){
+	include ("./scheduler.php");
+	}elseif($page=="sched_add"){
+	include ("./sched_add.php");
+	}elseif($page=="sched_delete"){
+	include ("./sched_delete.php");
+	}elseif($page=="sched_edit"){
+	include ("./sched_edit.php");
 	}
 	}
 //everybody's links

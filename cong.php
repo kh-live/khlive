@@ -11,7 +11,7 @@ exit();
 <a href="./cong_add"><?PHP echo $lng['add_new_congregation'];?></a><br /><br />
 <table>
 <?PHP
-echo '<tr><td><b>'.$lng['name'].'</td><td><b>'.$lng['cong_id'].'</b></td><td><b>'.$lng['admin_pin'].'</b></td><td><b>phone no</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
+echo '<tr><td><b>'.$lng['name'].'</b></td><td><b>'.$lng['cong_id'].'</b></td><td><b>'.$lng['admin_pin'].'</b></td><td><b>phone no</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 $db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);

@@ -478,6 +478,7 @@ $fichier = fopen('./config/update.sh', 'w');
 	     ob_start();
 ?>*/5 * * * * root <?PHP echo $web_server_root; ?>kh-live/config/update.sh
 5 0 * * * root <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
+*/15 * * * * asterisk 'php <?PHP echo $web_server_root; ?>kh-live/meeting-sched.php'
 <?PHP
 //it is very important to finish the cron file with a new line (otherwise it is not executed by cron)
 	          $message = ob_get_clean();
@@ -960,9 +961,10 @@ echo '?>';
     $message = ob_get_clean();
 $fichier = fopen('./db/config.php', 'w');
             if (fwrite($fichier, $message)){
-            echo "File saved successfully<br />" ;
+            echo "<div id=\"page\"><br /><b style=\"color:green;\">Configuration saved successfully</b></div></body></html>" ;
             
             fclose ($fichier);
+	    die(); //this is to give time to the system to write the config so the fresh one can be loaded
 	    }else{
 	    // error saving
 	    }
@@ -1083,6 +1085,11 @@ Where to play the songs: <br />client -> streams the song to the computer you us
 <select class="field_login" name="song_dev" >
 <option value="client">client</option>
 <option value="server" <?PHP if ($song_dev=="server") echo 'selected=selected';?>>server</option>
+</select><br /><br />
+Enable meeting scheduler<br />yes -> the link for scheduler will be shown in menu <br />no -> the scheduler is disabled <br />
+<select class="field_login" name="scheduler" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$scheduler=="yes") echo 'selected=selected';?>>yes</option>
 </select><br /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
