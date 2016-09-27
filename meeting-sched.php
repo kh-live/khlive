@@ -2,7 +2,8 @@
 include 'db/config.php';
 if (isset($scheduler)){
 	if ($scheduler=='yes'){
-	$db=file('db/sched');
+	chdir(dirname(__FILE__));
+	$db=file('./db/sched');
 		if ($db!=''){
 			foreach($db as $line){
 				$data=explode('**', $line);
