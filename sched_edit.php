@@ -23,14 +23,14 @@ $congregation=$_POST['congregation']; //check
 
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
-$info=time().'**info**schedule meeting edit successful**'.$cong_name."**\n";
+$info=time().'**info**schedule meeting edit successful**'.$congregation."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
 	}
 }else{
 echo $adding;
-$info=time().'**error**schedule meeting edit add fail**'.$cong_name."**\n";
+$info=time().'**error**schedule meeting edit add fail**'.$congregation."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -38,7 +38,7 @@ $info=time().'**error**schedule meeting edit add fail**'.$cong_name."**\n";
 }
 }else{
 echo $deleting;
-$info=time().'**error**schedule meeting edit del fail**'.$cong_confirmed."**\n";
+$info=time().'**error**schedule meeting edit del fail**'.$congregation."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
