@@ -9,7 +9,7 @@ exit();
 <div id="page">
 <h2>Scheduler</h2>
 Please note that no checks are done to make sure the schedule is consistent. Make sure the stop time is after the start time and that no meeting from an other congregation overlaps.<br /><br />
-<b>IMPORTANT : For now the scheduler is not active. Dont rely on it. This will be fixed in a further update.</b><br /><br />
+<b>IMPORTANT : For now the scheduler is in beta. There is no checks done to make sure the internal clock is synchronised yet! Dont rely on it. This will be fixed in a further update.</b><br /><br />
 <a href="./sched_add">Add a new schedulded meeting</a><br /><br />
 <table>
 <?PHP
