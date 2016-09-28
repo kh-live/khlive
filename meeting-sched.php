@@ -128,7 +128,7 @@ if (isset($scheduler)){
 						}else{
 							$info=time().'**error**schedule meeting start failed : meeting stat : '.$_SESSION['meeting_status'].' - test meeting stat : '.$_SESSION['test_meeting_status'].'**'.$cong."**\n";
 							$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
-							f(fputs($file,$info)){
+							if(fputs($file,$info)){
 								fclose($file);
 							}
 						}
