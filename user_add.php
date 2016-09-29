@@ -96,7 +96,7 @@ At least 8 characters. Tip : use a sentence!<br />
 <?PHP
 if ($auto_khlive=='yes' OR $server_beta=='master'){
 //$context = stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
-$ch = curl_init();
+//$ch = curl_init();
 	if ($server_beta=='master'){
 		$url="";
 		$db=file("db/servers");
@@ -107,19 +107,21 @@ $ch = curl_init();
 			}
 		}
 		if ($url==""){
-		curl_setopt($ch, CURLOPT_URL, 'http://impossible.kh-live.co.za/time.php');
-		//$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php',false,$context);
+		//curl_setopt($ch, CURLOPT_URL, 'http://impossible.kh-live.co.za/time.php');
+		$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php');
 		echo 'Could not find your congregations server...';
 		}else{
-		curl_setopt($ch, CURLOPT_URL, 'http://'.$url.'/kh-live/time.php');
+		//curl_setopt($ch, CURLOPT_URL, 'http://'.$url.'/kh-live/time.php');
 		//$test_time=@file_get_contents('http://'.$url.'/kh-live/time.php',false,$context);
+		exec ('wget -q -O - http://'.$url.'/kh-live/time.php', $test_time);
 		}
 	}else{
-		curl_setopt($ch, CURLOPT_URL, 'http://kh-live.co.za/time.php');
+		//curl_setopt($ch, CURLOPT_URL, 'http://kh-live.co.za/time.php');
 		//$test_time=@file_get_contents('http://kh-live.co.za/time.php',false,$context);
+		exec ('wget -q -O - http://kh-live.co.za/time.php', $test_time);
 	}
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$test_time = curl_exec($ch);
+	//curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	//$test_time = curl_exec($ch);
 if ($test_time!==FALSE){
 	if (is_numeric($test_time)){
 		$now=time();
