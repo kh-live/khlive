@@ -40,8 +40,8 @@ $db=file("db/users");
     foreach($db as $line){
         $data=explode ("**",$line);
 	//if there is no date data6 contains a \n
-	if (strlen(@$data[7])>=2){
-	$last_login=date('d/m/Y',$data[7]);
+	if (file_exists('./logins/'.md5($data[0]))){
+	$last_login=date('d/m/Y',implode("", file('./logins/'.md5($data[0]))));
 	}else{
 	$last_login="-";
 	}

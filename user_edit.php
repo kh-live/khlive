@@ -20,7 +20,7 @@ if(isset($_POST['submit'])){
 			$old_cong=$_POST['old_cong'];//sanitize input
 			$type_new=$_POST['type'];//sanitize input
 			$info_new=$_POST['info'];//sanitize input
-			$last_login=" ";
+			$last_login=time();
 			$error="";
 			if ($user_new!=$user_confirmed){
 			$db=file("db/users");
@@ -171,7 +171,58 @@ Leave blank if no change. At least 8 characters. Tip : use a sentence!<br />
 <input class="field_login" type="text" name="pin" value="<?PHP echo $pin;?>">#<br />
 <input type="hidden" name="old_pin" value="<?PHP echo $pin;?>">
 <input type="hidden" name="user_confirmed" value="<?PHP echo $user;?>">
-<a href="./users"><?PHP echo $lng['cancel'];?></a> <input name="submit" id="input_login" type="submit" value="<?PHP echo $lng['save'];?>">
+<a href="./users"><?PHP echo $lng['cancel'];?></a> 
+<?PHP
+if ($auto_khlive=='yes' OR $server_beta=='master'){
+	if ($server_beta=='master'){
+		$url="";
+		$db=file("db/servers");
+		foreach($db as $line){
+			$data=explode ("**",$line);
+			if (strstr($data[3],$_SESSION['cong'])){
+				$url=$data[1];
+			}
+		}
+		if ($url==""){
+		$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php');
+		echo 'Could not find your congregations server...';
+		}else{
+		$test_time=@file_get_contents('http://'.$url.'/kh-live/time.php');
+		}
+	}else{
+		$test_time=@file_get_contents('http://kh-live.co.za/time.php');
+	}
+if ($test_time!==FALSE){
+	if (is_numeric($test_time)){
+		$now=time();
+		$min=$now - 60 ;
+		$max=$now + 60;
+		if (($min <= $test_time) AND ($test_time <= $max)){
+?>
+<input name="submit" id="input_login" type="submit" value="<?PHP echo $lng['save'];?>">
+<?PHP
+		}else{
+			echo '<br /><b style="background-color:orange;color:black;display:block;">Error : The clock is not synchronised!</b><br />';
+		}
+	}else{
+		echo '<br /><b style="background-color:orange;color:black;display:block;">Error : Cant get remote time!</b><br />';
+	}
+}else{
+	echo '<br /><b style="background-color:red;color:white;display:block;">Warning! we cant connect to the remote server.<br />
+	You cant manage users while offline.<br />
+	Check the following : <br />
+	1. Your databundle is not finished<br />
+	2. Reboot the router<br />
+	3. Ask your administrator to reboot the server</b><br />';
+	}
+}else{
+?>
+<input name="submit" id="input_login" type="submit" value="<?PHP echo $lng['save'];?>"><br /> 
+<b style="color:red">Warning! The changes are not synchronised with kh-live.co.za!</b><br />
+If this is unexpected change the Auto config kh-live.co.za setting on configuration page.<br />
+<?PHP
+}
+?>
 </form>
 </div>
 <?PHP

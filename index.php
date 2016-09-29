@@ -6,6 +6,9 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+if (!is_dir('./logins')){
+mkdir('./logins', 0755);
+}
 include "db/config.php";
 if ($server_beta==true){
 error_reporting(E_ALL);
@@ -121,7 +124,11 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 			fclose($file);
 			}
 	
-		$file_content='';
+	$file=fopen('./logins/'.md5($_SESSION['user']),'w');
+	fputs($file,time());
+	fclose($file);
+	
+		/*$file_content='';
 	foreach($db as $line2){
         $data2=explode ("**",$line2);
 		if (strtoupper($data2[0])==strtoupper($user)){
@@ -136,7 +143,7 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-		}
+		}*/
 			//sort out when a bad login is logged it is confusing
 
 	}else{
@@ -191,7 +198,7 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			if(fputs($file,$info)){
 			fclose($file);
 			}
-	
+	/*
 	$file_content='';
 	foreach($db as $line2){
         $data2=explode ("**",$line2);
@@ -207,7 +214,10 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-	}		
+	}*/
+	$file=fopen('./logins/'.md5($_SESSION['user']),'w');
+	fputs($file,time());
+	fclose($file);	
 			//sort out when a bad login is logged it is confusing
 
 	}else{
