@@ -1,5 +1,6 @@
 <?PHP
 $gen_version='1.9';
+$max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
 header("HTTP/1.1 404 Not Found");
@@ -947,6 +948,7 @@ ob_start();
         echo '<?PHP
 	/**last change on : '.date("F d Y H:i:s").'**/
 $version=\''.$gen_version.'\';
+$max_song_no=\''.$max_song_no.'\';
 ' ;
 	foreach ($_POST as $key=>$value){
 if ($key!="submit"){

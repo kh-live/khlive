@@ -1,5 +1,4 @@
 <?PHP
-$max_song_no=154;
 if(session_id()==""){session_start();}
 include "db/config.php";
 if (isset($_GET['song_1'])){

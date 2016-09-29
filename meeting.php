@@ -25,8 +25,6 @@ echo '<div id="page">
 <a href="javascript:showdiv('song-small','songs')">>> HIDE</a><br /><br />
 Song 1 : <select id="song1" onchange="javascript:update_song(1,this.value)">
 <?PHP
-//this is the max no of songs. will change when new ones are added
-$max_song_no=154;
 $i=1;
 $tmp="";
 echo '<option value="" >...</option>';

@@ -13,6 +13,4 @@ z_archives/users
 *.old
 z_archives/pfcad.py
 z_archives/WHMDDNS.php
-db/users
-logins/21232f297a57a5a743894a0e4a801fc3
-db/users
+logins/*

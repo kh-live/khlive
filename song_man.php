@@ -1,5 +1,4 @@
 <?PHP
-$max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
 header("HTTP/1.1 404 Not Found");
@@ -79,6 +78,13 @@ xmlhttp2.send();
 <div id="please_wait"><br /><br />Please wait for download to finish...<br /><h3 id="progress_download"></h3></div>
 <div id="page">
 <h2>Manage Songs</h2>
+Select how to manage songs <br />
+<select id="type" onchange="javascript:update_type(this.value)">
+	<option value="">...</option>
+	<option value="filename">file name</option>
+	<option value="song_no">song number</option>
+</select>
+<br /><br />Please note that you should use the orchestral version for your meetings. If both versions are on the server, it will automatically use the orchestral one.<br /><br />
 <?PHP
 if (isset($_GET['type'])){
 	if ($_GET['type']=='filename'){
@@ -87,6 +93,7 @@ Manage by filename
 <table>
 <?PHP
 echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
+$songs_db=array();
  if ($dh = @opendir("./kh-songs")) {
        while (($file = readdir($dh)) !== false) {
            if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
@@ -101,11 +108,15 @@ echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b
 	   }else{
 	    $info.=" B";
 	   }
-                     echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="javascript:show_confirm(\'../kh-songs/'.$file.'\')">Remove</a></td></tr>';
+                     $songs_db[]='<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="javascript:show_confirm(\'../kh-songs/'.$file.'\')">Remove</a></td></tr>';
 
                      }
 		}
 	closedir($dh);
+	}
+	asort($songs_db);
+	foreach($songs_db as $song_l){
+	echo $song_l;
 	}
 ?>
 </table>
@@ -140,16 +151,6 @@ echo '<tr><td><b>Song no</b></td><td><b>piano version (outdated)</b></td><td><b>
 </table>
 <?PHP
 }
-}else{
-?>
-Select how to manage songs <br />
-<select id="type" onchange="javascript:update_type(this.value)">
-	<option value="">...</option>
-	<option value="filename">file name</option>
-	<option value="song_no">song number</option>
-</select>
-<br /><br />Please note that you should use the orchestral version for your meetings. If both versions are on the server, it will automatically use the orchestral one.
-<?PHP
 }
 ?>
 </div>

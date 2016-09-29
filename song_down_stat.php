@@ -1,5 +1,5 @@
 <?PHP
-$max_song_no=154;
+include "db/config.php";
 if (isset($_GET['song_no'])){
 	if (is_numeric($_GET['song_no'])){
 		if ($_GET['song_no']<=$max_song_no AND $_GET['song_no']>=0){
