@@ -231,7 +231,8 @@ include 'meeting-listeners.php';
 				}
 				$_SESSION['meeting_just_stopped']='';
 				$skip=1;
-				echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br /><br /><br />';			
+				echo '<b style="color:green;">The meeting was stopped successfuly!</b><br />
+				Click <a href="./meeting-ajax.php">here</a> if you want to start the meeting again.<br /><br /><br />';			
 				$tmp_results=array();
 				if ($dh = @opendir("./records")) {
 					while (($file = readdir($dh)) !== false) {
@@ -255,7 +256,8 @@ include 'meeting-listeners.php';
 				}else{
 					$info.=" B";
 				}
-				echo 'Right click on the following link to save the latest meeting : <br /><br /><a href="./download.php?file='.$file.'" download>'.$file.'</a><br /><br /> (Size : '.$info.')';
+				echo 'Right click on the following link to save the latest meeting : <br />
+				<br /><a href="./download.php?file='.$file.'" download>'.$file.'</a><br /><br /> (Size : '.$info.')<br /><br />';
 			}
 		}
 		// if the meeting failed to start

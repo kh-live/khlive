@@ -9,7 +9,7 @@ if ($test_time!==FALSE){
 		if (($min <= $test_time) AND ($test_time <= $max)){
 			if ($meeting_processor!='scheduler' AND @$scheduler=='yes'){
 			//we display when the next schedulded meeting is going to take palce
-			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings (automatic start and stop) :<br />';
+			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings for today (automatic start and stop) :<br />';
 			$smeetings='';
 			$db0=file('./db/sched');
 			if ($db0!=''){
