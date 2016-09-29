@@ -198,6 +198,9 @@ if(isset($_POST['submit'])){
 						<form action="" method="post">
 						<input style="width:300px;" name="submit" id="input_login" type="submit" value="Cancel Auto Stop">
 						</form></i>';
+					}elseif( $time_since_bypass <= (10*60*60)){
+					echo '<i style="padding:10px;background-color:yellow;color:black;display:block;">The Auto Stop is bypassed. Dont forget to stop the meeting manually!
+						</form></i>';
 					}
 				}
 			}
