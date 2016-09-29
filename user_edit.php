@@ -174,6 +174,7 @@ Leave blank if no change. At least 8 characters. Tip : use a sentence!<br />
 <a href="./users"><?PHP echo $lng['cancel'];?></a> 
 <?PHP
 if ($auto_khlive=='yes' OR $server_beta=='master'){
+$context = stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 	if ($server_beta=='master'){
 		$url="";
 		$db=file("db/servers");
@@ -184,13 +185,13 @@ if ($auto_khlive=='yes' OR $server_beta=='master'){
 			}
 		}
 		if ($url==""){
-		$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php');
+		$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php',false,$context);
 		echo 'Could not find your congregations server...';
 		}else{
-		$test_time=@file_get_contents('http://'.$url.'/kh-live/time.php');
+		$test_time=@file_get_contents('http://'.$url.'/kh-live/time.php',false,$context);
 		}
 	}else{
-		$test_time=@file_get_contents('http://kh-live.co.za/time.php');
+		$test_time=@file_get_contents('http://kh-live.co.za/time.php',false,$context);
 	}
 if ($test_time!==FALSE){
 	if (is_numeric($test_time)){
