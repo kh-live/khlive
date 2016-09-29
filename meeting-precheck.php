@@ -1,6 +1,7 @@
 <?PHP
 //we check that the internet connection is working and the clock synchronised. We warn if it's not.
-$test_time=@file_get_contents('http://kh-live.co.za/time.php');
+$context = stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
+$test_time=@file_get_contents('http://kh-live.co.za/time.php',false,$context);
 if ($test_time!==FALSE){
 	if (is_numeric($test_time)){
 		$now=time();
