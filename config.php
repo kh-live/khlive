@@ -1,5 +1,5 @@
 <?PHP
-$gen_version='1.8';
+$gen_version='1.9';
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
 header("HTTP/1.1 404 Not Found");
