@@ -111,7 +111,7 @@ unlink($temp_dir.'song_3_'.$_SESSION['cong']);
 		if ($meeting_processor!='scheduler'){
 			echo ' Stopping...<br /><br />
 			<script>
-			setTimeout(function(){ window.location= "./meeting-ajax.php"},15000);
+			setTimeout(function(){ window.location= "./meeting-ajax.php"},20000);
 			</script>';
 		}
 	}
