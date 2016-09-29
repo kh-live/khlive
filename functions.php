@@ -33,9 +33,9 @@ global $auto_khlive;
 			$pwd_hashed=hash("sha512",$salt.$password);
 			$password=$salt.'--'.$pwd_hashed;
 			}
-			$info=$user.'**'.$password.'**'.$name.'**'.$congregation.'**'.$rights.'**'.$pin.'**'.$type."**".$last_login."**".$info."**\n"; //sanitize input
+			$info0=$user.'**'.$password.'**'.$name.'**'.$congregation.'**'.$rights.'**'.$pin.'**'.$type."**".$last_login."**".$info."**\n"; //sanitize input
 			$file=fopen('./db/users','a');
-			if(fputs($file,$info)){
+			if(fputs($file,$info0)){
 			fclose($file);
 			}else{
 			$error='ko';
