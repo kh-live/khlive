@@ -254,6 +254,33 @@ function counter (i){
 </script>
 <div id="page">
 <?PHP echo '<h2>'.$lng['listening'].'</h2>'.$lng['listening_text'].'<br /><br />';
+	if (@$scheduler=='yes'){
+			//we display when the next schedulded meeting is going to take palce
+			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings :<br />';
+			$smeetings='';
+			$db0=file('./db/sched');
+			if ($db0!=''){
+			foreach($db0 as $line){
+				$data=explode('**', $line);
+				$cong=$data[0];
+				$day=$data[1];
+				$start_time=explode(':',$data[2]);
+				if ($start_time[1]=='0') $data[2]=$data[2].'0';
+				$stop_time=explode(':',$data[3]);
+				if ($stop_time[1]=='0') $data[3]=$data[3].'0';
+				$enabled=$data[4];
+				if (($enabled=='yes') AND (date('D',time())==$day) AND $_SESSION['cong']==$cong){
+					$smeetings.= '- Meeting from '.$data[2].' to '.$data[3].' </br>';
+				}
+				}
+			}
+			if ($smeetings!=''){
+			echo $smeetings;
+			}else{
+			echo 'No meeting scheduled for today for your congregation';
+			}
+			echo '</i><br />';
+			}
 ?>
 <div id="feeds">
 <?PHP	

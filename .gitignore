@@ -13,3 +13,4 @@ z_archives/users
 *.old
 z_archives/pfcad.py
 z_archives/WHMDDNS.php
+db/users

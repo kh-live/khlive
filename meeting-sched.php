@@ -18,8 +18,8 @@ if (isset($scheduler)){
 					//we need to set all the required variables
 					$_SESSION['cong']=$cong;
 					$_SESSION['user']='automatic_scheduler';
-					$db=file("db/cong");
-					foreach($db as $line){
+					$db1=file("db/cong");
+					foreach($db1 as $line){
 						$data=explode ("**",$line);
 						if ($data[0]==$_SESSION['cong']) {
 							$meeting_type=$data[5];
@@ -44,77 +44,12 @@ if (isset($scheduler)){
 						$_SESSION['test_meeting_status']='down';
 					}
 					$already_meeting='';
-					if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
-						$path=$temp_dir;
-						if (is_dir($path)){
-							if ($dh = @opendir($path)) {
-								while (($file = readdir($dh)) !== false) {
-									if (($file != '.') && ($file != '..')){
-										if (!is_dir($path . $file)){
-											if (strstr($file, "meeting_")){
-												$content=implode("",file($path . $file));
-												if (strstr($content, 'live')) {
-													$already_meeting=$file;
-												}
-											}
-										}
-									}
-								}
-							closedir($dh);
-							}
-						}
-					}else{
-			if (isset($_SESSION['cong_phone_no'])){
-				if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
-					$tmp_sip="";
-					if ($sip_caller_ip!="") $tmp_sip=" ( ".$sip_caller_ip." ) ";
-					//check if the call can be placed first warn if it can't
-					if ($meeting_type=="sip"){
-						exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
-						$tmp_unspec="(Unspecified)";
-					}elseif ($meeting_type=="iax"){
-						exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
-						$tmp_unspec="(null)";
-					}
-					$sip_result=implode(" , ",$sip_result);
-					if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
-						//echo 'Asterisk died. contact your administrator!';
-						$already_meeting='asterisk error';
-					}else{
-						$sip_result2=str_replace(" ", "", $sip_result);
-						if ($sip_caller_ip!=""){
-							if (strstr($sip_result2, $_SESSION['cong_phone_no'].$sip_caller_ip)){
-								/*echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
-								echo '<form action="" method="post">
-								<input name="submit" id="input_login" type="submit" value="Start meeting">
-								</form>';*/
-							}else{
-								//echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
-								$already_meeting='number unreachable';
-							}
-						}else{
-							//as we dont have an ip to compare to, we check that the phone no is unregistered
-							// this breaks when asterisk died
-							//$sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$tmp_unspec
-							//that doesnt work on debian
-							if (!strstr($sip_result2, $_SESSION['cong_phone_no'].$tmp_unspec)){
-								/*echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
-								echo '<form action="" method="post">
-								<input name="submit" id="input_login" type="submit" value="Start meeting">
-								</form>';*/
-							}else{
-								//echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
-								$already_meeting='number unreachable';
-							}
-						}
-					}
-				}
-			}
-					}
+					$meeting_processor='scheduler';
+					$skip=0;
+					include 'meeting-precheck.php';
+					
 					if ($already_meeting==''){
 						if (!strstr($_SESSION['meeting_status'],"live") AND $_SESSION['test_meeting_status']!="live" ){
-							//we need to check that the time is accurate
-					
 							//we include the start file
 							$meeting_processor='scheduler';
 							include 'meeting-start.php';
@@ -123,8 +58,17 @@ if (isset($scheduler)){
 							if(fputs($file,$info)){
 								fclose($file);
 							}
-							//we must move that to dev/shm otherwise we'll loose the info when session is closed
-							$_SESSION['meeting_start_time']=time();
+							//we set when the meeting was started
+							$now=time();
+							$file=fopen($temp_dir.'start_'.$_SESSION['cong'],'w');
+							fputs($file,$now);
+							fclose($file);
+							//we set when it's supposed to stop
+							$duration = (($stop_time[0] - $start_time[0]) * 3600) + (($stop_time[1] - $start_time[1]) * 60);
+							$endtime= $now + $duration;
+							$file=fopen($temp_dir.'stop_'.$_SESSION['cong'],'w');
+							fputs($file,$endtime);
+							fclose($file);
 						}else{
 							$info=time().'**error**schedule meeting start failed : meeting stat : '.$_SESSION['meeting_status'].' - test meeting stat : '.$_SESSION['test_meeting_status'].'**'.$cong."**\n";
 							$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
@@ -168,11 +112,14 @@ if (isset($scheduler)){
 					}else{
 						$_SESSION['test_meeting_status']='down';
 					}
-					
+					$bypass_time=0;
+					if (file_exists($temp_dir.'bypass_'.$_SESSION['cong'])){
+						$bypass_time=implode("",file($temp_dir.'bypass_'.$_SESSION['cong']));
+					}
+					$time_since_bypass= time() - $bypass_time ;
+					if ($time_left <= (5*60) AND $time_since_bypass >= (10*60*60)){					
 					if (strstr($_SESSION['meeting_status'],"live") AND $_SESSION['test_meeting_status']!="live"){
-						//we need to check that the time is accurate
-					
-						//we include the ajax file
+						//we include the stop file
 						$meeting_processor='scheduler';
 						include 'meeting-stop.php';
 						$info=time().'**info**schedule meeting stopped successful**'.$cong."**\n";
@@ -182,6 +129,13 @@ if (isset($scheduler)){
 						}
 					}else{
 						$info=time().'**error**schedule meeting stop failed : meeting stat : '.$_SESSION['meeting_status'].' - test meeting stat : '.$_SESSION['test_meeting_status'].'**'.$cong."**\n";
+						$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+						if(fputs($file,$info)){
+							fclose($file);
+						}
+					}
+					}else{
+						$info=time().'**info**schedule meeting stop bypassed**'.$cong."**\n";
 						$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 						if(fputs($file,$info)){
 							fclose($file);

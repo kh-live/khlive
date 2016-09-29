@@ -49,7 +49,11 @@ unlink($temp_dir.'song_3_'.$_SESSION['cong']);
 			}
 		}
 		//if the start time is not set we default to 2 hours
-		if (!isset($_SESSION['meeting_start_time'])) $_SESSION['meeting_start_time']=time()-7200;
+		if (!file_exists($temp_dir.'start_'.$_SESSION['cong'])){
+		$_SESSION['meeting_start_time']=time()-7200;
+		}else{
+		$_SESSION['meeting_start_time']=implode("",file($temp_dir.'start_'.$_SESSION['cong']));
+		}
 		$meeting_length=$_SESSION['meeting_stop_time'] - $_SESSION['meeting_start_time'];
 		//26 is the no of seconds of recording encode by the server in one second on PI B+
 		if (!isset($encoder_speed)) $encoder_speed=26;

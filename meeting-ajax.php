@@ -121,6 +121,19 @@ if(isset($_POST['submit'])){
 		}
 		exec($asterisk_bin.' -rx "channel redirect '.$kill.' grg-meetme,killpin,1"');
 		echo 'Disconnecting...<br /><br />';
+	}elseif($_POST['submit']=="Cancel Auto Stop"){
+		echo 'Are you sure you want to cancel automatic stop of the meeting ?<br />
+		If you do so, you will have to stop the meeting manually!<br />
+		(the bypass is active for 10 hours)<br />
+		<form action="" method="post">
+		<input name="submit" id="input_login" type="submit" value="No"><input name="submit" id="input_login" type="submit" value="Yes, Cancel it">
+		</form><br /><br />';
+	}elseif($_POST['submit']=="Yes, Cancel it"){
+		echo 'Bypassing...<br /><br />';
+		$now=time();
+		$file=fopen($temp_dir.'bypass_'.$_SESSION['cong'],'w');
+		fputs($file,$now);
+		fclose($file);
 	}
 }elseif(isset($_GET['kill'])){
 	if ($_GET['kill']==1){
@@ -140,8 +153,11 @@ if(isset($_POST['submit'])){
 			}
 			$_SESSION['meeting_just_started']='';
 			echo '<b style="color:green;">The meeting was started successfuly!</b><br />';
-			//we must move that to dev/shm otherwise we'll loose the info when session is closed
-			$_SESSION['meeting_start_time']=time();
+
+			$file=fopen($temp_dir.'start_'.$_SESSION['cong'],'w');
+			fputs($file,time());
+			fclose($file);
+			
 			echo '<script>
 		setTimeout(function(){ window.location= "./meeting-ajax.php"},5000);
 		</script>';
@@ -162,10 +178,29 @@ if(isset($_POST['submit'])){
 	//not allowed to stop the meeting if it was started by the stream.
 	if ($meeting_type!="none"){
 		if (@$_SESSION['test_meeting_status']!="live"){
-			echo 'Use this button to stop the meeting<br /><br />
+			echo 'Use this button to stop the meeting manually<br /><br />
 			<form action="" method="post">
 			<input name="submit" id="input_login" type="submit" value="Stop meeting">
 			</form><br /><br />';
+			//we must add a bypass button in case the meeting is to be stopped automatically but it's not finished yet.
+			if (@$scheduler=='yes'){
+				if (file_exists($temp_dir.'stop_'.$_SESSION['cong'])){
+					$stop_time=implode("",file($temp_dir.'stop_'.$_SESSION['cong']));
+					$time_left= $stop_time - time();
+					$bypass_time=0;
+					if (file_exists($temp_dir.'bypass_'.$_SESSION['cong'])){
+						$bypass_time=implode("",file($temp_dir.'bypass_'.$_SESSION['cong']));
+					}
+					$time_since_bypass= time() - $bypass_time ;
+					if ($time_left <= (5*60) AND $time_since_bypass >= (10*60*60)){
+						echo '<i style="background-color:yellow;color:black;display:block;">NOTE : The meeting will be automatically be stopped in '.$time_left.' sec. <br />
+						Press on the button below to disable automatic stopping :<br />
+						<form action="" method="post">
+						<input name="submit" id="input_login" type="submit" value="Cancel Auto Stop">
+						</form></i>';
+					}
+				}
+			}
 		}else{
 			echo '<b style="color:orange;">This is a test meeting.</b><br />Don\'t forget to stop it using the button on diagnosis page.<br /><br />';
 		}
@@ -233,88 +268,8 @@ include 'meeting-listeners.php';
 			}
 		}
 		//otherwise
-		if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
-			if ($skip==0){
-				echo 'Click on the button bellow to start the meeting.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
-				$already_meeting='';
-				$path=$temp_dir;
-				if (is_dir($path)){
-					if ($dh = @opendir($path)) {
-						while (($file = readdir($dh)) !== false) {
-							if (($file != '.') && ($file != '..')){
-								if (!is_dir($path . $file)){
-									if (strstr($file, "meeting_")){
-										$content=implode("",file($path . $file));
-										if (strstr($content, 'live')) {
-											$already_meeting=$file;
-										}
-									}
-								}
-							}
-						}
-						closedir($dh);
-					}
-				}
-				if ($already_meeting==''){
-					echo '<form action="" method="post">
-					<input name="submit" id="input_login" type="submit" value="Start meeting">
-					</form>';
-				}else{
-					echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting.'</b><br />Terminate that one first before you can start yours.<br />';
-				}
-			}
-		}elseif ($meeting_type=='none'){
-			echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
-		}else{
-			if (isset($_SESSION['cong_phone_no'])){
-				if ($_SESSION['cong_phone_no']!="" AND $meeting_type!="none"){
-					$tmp_sip="";
-					if ($sip_caller_ip!="") $tmp_sip=" ( ".$sip_caller_ip." ) ";
-					//check if the call can be placed first warn if it can't
-					if ($meeting_type=="sip"){
-						exec($asterisk_bin.' -rx "sip show peers"',$sip_result);
-						$tmp_unspec="(Unspecified)";
-					}elseif ($meeting_type=="iax"){
-						exec($asterisk_bin.' -rx "iax2 show peers"',$sip_result);
-						$tmp_unspec="(null)";
-					}
-					$sip_result=implode(" , ",$sip_result);
-					if (strstr($sip_result, "does /var/run/asterisk/asterisk.ctl exist?")){
-						echo 'Asterisk died. contact your administrator!';
-					}else{
-						echo 'Click on the button bellow to start the meeting.<br />
-						We\'ll try to connect to the following number : <b>'.$_SESSION['cong_phone_no'].'</b>'.$tmp_sip.'<br />';
-						//find a way to avoid having all the spaces in the strstr
-						$sip_result2=str_replace(" ", "", $sip_result);
-						if ($sip_caller_ip!=""){
-							//$sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$sip_caller_ip
-							//that doesnt work on debian or maybe it does to be tested
-							if (strstr($sip_result2, $_SESSION['cong_phone_no'].$sip_caller_ip)){
-								echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
-								echo '<form action="" method="post">
-								<input name="submit" id="input_login" type="submit" value="Start meeting">
-								</form>';
-							}else{
-								echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
-							}
-						}else{
-							//as we dont have an ip to compare to, we check that the phone no is unregistered
-							// this breaks when asterisk died
-							//$sip_result2, $_SESSION['cong_phone_no']."/".$_SESSION['cong_phone_no'].$tmp_unspec
-							//that doesnt work on debian
-							if (!strstr($sip_result2, $_SESSION['cong_phone_no'].$tmp_unspec)){
-								echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
-								echo '<form action="" method="post">
-								<input name="submit" id="input_login" type="submit" value="Start meeting">
-								</form>';
-							}else{
-								echo '<b style="color:red;">The number seems to be unreachable! The meeting won\'t start!<br />Please make sure that the Softphone (jitsy) is started OR restart the computer.</b><br /><br />';
-							}
-						}
-					}
-				}
-			}
-		}
+		$meeting_processor='ajax';
+		include 'meeting-precheck.php';
 	}
 }
 }
