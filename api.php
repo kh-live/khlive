@@ -49,7 +49,7 @@ $query=explode("**", $decrypted);
 		$string=$new_ip."@@@ok";
 		}
 		//we log that the ip has been updated
-		$info=time().'**info**ip updated**'.$server_name.'@'.$new_ip."**\n";
+		$info=time().'**info**ip updated**'.$server_name.'@'.$new_ip."--".$string."--".$api_key."**\n";
 		}else{
 		$string=$new_ip."@@@ko";
 		$info=time().'**error**ip update colision**'.$server_name.'@'.$new_ip."**\n";
