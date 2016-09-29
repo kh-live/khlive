@@ -70,14 +70,14 @@ if (isset($scheduler)){
 							fputs($file,$endtime);
 							fclose($file);
 						}else{
-							$info=time().'**error**schedule meeting start failed : meeting stat : '.$_SESSION['meeting_status'].' - test meeting stat : '.$_SESSION['test_meeting_status'].'**'.$cong."**\n";
+							$info=time().'**info**schedule meeting start skipped : meeting stat : '.$_SESSION['meeting_status'].' - test meeting stat : '.$_SESSION['test_meeting_status'].'**'.$cong."**\n";
 							$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 							if(fputs($file,$info)){
 								fclose($file);
 							}
 						}
 					}else{
-						$info=time().'**error**schedule meeting launch failed - '.$already_meeting.'**'.$cong."**\n";
+						$info=time().'**error**schedule meeting start failed - Reason : '.$already_meeting.'**'.$cong."**\n";
 							$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 							if(fputs($file,$info)){
 								fclose($file);

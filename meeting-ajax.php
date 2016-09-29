@@ -193,10 +193,10 @@ if(isset($_POST['submit'])){
 					}
 					$time_since_bypass= time() - $bypass_time ;
 					if ($time_left <= (5*60) AND $time_since_bypass >= (10*60*60)){
-						echo '<i style="background-color:yellow;color:black;display:block;">NOTE : The meeting will be automatically be stopped in '.$time_left.' sec. <br />
+						echo '<i style="padding:10px;background-color:yellow;color:black;display:block;">NOTE : The meeting will be automatically be stopped in '.$time_left.' sec. <br />
 						Press on the button below to disable automatic stopping :<br />
 						<form action="" method="post">
-						<input name="submit" id="input_login" type="submit" value="Cancel Auto Stop">
+						<input style="width:300px;" name="submit" id="input_login" type="submit" value="Cancel Auto Stop">
 						</form></i>';
 					}
 				}
