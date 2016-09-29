@@ -192,7 +192,7 @@ if(isset($_POST['submit'])){
 						$bypass_time=implode("",file($temp_dir.'bypass_'.$_SESSION['cong']));
 					}
 					$time_since_bypass= time() - $bypass_time ;
-					if ($time_left <= (5*60) AND $time_since_bypass >= (10*60*60)){
+					if ($time_left >= 0; $time_left <= (5*60) AND $time_since_bypass >= (10*60*60)){
 						echo '<i style="padding:10px;background-color:yellow;color:black;display:block;">NOTE : The meeting will be automatically be stopped in '.$time_left.' sec. <br />
 						Press on the button below to disable automatic stopping :<br /><br />
 						<form action="" method="post">
