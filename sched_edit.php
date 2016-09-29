@@ -78,7 +78,7 @@ if ($_SESSION['type']=='root'){
 $db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
-	echo '<option';
+	echo '<option ';
 	if ($data[0]==$cong_selected) echo ' selected="selected" ';
 		echo 'value="'.$data[0].'">'.$data[0].'</option>';
 	}
