@@ -321,6 +321,14 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./user_edit.php");
 	}elseif($page=="download"){
 	include ("./software.php");
+	}elseif($page=="infos"){
+	include ("./infos.php");
+	}elseif($page=="info_add"){
+	include ("./info_add.php");
+	}elseif($page=="info_delete"){
+	include ("./info_delete.php");
+	}elseif($page=="info_edit"){
+	include ("./info_edit.php");
 	}
 	}
 //manger links only
@@ -350,7 +358,30 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	}elseif($page=="video"){
 	include ("./videolib.php");
 	}
-	
-include ("./footer.php");
+?>
+<script type="text/javascript">
+function hideMenu(){
+if (document.getElementById("menu").style.display!= "block"){
+document.getElementById("menu").style.display="block";
+document.getElementById("hide_menu").innerHTML="&#10006;";
+	if(document.getElementById("homepage")!== null){
+	document.getElementById("homepage").style.marginLeft="195px";
+	}else{
+	document.getElementById("page").style.marginLeft="195px";
+	}
+}else{
+document.getElementById("menu").style.display="none";
+document.getElementById("hide_menu").innerHTML="&#9776;";
+	if(document.getElementById("homepage")!== null){
+	document.getElementById("homepage").style.marginLeft="5px";
+	}else{
+	document.getElementById("page").style.marginLeft="5px";
+	}
+}
+}
+</script>
+</body>
+</html>
+<?PHP
 }
 ?>

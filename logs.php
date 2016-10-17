@@ -29,7 +29,7 @@ function update_date(url){
   window.location="./logs?date=" + url;
 }
 </script>
-<h2><?PHP echo $lng['logs'].' :';?></h2>
+<h2><?PHP echo $lng['logs']; ?></h2>
 
 <?PHP
 echo 'Date: <select id="date" onchange="javascript:update_date(this.value)">';

@@ -196,7 +196,7 @@ echo '<table><tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td
 	   }
 	   if($go=="ok"){
 	   $tmptmp=explode('?',$_SERVER['REQUEST_URI']); 
-                     echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="//'.$_SERVER['HTTP_HOST'].str_replace('record', '', str_replace('records.php','',$tmptmp[0])).'download.php?file='.$file.'" download>'.$lng['download'].'</a>';
+                     echo'<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="//'.$_SERVER['HTTP_HOST'].str_replace('record', '', str_replace('records.php','',$tmptmp[0])).'download.php?file='.$file.'" >'.$lng['download'].'</a>';
 if (($_SESSION['type']=="admin" OR $_SESSION['type']=="root") AND !strstr($test, ".php")){
 echo '- <a href="javascript:show_confirm(\''.$file.'\')">'.$lng['delete'].'</a>';
 }

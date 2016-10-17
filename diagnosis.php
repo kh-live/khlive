@@ -196,19 +196,6 @@ if ($server_beta=='false'){
 if (is_array(@$reboot)){
 echo '<br /><br />rebooting ...<br /><br />Click <a href="./">here</a> to refresh the page once the server has rebooted.';
 }else{
-echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
-if($server_beta=='stream'){
-echo 'Make sure you have some mp3s in the recordings folder<br /><br />';
-}
-echo '<form action="" method="post">';
-if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meeting_status'],"down")){
-	echo '<input name="submit" type="submit" value="Start test">';
-	}elseif (strstr($_SESSION['test_meeting_status'],"live")){
-	echo '<input name="submit" type="submit" value="Stop test">';
-	}else{
-	echo '<i>There is a meeting right now. You can\'t use the test meeting while there is a real meeting.</i>';
-	}
-	echo '</form>';
 	//we dont do the test when we start the test meeting
 if(!isset($_POST['submit']) AND $server_beta==true){
 	$ping='';
@@ -251,7 +238,7 @@ if(!isset($_POST['submit']) AND $server_beta==true){
 	}else{
 	$sip='<b style="color:red;">disconnected</b><br /><i style="font-size:12px;background-color:grey;">'.$sip_result.'</i>';
 	}*/
-echo '<div id="diags"><h2>Diagnosis</h2>
+echo '<h2>Diagnosis</h2>
 <b>Internet connectivity :</b><br />
 Dns server : '.$dns.'<br />
 <b>Local network connectivity :</b><br />
@@ -265,8 +252,21 @@ echo '<h1>Reboot</h1>
 <form action="" method="post">
 <input name="submit" type="submit" value="Reboot" />
 </form>
-</div>';
+';
 }
+echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
+if($server_beta=='stream'){
+echo 'Make sure you have some mp3s in the recordings folder<br /><br />';
+}
+echo '<form action="" method="post">';
+if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meeting_status'],"down")){
+	echo '<input name="submit" type="submit" value="Start test">';
+	}elseif (strstr($_SESSION['test_meeting_status'],"live")){
+	echo '<input name="submit" type="submit" value="Stop test">';
+	}else{
+	echo '<i>There is a meeting right now. You can\'t use the test meeting while there is a real meeting.</i>';
+	}
+	echo '</form>';
 }
 echo "</div>";
 ?>

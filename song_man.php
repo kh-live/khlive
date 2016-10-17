@@ -84,7 +84,7 @@ Select how to manage songs <br />
 	<option value="filename">file name</option>
 	<option value="song_no">song number</option>
 </select>
-<br /><br />Please note that you should use the orchestral version for your meetings. If both versions are on the server, it will automatically use the orchestral one.<br /><br />
+<br /><br />Please note that you should use the orchestral version for your meetings. If piano version is on the server, it will automatically be used as a fallback in case the orchestral one is not present. <b>BOLD</b> heading indicates which type is selected in configuration.<br /><br />
 <?PHP
 if (isset($_GET['type'])){
 	if ($_GET['type']=='filename'){
@@ -108,6 +108,28 @@ $songs_db=array();
 	   }else{
 	    $info.=" B";
 	   }
+	   /*$a=0;
+	   $file_letters=str_split($file);
+	   foreach($file_letters as $file_letter){
+	   $test=unpack('H*',$file_letter);
+	   $bin = base_convert($test[1], 16 , 2);
+	   //echo $bin.'+';
+	   $a=str_pad($a, 8, 0, STR_PAD_LEFT);
+	   $bin=str_pad($bin, 8, 0, STR_PAD_LEFT);
+	   $c= ~($a & $bin);
+	   $a=$c;
+	   }
+	   
+	   //$pad=9-strlen($a);
+	   //echo $pad;
+	   //while($pad>0){
+	   //$a='0'.$a;
+	   //$pad=$pad-1;
+	   //}
+	   $b=substr($a,0,4);
+	   $c=substr($a,4,4);
+	   $d=base_convert($b, 2 , 16).base_convert($c, 2 , 16);
+	   */
                      $songs_db[]='<tr><td>'.$file.'</td><td>'.$info.'</td><td><a href="javascript:show_confirm(\'../kh-songs/'.$file.'\')">Remove</a></td></tr>';
 
                      }
@@ -126,7 +148,23 @@ $songs_db=array();
 Manage by song no
 <table>
 <?PHP
-echo '<tr><td><b>Song no</b></td><td><b>piano version (outdated)</b></td><td><b>orchestral</b></td></tr>';
+echo '<tr><td>Song no</td><td>piano version (outdated)</td><td>';
+	if ($song_type=='normal'){
+	echo '<b>orchestral (until 31.12.2016)</b></td><td>';
+	}else{
+	echo 'orchestral (until 31.12.2016)</td><td>';
+	}
+	if ($song_type=='joy'){
+	echo '<b>joyfully (from 01.12.2016)</b></td><td>';
+	}else{
+	echo 'joyfully (from 01.12.2016)</td><td>';
+	}
+	if ($song_type=='vid'){
+	echo '<b>music video (from 01.12.2016)</b></td>';
+	}else{
+	echo 'music video (from 01.12.2016)</td>';
+	}
+	echo '</tr>';
        for ($i=1 ; $i<=$max_song_no; $i++) {
        $song_no=$i;
        if ($i<=135){
@@ -135,16 +173,24 @@ echo '<tr><td><b>Song no</b></td><td><b>piano version (outdated)</b></td><td><b>
        $info0='';
        $info1='<a href="javascript:downloadToServer('.$i.', \'piano\')">download to server</a>';
        $info2='<a href="javascript:downloadToServer('.$i.', \'orchestral\')">download to server</a>';
+       $info3='<a href="javascript:downloadToServer('.$i.', \'joy\')">download to server</a>';
       
       if (file_exists('./kh-songs/iasn_E_'.$song_no.'.m4a')) $info0='<b style="color:green;" > m4a </b>';
 	if (file_exists('./kh-songs/iasn_E_'.$song_no.'.mp3')) $info0.='<b style="color:green;" > mp3 </b>';
 	if ($info0!='') $info1=$info0;
        if (file_exists('./kh-songs/iasnm_E_'.$song_no.'.mp3')) $info2='<b style="color:green;" >mp3</b>';
-                     echo'<tr><td>'.$song_no.'</td><td>'.$info1.'</td><td>'.$info2.'</td></tr>';
+       if (file_exists('./kh-songs/sjjm_E_'.$song_no.'.mp3')) $info3='<b style="color:green;" >mp3</b>';
+                     echo'<tr><td>'.$song_no.'</td><td>'.$info1.'</td><td>'.$info2.'</td><td>'.$info3.'</td><td>n/a</td></tr>';
+	}elseif ($i<=151){
+	$info2='<a href="javascript:downloadToServer('.$i.', \'new\')">download to server</a>';
+	$info3='<a href="javascript:downloadToServer('.$i.', \'joy\')">download to server</a>';
+	if (file_exists('./kh-songs/snnw_E_'.$song_no.'.mp3')) $info2='<b style="color:green;" >mp3</b>';
+	 if (file_exists('./kh-songs/sjjm_E_'.$song_no.'.mp3')) $info3='<b style="color:green;" >mp3</b>';
+	echo'<tr><td>'.$song_no.'</td><td>n/a</td><td>'.$info2.'</td><td>'.$info3.'</td><td>n/a</td></tr>';
 	}else{
 	$info2='<a href="javascript:downloadToServer('.$i.', \'new\')">download to server</a>';
 	if (file_exists('./kh-songs/snnw_E_'.$song_no.'.mp3')) $info2='<b style="color:green;" >mp3</b>';
-	echo'<tr><td>'.$song_no.'</td><td>n/a</td><td>'.$info2.'</td></tr>';
+	echo'<tr><td>'.$song_no.'</td><td>n/a</td><td>'.$info2.'</td><td>n/a</td><td>n/a</td></tr>';
 	}
 	}
 ?>

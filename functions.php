@@ -643,4 +643,39 @@ if ($db!=''){
 			}
 }
 }
+function info_add($congregation, $infos, $link, $enable){
+$file_content=$congregation.'**'.$infos.'**'.$link.'**'.$enable."**\n";
+$file=fopen('db/infos','a');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			return 'ok';
+			}else{
+			return 'error saving db/infos while add';
+			}
+}
+function info_del($id){
+$db=file("db/infos");
+if ($db!=''){
+			$file_content="";
+			$i=0;
+	foreach($db as $line){
+		if ($i!=$id){
+		$file_content.=$line;
+		}
+		$i++;
+	}
+			$file=fopen('db/infos','w');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			return 'ok';
+			}else{
+			//when we delete the last line in the file, fputs will give an error but it will still work....
+			if ($file_content==''){
+			return 'ok';
+			}else{
+			return 'error saving db/infos while delete';
+			}
+			}
+}
+}
 ?>

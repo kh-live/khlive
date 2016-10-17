@@ -28,7 +28,7 @@ function update_cong(url){
   window.location="./report?cong=" + url;
 }
 </script>
-<h2><?PHP echo $lng['report'].' : '.$selected_cong;?></h2>
+<h2><?PHP echo $lng['report']; ?></h2>
 <?PHP 
 if (strstr($_SESSION['meeting_status'],"live")){
 echo 'There is a meeting right now. You can not view the report while the meeting is on. Come back after the meeting.';

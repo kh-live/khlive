@@ -7,7 +7,7 @@ exit();
 }
 ?>
 <div id="page">
-<h2><?PHP echo $lng['download'];?></h2>
+<h2>File Transfer</h2>
 <table>
 <?PHP
 echo '<tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b>'.$lng['actions'].'</b></td></tr>';

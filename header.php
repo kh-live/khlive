@@ -25,9 +25,7 @@ if(strstr($_SESSION['meeting_status'],"live") OR $server_beta=="true" ){// for t
 ?>
 </head>
 <body>
-<div id="lines"></div>
-<div id="title3">KH</div><div id="title4">Live!</div><div id="title_mobile2">mobile</div>
-<div id="logout"><a href="./logout"><?PHP echo $lng['logout'];?></a></div>
+<div id="title3">KH</div><div id="title4">Live!</div>
 <div id="live">
 <?PHP
 //we dont need to check if the server is live. If the page is displayed => the server is live.
@@ -36,39 +34,73 @@ $_SESSION['server_status']="ok";
 	echo '<u>'.$version.'</u>';
 ?>
 </div>
+
+<div id="hide_menu" onclick="javascript:hideMenu()">&#9776;</div>
 <div id="menu"><a href="./login"><?PHP echo $lng['home'];?></a>
  <?PHP
  if ($_SESSION['type']=="user"){
- echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a>';
-if ($server_beta!="master") echo ' - <a href="./video">Videos</a>';
+ echo '<a href="./listening">'.$lng['listening'].'</a>
+ <a href="./record">'.$lng['recordings'].'</a>';
+if ($server_beta!="master") echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="manager" AND $server_beta!="master"){
+
+echo '<a href="./meeting">'.$lng['meeting'].'</a>
+<a href="./record">'.$lng['recordings'].'</a>
+<a href="./report">'.$lng['report'].'</a>';
 	if(@$scheduler=='yes'){
-	echo '- <a href="./scheduler">Scheduler</a>';
+	echo '<a href="./scheduler">Scheduler</a>';
 	}
-echo ' - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./video">Videos</a> - <a href="./report">'.$lng['report'].'</a>';
+echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
-echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a>';
+echo '<a href="./diagnosis">Diagnosis</a>
+<a href="./download">'.$lng['file_transfer'].'</a>
+<a href="./listening">'.$lng['listening'].'</a>
+<a href="./meeting">'.$lng['meeting'].'</a>';
+if ($server_beta!="master") {
+echo '<a href="./infos">Notice Board</a>';
+}
+echo '<a href="./record">'.$lng['recordings'].'</a>
+<a href="./report">'.$lng['report'].'</a>
+';
 if ($server_beta!="master") {
 	if(@$scheduler=='yes'){
-	echo '- <a href="./scheduler">Scheduler</a>';
+	echo '<a href="./scheduler">Scheduler</a>';
 	}
-echo ' - <a href="./download">'.$lng['file_transfer'].'</a>  - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./report">'.$lng['report'].'</a> - <a href="./diagnosis">Diagnosis</a>';
+echo '<a href="./users">'.$lng['users'].'</a>
+<a href="./video">Videos</a>
+';
 }
 }
 if ($_SESSION['type']=="root"){
-echo ' - <a href="./listening">'.$lng['listening'].'</a> - <a href="./record">'.$lng['recordings'].'</a> - <a href="./users">'.$lng['users'].'</a> - <a href="./congregations">'.$lng['congregations'].'</a> - <a href="./logs">'.$lng['logs'].'</a> - <a href="./configure">Configuration</a>';
+echo '<a href="./configure">Configuration</a>
+<a href="./congregations">'.$lng['congregations'].'</a>
+<a href="./diagnosis">Diagnosis</a>
+<a href="./download">'.$lng['file_transfer'].'</a>
+<a href="./listening">'.$lng['listening'].'</a>
+<a href="./logs">'.$lng['logs'].'</a>
+<a href="./song_man">Manage Songs</a>
+<a href="./meeting">'.$lng['meeting'].'</a>';
+if ($server_beta!="master") {
+echo '<a href="./infos">Notice Board</a>';
+}
+echo '<a href="./record">'.$lng['recordings'].'</a>
+<a href="./report">'.$lng['report'].'</a>
+';
 if ($server_beta!="master") {
 	if(@$scheduler=='yes'){
-	echo '- <a href="./scheduler">Scheduler</a>';
+	echo '<a href="./scheduler">Scheduler</a>';
 	}
-echo ' - <a href="./song_man">Manage Songs</a> - <a href="./download">'.$lng['file_transfer'].'</a> - <a href="./video">Videos</a> - <a href="./meeting">'.$lng['meeting'].'</a> - <a href="./diagnosis">Diagnosis</a> - <a href="./report">'.$lng['report'].'</a>';
+echo '
+<a href="./users">'.$lng['users'].'</a>
+<a href="./video">Videos</a>
+';
 }else{
-echo '  - <a href="./servers">Servers</a>';
+echo ' <a href="./servers">Servers</a>';
 }
 }
 ?>
+<a  id="logout" href="./logout"><?PHP echo $lng['logout'];?></a>
 </div>
-
 

@@ -1,5 +1,6 @@
 <?PHP
-$gen_version='1.9';
+$tmp_skip='no';
+$gen_version='2.0';
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -967,12 +968,13 @@ $fichier = fopen('./db/config.php', 'w');
             echo "<div id=\"page\"><br /><b style=\"color:green;\">Configuration saved successfully</b></div></body></html>" ;
             
             fclose ($fichier);
-	    die(); //this is to give time to the system to write the config so the fresh one can be loaded
+	    $tmp_skip='yes'; //this is to give time to the system to write the config so the fresh one can be loaded
 	    }else{
 	    // error saving
 	    }
 	}
 }
+if ($tmp_skip=='no'){
 //db/streams is not regenerated...
 include "db/config.php";
 ?>
@@ -992,6 +994,8 @@ else
 <div id="page">
 <h2>Configuration</h2>
 <form action="./configure" method="post">
+<div class="subgroup" onclick="javascript:toogleDiv(1)">General</div>
+<div class="subgroups" id="subgroup1">
 Server state :<br />enable testing functions - the meeting is faked live, all errors are displayed,the listening page doesnt refresh<br />
 <select class="field_login" name="server_beta" >
 <option value="false" <?PHP if ($server_beta=="false") echo 'selected=selected';?>>Production (voip enabled)</option>
@@ -1003,14 +1007,6 @@ Server_in : <br />adress to test if the server is live - localhost used for : ic
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
 server_out : <br />Server name (must be the same as set on kh-live.co.za)<br />
 <input class="field_login" type="text" name="server_out" value="<?PHP echo $server_out;?>" /><br />
-mooo.com address : <br />
-<input class="field_login" type="text" name="moo_adr" value="<?PHP echo @$moo_adr;?>" /><br />
-moo_key : <br />api key for link up with mooo.com server<br />
-<input class="field_login" type="text" name="moo_key" value="<?PHP echo @$moo_key;?>" /><br />
-api_key : <br />api key for link up with main server<br />
-<input class="field_login" type="text" name="api_key" value="<?PHP echo @$api_key;?>" /><br />
-master_key : <br />key for ip synch with main server and pwd for icecast admin<br />
-<input class="field_login" type="text" name="master_key" value="<?PHP echo @$master_key;?>" /><br />
 web_server_root : <br />root for webserver with trailing /<br />
 <input class="field_login" type="text" name="web_server_root" value="<?PHP echo $web_server_root;?>" /><br />
 temp_dir : <br />temp directory /dev/shm with trailing / <br />
@@ -1021,7 +1017,7 @@ port :<br />icecast port <br />
 <input class="field_login" type="text" name="port" value="<?PHP echo $port;?>" /><br />
 timer : <br />used to reload  meeting page<br />
 <input class="field_login" type="text" name="timer" value="<?PHP echo $timer;?>" /><br />
-timer_listen :<br />istening timer <br />
+timer_listen :<br />listening timer <br />
 <input class="field_login" type="text" name="timer_listen" value="<?PHP echo $timer_listen;?>" /><br />
 asterisk_bin : <br />asterisk binary path + file_name<br />
 <input class="field_login" type="text" name="asterisk_bin" value="<?PHP echo $asterisk_bin;?>" /><br />
@@ -1038,20 +1034,6 @@ $ices_bin="/usr/bin/ices2";
 }
 ?>
 <input class="field_login" type="text" name="ices_bin" value="<?PHP echo $ices_bin;?>" /><br />
-test_url : <br />test url ex kh.sinux.ch check if nslookup works<br />
-<input class="field_login" type="text" name="test_url" value="<?PHP echo $test_url;?>" /><br />
-test_ip :<br />local ip to ping<br />
-<input class="field_login" type="text" name="test_ip" value="<?PHP echo $test_ip;?>" /><br />
-Audio device :<br />select which input device to use on direct input<br />
-<select class="field_login" name="server_audio" >
-<option value="0">None</option>
-<option value="alsa" <?PHP if ($server_audio=="alsa") echo 'selected=selected';?>>Alsa</option>
-<option value="dsp" <?PHP if ($server_audio=="dsp") echo 'selected=selected';?>>Oss (/dev/dsp)</option>
-</select><br />
-Direct input hw :<br />hardware for input (default)<br />
-<input class="field_login" type="text" name="alsa_in" value="<?PHP echo @$alsa_in;?>" /><br />
-Direct output hw :<br />hardware for output (default)<br />
-<input class="field_login" type="text" name="alsa_out" value="<?PHP echo @$alsa_out;?>" /><br />
 Auto config ppp0 :<br />keep alive ppp0 by sending ifup every 5min<br />
 <select class="field_login" name="auto_ppp" >
 <option value="no">No</option>
@@ -1067,16 +1049,49 @@ Auto config cron :<br />update khlive cron file every 5min<br />
 <option value="yes">Yes</option>
 <option value="no" <?PHP if ($auto_cron=="no") echo 'selected=selected';?>>No</option>
 </select><br />
+Enable meeting scheduler<br />yes -> the link for scheduler will be shown in menu <br />no -> the scheduler is disabled <br />
+<select class="field_login" name="scheduler" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$scheduler=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+</div>
+
+<div class="subgroup" onclick="javascript:toogleDiv(2)">FreeDNS</div>
+<div class="subgroups" id="subgroup2">
 Auto config freedns :<br />update ip address at freedns every 5min<br />
 <select class="field_login" name="auto_dns" >
 <option value="yes">Yes</option>
 <option value="no" <?PHP if ($auto_dns=="no") echo 'selected=selected';?>>No</option>
 </select><br />
+mooo.com address : <br />
+<input class="field_login" type="text" name="moo_adr" value="<?PHP echo @$moo_adr;?>" /><br />
+moo_key : <br />api key for link up with mooo.com server<br />
+<input class="field_login" type="text" name="moo_key" value="<?PHP echo @$moo_key;?>" /><br />
+</div>
+
+<div class="subgroup" onclick="javascript:toogleDiv(3)">khlive.co.za</div>
+<div class="subgroups" id="subgroup3">
 Auto config kh-live.co.za :<br />update ip address at kh-live.co.za every 5min<br />and linkup users changes with kh-live.co.za<br />
 <select class="field_login" name="auto_khlive" >
 <option value="yes">Yes</option>
 <option value="no" <?PHP if ($auto_khlive=="no") echo 'selected=selected';?>>No</option>
 </select><br />
+api_key : <br />api key for link up with main server<br />
+<input class="field_login" type="text" name="api_key" value="<?PHP echo @$api_key;?>" /><br />
+master_key : <br />key for ip synch with main server and pwd for icecast admin<br />
+<input class="field_login" type="text" name="master_key" value="<?PHP echo @$master_key;?>" /><br />
+</div>
+
+<div class="subgroup" onclick="javascript:toogleDiv(4)">Diagnosis</div>
+<div class="subgroups" id="subgroup4">
+test_url : <br />test url ex kh.sinux.ch check if nslookup works<br />
+<input class="field_login" type="text" name="test_url" value="<?PHP echo $test_url;?>" /><br />
+test_ip :<br />local ip to ping<br />
+<input class="field_login" type="text" name="test_ip" value="<?PHP echo $test_ip;?>" /><br />
+</div>
+
+<div class="subgroup" onclick="javascript:toogleDiv(5)">Audio interface</div>
+<div class="subgroups" id="subgroup5">
 Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)<br />
 <input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />
 <?PHP
@@ -1084,19 +1099,63 @@ if (!isset($song_dev)){
 $song_dev="client";
 }
 ?>
-Where to play the songs: <br />client -> streams the song to the computer you use to manage the meeting.<br />server -> uses server sound card. <br />
+Where to play the songs: <br />client -> streams the song to the computer you use to manage the meeting.<br />server -> uses server sound card. <br />vmix -> plays the song on vmix<br />
 <select class="field_login" name="song_dev" >
 <option value="client">client</option>
 <option value="server" <?PHP if ($song_dev=="server") echo 'selected=selected';?>>server</option>
-</select><br /><br />
-Enable meeting scheduler<br />yes -> the link for scheduler will be shown in menu <br />no -> the scheduler is disabled <br />
-<select class="field_login" name="scheduler" >
+<option value="vmix" <?PHP if ($song_dev=="vmix") echo 'selected=selected';?>>vmix</option>
+</select><br />
+Song type :<br />select which type of song to use<br />
+<select class="field_login" name="song_type" >
+<option value="normal">Orchestral (until 31.12.2016)</option>
+<option value="joy" <?PHP if ($song_type=="joy") echo 'selected=selected';?>>Sing Joyfully (from 01.01.2017)</option>
+<option value="vid" <?PHP if ($song_type=="vid") echo 'selected=selected';?>>Music Video with lyrics (not yet available)</option>
+</select><br />
+Asterisk Audio device :<br />select which input device to use on direct input<br />
+<select class="field_login" name="server_audio" >
+<option value="0">None</option>
+<option value="alsa" <?PHP if ($server_audio=="alsa") echo 'selected=selected';?>>Alsa</option>
+<option value="dsp" <?PHP if ($server_audio=="dsp") echo 'selected=selected';?>>Oss (/dev/dsp)</option>
+</select><br />
+Asterisk Direct input hw :<br />hardware for input (default)<br />
+<input class="field_login" type="text" name="alsa_in" value="<?PHP echo @$alsa_in;?>" /><br />
+Asterisk Direct output hw :<br />hardware for output (default)<br />
+<input class="field_login" type="text" name="alsa_out" value="<?PHP echo @$alsa_out;?>" /><br />
+</div>
+<div class="subgroup" onclick="javascript:toogleDiv(6)">vMix</div>
+<div class="subgroups" id="subgroup6">
+Enable vmix integration<br />yes -> the vmix control panel will be shown on meeting page <br />no -> vmix is disabled <br />
+<select class="field_login" name="vmix" >
 <option value="no">no</option>
-<option value="yes" <?PHP if (@$scheduler=="yes") echo 'selected=selected';?>>yes</option>
-</select><br /><br />
+<option value="yes" <?PHP if (@$vmix=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+vmix server address : <br />this should be the local computer where vmix is running's address (see in vmix->settings->web controller). this is the ip:port . f eg : 192.168.1.18:8088<br />
+<input class="field_login" type="text" name="vmix_url" value="<?PHP echo @$vmix_url;?>" /><br />
+year text path : <br />where is the year text stored on local computer with trailing \ . the year text filename must be : YT-201x-cong_name.jpg. f eg c:\users\admin\documents\<br />
+<input class="field_login" type="text" name="vmix_path" value="<?PHP echo @$vmix_path;?>" /><br />
+music video path : <br />where is the music video with lyrics stored on local computer with trailing \ . f eg c:\users\admin\documents\<br />
+<input class="field_login" type="text" name="vmix_song_path" value="<?PHP echo @$vmix_song_path;?>" /><br />
+Enable vmix autopause<br />yes -> vmix pauses automatically an input that's not active anymore <br />no -> vmix auto pause is disabled <br />
+<select class="field_login" name="vmix_auto_pause" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$vmix_auto_pause=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+</div>
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />
 Use this button to re-generate all the config files from db.<br />
 <input type="submit" value="Over-write config!" onclick="javascript:redoconfig()" />
 </div>
+<script type="text/javascript">
+function toogleDiv(id){
+if (document.getElementById("subgroup" + id).style.display=="block"){
+document.getElementById("subgroup" + id).style.display="";
+}else{
+document.getElementById("subgroup" + id).style.display="block";
+}
+}
+</script>
+<?PHP
+}
+?>
