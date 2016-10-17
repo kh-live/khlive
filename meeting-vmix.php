@@ -22,7 +22,10 @@ if (typeof window.DOMParser != "undefined") {
 } else {
     throw new Error("No XML parser found");
 }
-
+function sleepFor( sleepDuration ){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
+}
 window.onload=vMixGetStart();
 function vMixToggle(){
 if ( document.getElementById("vmix_ctrl").style.marginBottom==''){
@@ -124,6 +127,7 @@ xmlhttp.onreadystatechange=function()
 
    for (i=1; i<=20; i++){
    vMixLibGet(i);
+   sleepFor(50);
    }
 	
    window.setInterval(function(){
