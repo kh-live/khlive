@@ -54,23 +54,23 @@ echo '<a href="./meeting">'.$lng['meeting'].'</a>
 echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
-echo '<a href="./diagnosis">Diagnosis</a>
-<a href="./download">'.$lng['file_transfer'].'</a>
-<a href="./listening">'.$lng['listening'].'</a>
-<a href="./meeting">'.$lng['meeting'].'</a>';
+echo '<a href="./download">'.$lng['file_transfer'].'</a>
+<a href="./listening">'.$lng['listening'].'</a>';
 if ($server_beta!="master") {
+echo '<a href="./meeting">'.$lng['meeting'].'</a>';
 echo '<a href="./infos">Notice Board</a>';
 }
-echo '<a href="./record">'.$lng['recordings'].'</a>
-<a href="./report">'.$lng['report'].'</a>
-';
+echo '<a href="./record">'.$lng['recordings'].'</a>';
 if ($server_beta!="master") {
+echo '<a href="./report">'.$lng['report'].'</a>';
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
 echo '<a href="./users">'.$lng['users'].'</a>
 <a href="./video">Videos</a>
 ';
+}else{
+echo '<a href="./users">'.$lng['users'].'</a>';
 }
 }
 if ($_SESSION['type']=="root"){
@@ -79,16 +79,15 @@ echo '<a href="./configure">Configuration</a>
 <a href="./diagnosis">Diagnosis</a>
 <a href="./download">'.$lng['file_transfer'].'</a>
 <a href="./listening">'.$lng['listening'].'</a>
-<a href="./logs">'.$lng['logs'].'</a>
-<a href="./song_man">Manage Songs</a>
-<a href="./meeting">'.$lng['meeting'].'</a>';
+<a href="./logs">'.$lng['logs'].'</a>';
 if ($server_beta!="master") {
+echo '<a href="./song_man">Manage Songs</a>';
+echo '<a href="./meeting">'.$lng['meeting'].'</a>';
 echo '<a href="./infos">Notice Board</a>';
 }
-echo '<a href="./record">'.$lng['recordings'].'</a>
-<a href="./report">'.$lng['report'].'</a>
-';
+echo '<a href="./record">'.$lng['recordings'].'</a>';
 if ($server_beta!="master") {
+	echo '<a href="./report">'.$lng['report'].'</a>';
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
@@ -97,7 +96,8 @@ echo '
 <a href="./video">Videos</a>
 ';
 }else{
-echo ' <a href="./servers">Servers</a>';
+echo ' <a href="./users">'.$lng['users'].'</a>
+<a href="./servers">Servers</a>';
 }
 }
 ?>
