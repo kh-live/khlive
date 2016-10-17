@@ -12,6 +12,11 @@ unlink($temp_dir.'song_2_'.$_SESSION['cong']);
 if (is_file($temp_dir.'song_3_'.$_SESSION['cong'])){
 unlink($temp_dir.'song_3_'.$_SESSION['cong']);
 }
+for ($i=1; $i<=20; $i++){
+	if (is_file($temp_dir.'vmix_'.$i.'_'.$_SESSION['cong'])){
+	unlink($temp_dir.'vmix_'.$i.'_'.$_SESSION['cong']);
+	}
+}
 	/*this only works if the call was initiated on sip*/
 	if ($meeting_type=="sip"){
 	$client='SIP/'.$_SESSION['cong_phone_no'];

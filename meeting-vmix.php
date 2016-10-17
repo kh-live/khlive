@@ -6,7 +6,7 @@ if (isset($vmix)){
 </div>
 <script type="text/javascript">
 var parseXml;
-
+var lastId=0;
 if (typeof window.DOMParser != "undefined") {
     parseXml = function(xmlStr) {
         return ( new window.DOMParser() ).parseFromString(xmlStr, "text/xml");
@@ -33,6 +33,71 @@ document.getElementById("vmix_ctrl").style.marginBottom="";
 document.getElementById("vmix_title").innerHTML="&uArr; vMix &uArr;";
 }
 }
+function vMixLibSet(id){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+   }
+  }
+var setName=document.getElementById("file"+id).value.replace("C:\\fakepath\\","");
+xmlhttp.open("GET","vmix_lib.php?id="+id+"&file="+setName, true);
+xmlhttp.send();
+}
+function vMixLibGet(id){
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  var xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    if (resp!=""){
+    document.getElementById("vmix_lib").innerHTML+="<div id=\"vMixFile"+id+"\"><input id=\"file"+ id +"\" type=\"text\" value=\""+ resp +"\" disabled=\"disabled\" ><input type=\"submit\" onclick=\"javascript:vMixLoad("+ id +")\" value=\"&#10560; load\" /><input type=\"submit\" onclick=\"javascript:vMixCloseLib("+ id +")\" value=\"&#10006; close\" /></div>";
+    lastId=id;
+    }
+    if(id==20){
+    document.getElementById("vmix_lib").innerHTML+="<div id=\"vMixFile"+ (1+lastId) +"\"> <input id=\"file"+ (1+lastId) +"\" type=\"file\" onchange=\"javascript:vMixPreLoad("+ (1+lastId) +")\" ></div>";
+    }
+   }
+  }
+xmlhttp.open("GET","vmix_lib.php?id="+id, true);
+xmlhttp.send();
+}
+function vMixLibDel(id){
+	if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  var xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  var xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+   }
+  }
+xmlhttp.open("GET","vmix_lib.php?del="+id, true);
+xmlhttp.send();
+}
 function vMixGetStart(){
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -56,8 +121,11 @@ xmlhttp.onreadystatechange=function()
    document.getElementById("vmix_ctrl").innerHTML="connected!";
    }
    document.getElementById("vmix_ctrl").innerHTML="<div id=\"vmix_lib\"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo addslashes($vmix_path); ?></b><br /><br /></div><div id=\"vmix_status\">Loading...</div>";
-document.getElementById("vmix_lib").innerHTML+="<div id=\"vMixFile1\"> <input id=\"file1\" type=\"file\" onchange=\"javascript:vMixPreLoad(1)\"></div>";
-    
+
+   for (i=1; i<=20; i++){
+   vMixLibGet(i);
+   }
+	
    window.setInterval(function(){
   vMixGetStatus();
 }, 5000);
@@ -169,9 +237,11 @@ function vMixPreLoad(id){
     var setName=document.getElementById("file"+id).value.replace("C:\\fakepath\\","");
     document.getElementById("vMixFile"+id).innerHTML="<input id=\"file"+ id +"\" type=\"text\" value=\""+ setName +"\" disabled=\"disabled\" ><input type=\"submit\" onclick=\"javascript:vMixLoad("+ id +")\" value=\"&#10560; load\" /><input type=\"submit\" onclick=\"javascript:vMixCloseLib("+ id +")\" value=\"&#10006; close\" /></div>";
     document.getElementById("vmix_lib").innerHTML+="<div id=\"vMixFile"+ (1+id) +"\"> <input id=\"file"+ (1+id) +"\" type=\"file\" onchange=\"javascript:vMixPreLoad("+ (1+id) +")\" ></div>";
+    vMixLibSet(id);
 }
 function vMixCloseLib(id){
 document.getElementById("vMixFile"+id).innerHTML='';
+vMixLibDel(id);
 }
 function vMixLoad(id){
 var vFile = basename(document.getElementById("file" + id).value);
