@@ -59,7 +59,7 @@ if ($_SESSION['meeting_status']=='live'){
 echo '<a class="home_widget_link" href="./listening"><b>Scheduled meetings :</b><br /> There is a <b>live meeting</b> right now! <b><br /><br />Click here to listen in...</b></a>';
 }elseif ($_SESSION['test_meeting_status']=='live'){
 echo '<a class="home_widget_link" href="./listening"><b>Scheduled meetings :</b><br /> There is a <b style="color:red;">test meeting</b> right now! <b>Click here to listen in...</b></a>';
-}else{
+}elseif ($server_beta!='master'){
 if ($scheduler=='yes'){
 echo '<div class="home_widget"><b>Scheduled meetings :</b><br />';
 if (file_exists("db/sched")){
@@ -77,6 +77,38 @@ $i=0;
 	}
 	$i++;
 	}
+	}
+echo '</div>';
+}
+}else{
+$db='';
+$db1=file("db/servers");
+    foreach($db1 as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$_SESSION['cong'])){
+	$url=$data[1];
+	}
+	}
+if ($url!=""){
+$remote_db=@file_get_contents('http://'.$url.'/kh-live/sched_remote.php');
+	if ($remote_db!==false){
+	$db=explode("\n",$remote_db);
+	}
+}
+if ($db!=''){
+echo '<div class="home_widget"><b>Scheduled meetings :</b><br />';
+$i=0;
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	$tmp=explode(':',$data[2]);
+	if ($tmp[1]=='0') $data[2]=$data[2].'0';
+	$tmp=explode(':',$data[3]);
+	if ($tmp[1]=='0') $data[3]=$data[3].'0';
+	
+	if (($_SESSION['cong']==$data[0] OR $_SESSION['type']!='user')  AND $data[4]=='yes'){
+	echo 'Meeting for '.$data[0].' : '.@$data[1].' ('.@$data[2].' - '.@$data[3].')<br />';
+	}
+	$i++;
 	}
 echo '</div>';
 }

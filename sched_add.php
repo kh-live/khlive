@@ -12,8 +12,8 @@ if(isset($_POST['submit'])){
 		//we obviously need to check the input
 			$congregation=$_POST['congregation']; //check
 			$day=$_POST['day'];
-			$start_time=$_POST['start_time'];
-			$stop_time=$_POST['stop_time'];
+			$start_time=$_POST['start_time_hour'].':'.$_POST['start_time_min'];
+			$stop_time=$_POST['stop_time_hour'].':'.$_POST['stop_time_min'];
 			$enable=$_POST['enable'];
 			
 $adding=sched_add($congregation,$day,$start_time,$stop_time,$enable);
@@ -74,39 +74,52 @@ $db=file("db/cong");
 <option value="Sun">Sunday</option>
 </select><br /><br />
 <b>Start Time</b><br />
-<select name="start_time">
+<select name="start_time_hour">
 <option value="0">...</option>
 <?PHP
 for ($i=0; $i<=23; $i++){
-	for ($j=0; $j<=45; $j+=15){
-	echo '<option value="'.$i.':'.$j.'">'.$i.':'.$j;
-	if ($j==0) echo $j;
-	echo '</option>';
-	}
+	echo '<option value="'.$i.'">'.$i.'</option>';
 }
 ?>
-</select><br /><br />
+</select>h
+<select name="start_time_min">
+<option value="0">...</option>
+<?PHP
+	for ($j=0; $j<=55; $j+=5){
+	echo '<option value="'.$j.'">';
+	if ($j==0) echo $j;
+	if ($j==5) echo '0';
+	echo $j.'</option>';
+	}
+?>
+</select>min<br /><br />
 <b>Stop Time</b><br />
-<select name="stop_time">
+<select name="stop_time_hour">
 <option value="0">...</option>
 <?PHP
 for ($i=0; $i<=23; $i++){
-	for ($j=0; $j<=45; $j+=15){
-	echo '<option value="'.$i.':'.$j.'">'.$i.':'.$j;
-	if ($j==0) echo $j;
-	echo '</option>';
-	}
+	echo '<option value="'.$i.'">'.$i.'</option>';
 }
 ?>
-</select><br /><br />
+</select>h
+<select name="stop_time_min">
+<option value="0">...</option>
+<?PHP
+	for ($j=0; $j<=55; $j+=5){
+	echo '<option value="'.$j.'">';
+	if ($j==0) echo $j;
+	if ($j==5) echo '0';
+	echo $j.'</option>';
+	}
+?>
+</select>min
+<br /><br />
 <b>Enable this meeting</b><br />
 <select name="enable">
 <option value="yes">yes</option>
 <option value="no">no</option>
 </select><br /><br />
-<br />
-<br /><br />
-<input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
+<a href="./scheduler">cancel</a> <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 </div>
 <?PHP } ?>

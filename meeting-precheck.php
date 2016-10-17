@@ -34,6 +34,37 @@ if ($test_time!==FALSE){
 			echo 'No meeting scheduled for today';
 			}
 			echo '</i><br />';
+			//countdown
+				if ($smeetings!=''){
+					$temp_meetings=explode ('</br>', $smeetings);
+					foreach($temp_meetings as $temp_meeting){
+					$temp_cong=explode('</b>',$temp_meeting);
+					
+					$temp_cong2=explode('<b>',$temp_cong[0]);
+						if (@$temp_cong2[1]==$_SESSION['cong']){
+							$temp_start=explode(' to ',$temp_meeting);
+							$temp_start2=explode('from ',$temp_start[0]);
+							$temp_start3=explode(':',$temp_start2[1]);
+							$temp_hour=$temp_start3[0];
+							$temp_min=$temp_start3[1];
+							
+							$today=date('d.m.Y', time());
+							$start_timestamp=strtotime($today." ".$temp_start2[1]);
+							if ($start_timestamp > time()){
+								$time_min_left=((($start_timestamp-time())/60) % 60);
+								$time_hour_left=(($start_timestamp-time())/3600) % 24;
+								if ($time_hour_left == 0 AND $time_min_left == 0) {
+									echo 'Starting...<br />Please wait 60 seconds for the page to refresh.<br /><br />';
+								}else{
+									echo 'Automatically Starting in : ';
+								
+									if ($time_hour_left > 0) echo $time_hour_left.' h and ';
+									if ($time_min_left >= 0) echo $time_min_left.' min<br /><br />';
+								}
+							}
+						}
+					}
+				}
 			}
 		}else{
 			if ($meeting_processor!='scheduler'){

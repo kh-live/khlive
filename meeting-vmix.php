@@ -130,7 +130,7 @@ var timing= (hours < 10 ? "0" + hours : hours) +":"+ (minutes < 10 ? "0" + minut
 	 document.getElementById("vmix_status").innerHTML+="<input style=\"color:red;border-color:red;\" type=\"submit\" value=\"playing\" /><input type=\"submit\" onclick=\"javascript:vMixPause("+ j +")\" value=\"&#9612;&#9612; pause\" /><input type=\"submit\" onclick=\"javascript:vMixStop("+ j +")\" value=\"&#9194; restart\" />";
 	}
 	if (j!=1){
-	document.getElementById("vmix_status").innerHTML+="<input type=\"submit\" onclick=\"javascript:vMixClose("+ j +")\" value=\"&#9167; close\" /> ";
+	document.getElementById("vmix_status").innerHTML+="<input type=\"submit\" onclick=\"javascript:vMixClose("+ j +")\" value=\"&#9167; eject\" /> ";
 	}
     }
        }else if (xmlhttp.readyState==4){
@@ -167,8 +167,11 @@ function basename(path) {
 }
 function vMixPreLoad(id){
     var setName=document.getElementById("file"+id).value.replace("C:\\fakepath\\","");
-    document.getElementById("vMixFile"+id).innerHTML="<input id=\"file"+ id +"\" type=\"text\" value=\""+ setName +"\" disabled=\"disabled\" ><input type=\"submit\" onclick=\"javascript:vMixLoad("+ id +")\" value=\"&#10560; load\" /></div>";
+    document.getElementById("vMixFile"+id).innerHTML="<input id=\"file"+ id +"\" type=\"text\" value=\""+ setName +"\" disabled=\"disabled\" ><input type=\"submit\" onclick=\"javascript:vMixLoad("+ id +")\" value=\"&#10560; load\" /><input type=\"submit\" onclick=\"javascript:vMixCloseLib("+ id +")\" value=\"&#10006; close\" /></div>";
     document.getElementById("vmix_lib").innerHTML+="<div id=\"vMixFile"+ (1+id) +"\"> <input id=\"file"+ (1+id) +"\" type=\"file\" onchange=\"javascript:vMixPreLoad("+ (1+id) +")\" ></div>";
+}
+function vMixCloseLib(id){
+document.getElementById("vMixFile"+id).innerHTML='';
 }
 function vMixLoad(id){
 var vFile = basename(document.getElementById("file" + id).value);

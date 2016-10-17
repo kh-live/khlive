@@ -15,8 +15,8 @@ $deleting=sched_del($id_confirmed);
 if ($deleting=='ok'){
 $congregation=$_POST['congregation']; //check
 			$day=$_POST['day'];
-			$start_time=$_POST['start_time'];
-			$stop_time=$_POST['stop_time'];
+			$start_time=$_POST['start_time_hour'].':'.$_POST['start_time_min'];
+			$stop_time=$_POST['stop_time_hour'].':'.$_POST['stop_time_min'];
 			$enable=$_POST['enable'];
 			
 	$adding=sched_add($congregation,$day,$start_time,$stop_time,$enable);
@@ -59,8 +59,12 @@ $i=0;
 	if ($i==$id) {
 	$cong_selected=$data[0];
 	$day=$data[1];
-	$start_time=$data[2];
-	$stop_time=$data[3];
+	$start_time=explode(':',$data[2]);
+	$start_time_hour=$start_time[0];
+	$start_time_min=$start_time[1];
+	$stop_time=explode(':',$data[3]);
+	$stop_time_hour=$stop_time[0];
+	$stop_time_min=$stop_time[1];
 	$enabled=$data[4];
 	}
 	$i++;
@@ -98,44 +102,61 @@ $db=file("db/cong");
 <option value="Sun" <?PHP if ($day=='Sun') echo ' selected="selected" ';?>>Sunday</option>
 </select><br /><br />
 <b>Start Time</b><br />
-<select name="start_time">
+<select name="start_time_hour">
 <option value="0">...</option>
 <?PHP
 for ($i=0; $i<=23; $i++){
-	for ($j=0; $j<=45; $j+=15){
 	echo '<option ';
-	if ($start_time==$i.':'.$j) echo ' selected="selected" ';
-	echo 'value="'.$i.':'.$j.'">'.$i.':'.$j;
-	if ($j==0) echo $j;
-	echo '</option>';
-	}
+	if ($start_time_hour==$i) echo 'selected="selected" ';
+	echo 'value="'.$i.'">'.$i.'</option>';
 }
 ?>
-</select><br /><br />
+</select>h
+<select name="start_time_min">
+<option value="0">...</option>
+<?PHP
+	for ($j=0; $j<=55; $j+=5){
+	echo '<option ';
+	if ($start_time_min==$j) echo 'selected="selected" ';
+	echo 'value="'.$j.'">';
+	if ($j==0) echo $j;
+	if ($j==5) echo '0';
+	echo $j.'</option>';
+	}
+?>
+</select>min<br /><br />
 <b>Stop Time</b><br />
-<select name="stop_time">
+<select name="stop_time_hour">
 <option value="0">...</option>
 <?PHP
 for ($i=0; $i<=23; $i++){
-	for ($j=0; $j<=45; $j+=15){
 	echo '<option ';
-	if ($stop_time==$i.':'.$j) echo ' selected="selected" ';
-	echo 'value="'.$i.':'.$j.'">'.$i.':'.$j;
-	if ($j==0) echo $j;
-	echo '</option>';
-	}
+	if ($stop_time_hour==$i) echo 'selected="selected" ';
+	echo 'value="'.$i.'">'.$i.'</option>';
 }
 ?>
-</select><br /><br />
+</select>h
+<select name="stop_time_min">
+<option value="0">...</option>
+<?PHP
+	for ($j=0; $j<=55; $j+=5){
+	echo '<option ';
+	if ($stop_time_min==$j) echo 'selected="selected" ';
+	echo 'value="'.$j.'">';
+	if ($j==0) echo $j;
+	if ($j==5) echo '0';
+	echo $j.'</option>';
+	}
+?>
+</select>min<br /><br />
 <b>Enable this meeting</b><br />
 <select name="enable">
 <option value="yes" <?PHP if ($enabled=='yes') echo ' selected="selected" ';?>>yes</option>
 <option value="no" <?PHP if ($enabled=='no') echo ' selected="selected" ';?>>no</option>
-</select><br /><br />
-<br />
+</select>
 <br /><br />
 <input type="hidden" name="id_confirmed" value="<?PHP echo $id;?>">
-<input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
+<a href="./scheduler">cancel</a> <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 </div>
 <?PHP
