@@ -211,6 +211,11 @@ margin-bottom:20px;
 	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
 	height:40px;
 }
+@media all and (max-width: 340px) {
+#title3{
+	color:white;
+}
+}
 #title4 {
 	position:fixed;
 	font-size:20px;
@@ -218,6 +223,11 @@ margin-bottom:20px;
 	top:9px;
 	z-index:103;
 	font-style: italic;
+}
+@media all and (max-width: 430px) {
+#title4{
+	display:none;
+}
 }
 #menu {
 	position:fixed;
@@ -267,6 +277,11 @@ color:red;
 	left:140px;
 	z-index:103;
 }
+@media all and (max-width: 490px) {
+#live{
+	display:none;
+}
+}
 #live u {
 	color:black;
 	text-decoration:none;
@@ -280,6 +295,7 @@ color:red;
 	z-index:100;
 	overflow-y:auto;
 	padding-top:55px;
+	text-align:center;
 }
 #homepage h2, #page > h2:first-of-type{
 	position:fixed;
@@ -313,6 +329,7 @@ color:red;
 	line-height:1.5em;
 	text-decoration:none;
 	color:black;
+	text-align:left;
 }
 .home_widget_link{
 	display:inline-block;
@@ -326,6 +343,7 @@ color:red;
 	line-height:1.5em;
 	text-decoration:none;
 	color:black;
+	text-align:left;
 }
 .home_widget_link:hover{
 transform:scale(1.02);
@@ -415,9 +433,37 @@ background-color:#BBBBBB;
 cursor:pointer;
 border: 1px solid rgba(0, 0, 0, 1);
 }
+.songs{
+	width:310px;
+	display:inline-block;
+	padding-top:20px;
+}
+@media all and (max-width: 800px) {
+#songs{
+	position:relative;
+	z-index:0;
+	padding: 5px;
+	margin-right:0;
+	top:auto;
+	right:auto;
+	width:auto;
+	text-align:center;
+	margin-bottom:20px;
+	margin-top:20px;
+}
+.songs{
+	width:200px;
+	padding:10px;
+}
+#songs a {
+display:none;
+}
+#song-small{
+	display:none;
+}
+}
 #meeting{
 	width:100%;
-	height:500px;
 	border:0px;
 }
 #error_msg{
@@ -478,7 +524,7 @@ padding-bottom:10px;
 	background-size:auto 100px;
 	background-repeat:no-repeat;
 	background-position:0 0;
-	margin-bottom:-370px;
+	margin-bottom:-1000px;
 }
 #vmix_lib, #vmix_status{
 	display:inline-block;
@@ -498,6 +544,19 @@ padding-bottom:10px;
 	height:20px;
 	text-align:center;
 	font-weight:bold;
+}
+@media all and (max-width: 950px) {
+#vmix_title{
+	display:none;
+}
+#vmix_ctrl{
+	position:relative;
+	margin-bottom:0;
+	padding-top:0;
+}
+#vmix_lib, #vmix_status{
+	padding:20px 0;
+}
 }
 @media all and (max-width: 840px) {
 /**********CSS mobile*******/
@@ -572,46 +631,9 @@ padding-bottom:10px;
 #send{
 	float:right;
 }
-#songs{
-	position:absolute;
-	top:100px;
-	right:0px;
-	width:320px;
-	background-color:#CCCCCC;
-	border: 1px solid black;
-	z-index:200;
-	margin-right:-320px;
-	padding: 5px;
-	transition:margin-right 0.3s;
-}
-#songs audio{
-	width:100%;
-}
-#songs a {
-	color:white;
-	text-decoration:none;
-	font-weight:bolder;
-	font-size:16px;
-	float:right;
-}
-#song-small{
-	position:absolute;
-	top:100px;
-	right:10px;
-	width:30px;
-	background-color:#AAAAAA;
-	border: 1px solid black;
-	height:410px;
-	z-index:200;
-	text-align:center;
-}
-#song-small:hover{
-background-color:#BBBBBB;
-cursor:pointer;
-}
+
 #meeting{
 	width:100%;
-	height:500px;
 	border:0px;
 }
 #error_msg{

@@ -10,7 +10,8 @@ $_SESSION['song_3']=file_get_contents($temp_dir.'song_3_'.$_SESSION['cong']);
 }
 ?>
 <div id="songs">
-<a href="javascript:showdiv('song-small','songs')">>> HIDE</a><br /><br />
+<a href="javascript:showdiv('song-small','songs')">>> HIDE</a>
+<div class="songs">
 Song 1 : <select id="song1" onchange="javascript:update_song(1,this.value)">
 <?PHP
 $i=1;
@@ -70,7 +71,7 @@ echo '</audio>';
  }
  }
  ?>
- <br /><br />
+</div><div class="songs">
 Song 2: <select id="song2" onchange="javascript:update_song(2,this.value)">
 <?PHP
 $i=1;
@@ -129,7 +130,7 @@ echo '</audio>';
  echo 'cant play video on client yet. change setting from "client" to "vmix" in config';
  }
  }
- ?><br /><br />
+ ?></div><div class="songs">
  Song 3: <select id="song3" onchange="javascript:update_song(3,this.value)">
 <?PHP
 $i=1;
@@ -156,7 +157,7 @@ echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_
 echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
 }
 if ($song_dev=='server'){
-echo '<br /><br />Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" disabled="disabled" />';
+echo '</div><div class="songs">Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" disabled="disabled" />';
 }
 }else{
 	if ($song_type=='normal'){
@@ -177,7 +178,7 @@ if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$_SESSION['song_3'].".m
 
  }
 ?>
- </audio><br /><br />
+ </audio></div><div class="songs">
 Random songs:
 <audio id="rand_player" controls preload="auto" >
 <?PHP
@@ -212,6 +213,7 @@ echo '</audio>';
  }
  }
  ?>
+ </div>
 </div>
 <div id="song-small" onclick="javascript:showdiv('songs','song-small')">
 <br />S<br />

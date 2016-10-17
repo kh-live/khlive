@@ -9,13 +9,19 @@ exit();
 echo '<div id="page">
 <h2>'.$lng['meeting'].'</h2>';
 ?>
-<iframe id="meeting" src="meeting-ajax.php" >
+<script type="text/javascript">
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
+<iframe id="meeting" src="meeting-ajax.php" scrolling="no" onload="resizeIframe(this)" >
 </iframe>
-</div>
+
 <?PHP
 include 'meeting-songs.php';
 include 'meeting-vmix.php';
 ?>
+</div>
 <script type="text/javascript">
 var showWarning='no';
 window.onbeforeunload = testT;
