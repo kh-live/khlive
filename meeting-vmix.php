@@ -76,6 +76,8 @@ xmlhttp.onreadystatechange=function()
     }
     if(id==20){
     document.getElementById("vmix_lib").innerHTML+="<div id=\"vMixFile"+ (1+lastId) +"\"> <input id=\"file"+ (1+lastId) +"\" type=\"file\" onchange=\"javascript:vMixPreLoad("+ (1+lastId) +")\" ></div>";
+    }else{
+    vMixLibGet(id+1);
     }
    }
   }
@@ -124,11 +126,7 @@ xmlhttp.onreadystatechange=function()
    document.getElementById("vmix_ctrl").innerHTML="connected!";
    }
    document.getElementById("vmix_ctrl").innerHTML="<div id=\"vmix_lib\"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo addslashes($vmix_path); ?></b><br /><br /></div><div id=\"vmix_status\">Loading...</div>";
-
-   for (i=1; i<=20; i++){
-   vMixLibGet(i);
-   sleepFor(50);
-   }
+   vMixLibGet(1);
 	
    window.setInterval(function(){
   vMixGetStatus();
