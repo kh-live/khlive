@@ -43,7 +43,7 @@ if ($_SESSION['type']!="manager") echo 'Your quick login PIN is : <b>'.$_SESSION
 echo '</div>';
 
 if ($_SESSION['type']=="user"){
-echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; button to view the menu.</div>';
+echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; button to view the menu.<br /><br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=user_guide">Click here to view the user guide...</a></div>';
 }else{
 
 $server_version=@file_get_contents('http://kh-live.co.za/version.php');
