@@ -2,7 +2,7 @@
 if (isset($vmix)){
 	if ($vmix=='yes'){
 ?>
-<div id="vmix_title" onclick="javascript:vMixToggle()">&uArr; vMix &uArr;</div><div id="vmix_ctrl">Connecting to vmix...
+<div id="vmix_title" onclick="javascript:vMixToggle()">&uArr; vMix &uArr;</div><div id="vmix_ctrl"><div id="vmix_lib"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo $vmix_lib_path; ?></b><br /><br /></div><div id="vmix_status">Connecting to vmix...</div></div>
 </div>
 <script type="text/javascript">
 var parseXml;
@@ -26,7 +26,10 @@ function sleepFor( sleepDuration ){
     var now = new Date().getTime();
     while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
-window.onload=vMixGetStart();
+window.onload= function(){
+vMixGetStart();
+vMixLibGet(1);
+}
 function vMixToggle(){
 if ( document.getElementById("vmix_ctrl").style.marginBottom==''){
 document.getElementById("vmix_ctrl").style.marginBottom="0";
@@ -120,19 +123,18 @@ xmlhttp.onreadystatechange=function()
     var xml = parseXml(resp);
     var yt = xml.getElementsByTagName("input")[0].textContent;
     if (yt!="<?PHP echo 'YT-'.date('Y',time()).'-'.$_SESSION['cong'];?>.jpg"){
-   document.getElementById("vmix_ctrl").innerHTML="connected! Loading year text ...";
+   document.getElementById("vmix_status").innerHTML="connected! Loading year text ...";
    vMixLoadYT();
    }else{
-   document.getElementById("vmix_ctrl").innerHTML="connected!";
+   document.getElementById("vmix_status").innerHTML="connected!";
    }
-   document.getElementById("vmix_ctrl").innerHTML="<div id=\"vmix_lib\"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo addslashes($vmix_path); ?></b><br /><br /></div><div id=\"vmix_status\">Loading...</div>";
-   vMixLibGet(1);
+
 	
    window.setInterval(function(){
   vMixGetStatus();
 }, 5000);
        }else if (xmlhttp.readyState==4){
-     document.getElementById("vmix_ctrl").innerHTML="error connecting to vmix. is vmix running? is the address right?" +xmlhttp.responseText + "<br /><a href=\"javascript:vMixGetStart()\"> Click here to Try again</a>";
+     document.getElementById("vmix_status").innerHTML="error connecting to vmix. is vmix running? is the address right?" +xmlhttp.responseText + "<br /><a href=\"javascript:vMixGetStart()\"> Click here to Try again</a>";
     }
   }
 xmlhttp.open("GET","http://<?PHP echo $vmix_url;?>/api", true);
@@ -225,7 +227,7 @@ xmlhttp.onreadystatechange=function()
     {
     resp=xmlhttp.responseText;
    }else if (xmlhttp.readyState==4) {
-    document.getElementById("vmix_ctrl").innerHTML="<div id=\"vmix_status\">error loading year text!</div> Is file in right directory?" +xmlhttp.responseText + "<br /><a href=\"javascript:vMixGetStart()\"> Click here to Try again</a>";
+    document.getElementById("vmix_status").innerHTML="error loading year text!</div> Is file in right directory?" +xmlhttp.responseText + "<br /><a href=\"javascript:vMixGetStart()\"> Click here to Try again</a>";
 
     }
   }
@@ -271,7 +273,7 @@ xmlhttp.onreadystatechange=function()
      document.getElementById("vmix_status").innerHTML="error loading file. Is file in a directory accessible by vmix?" +xmlhttp.responseText;
     }
   }
-xmlhttp.open("GET","http://<?PHP echo $vmix_url;?>/api?function=AddInput&value=" + type + "|<?PHP echo urlencode($vmix_path); ?>" + vFile, true);
+xmlhttp.open("GET","http://<?PHP echo $vmix_url;?>/api?function=AddInput&value=" + type + "|<?PHP echo urlencode($vmix_lib_path); ?>" + vFile, true);
 xmlhttp.send();
 }
 }

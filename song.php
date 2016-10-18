@@ -197,7 +197,7 @@ die('no_space_left');
 }
 
 curl_close($ch);
-$url = 'http://'.$vmix_url.'/api?function=AddInput&value='.$song_temp_type.urlencode('|'.$vmix_path.$song_temp_name);
+$url = 'http://'.$vmix_url.'/api?function=AddInput&value='.$song_temp_type.urlencode('|'.$vmix_song_path.$song_temp_name);
 $ch = curl_init();
 
 curl_setopt($ch,CURLOPT_HTTPHEADER, array('User-Agent : PHP'));

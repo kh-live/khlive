@@ -1135,6 +1135,8 @@ year text path : <br />where is the year text stored on local computer with trai
 <input class="field_login" type="text" name="vmix_path" value="<?PHP echo @$vmix_path;?>" /><br />
 music video path : <br />where is the music video with lyrics stored on local computer with trailing \ . f eg c:\users\admin\documents\<br />
 <input class="field_login" type="text" name="vmix_song_path" value="<?PHP echo @$vmix_song_path;?>" /><br />
+library path : <br />where is the library files are stored on local computer with trailing \ . f eg c:\users\admin\documents\<br />
+<input class="field_login" type="text" name="vmix_lib_path" value="<?PHP echo @$vmix_lib_path;?>" /><br />
 Enable vmix autopause<br />yes -> vmix pauses automatically an input that's not active anymore <br />no -> vmix auto pause is disabled <br />
 <select class="field_login" name="vmix_auto_pause" >
 <option value="no">no</option>
