@@ -54,6 +54,9 @@ echo '<a href="./meeting">'.$lng['meeting'].'</a>
 echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
+if ($server_beta!="master") {
+echo '<a href="./diagnosis">Diagnosis</a>';
+}
 echo '<a href="./download">'.$lng['file_transfer'].'</a>
 <a href="./listening">'.$lng['listening'].'</a>';
 if ($server_beta!="master") {
