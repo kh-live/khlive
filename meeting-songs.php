@@ -157,7 +157,7 @@ echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_
 echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
 }
 if ($song_dev=='server'){
-echo '</div><div class="songs">Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" disabled="disabled" />';
+echo '</div><div class="songs">Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" />';
 }
 }else{
 	if ($song_type=='normal'){
@@ -426,7 +426,7 @@ xmlhttp.onreadystatechange=function()
     resp=xmlhttp.responseText;
     if (resp!=""){
 	document.getElementById("play_rand").value = "Play Random";
-	document.getElementById("stop_rand").disabled = true;
+	document.getElementById("stop_rand").disabled = false;
 	document.getElementById("play_rand").onclick= function(){
 		play_rand();
 		}

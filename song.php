@@ -102,6 +102,11 @@ if (isset($_GET['play'])){
 	}else{
 	echo "not_live";
 	}
+	$info=time().'**info**song '.$_GET['play'].' started**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
 	}
 	}elseif ($_GET['play']=="rand"){
 	exec("/usr/bin/mocp -x");
@@ -111,14 +116,23 @@ if (isset($_GET['play'])){
 	exec("/usr/bin/mocp -a ".$web_server_root."kh-live/kh-songs/");
 	exec("/usr/bin/mocp -t shuffle");
 	exec("/usr/bin/mocp -p");
+	$info=time().'**info**random song started**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
 	}
 }
 if (isset($_GET['stop'])){
 	
 	if ($_GET['stop']=="true") {
 	exec("/usr/bin/mocp -x");
-	
 	echo "Stopped...";
+	$info=time().'**info**song stopped**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
 	}
 }
 if (isset($_GET['pause'])){
@@ -126,6 +140,11 @@ if (isset($_GET['pause'])){
 	if ($_GET['pause']=="true") {
 	exec("/usr/bin/mocp -G");
 	echo "Paused...";
+	$info=time().'**info**song paused**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
 	}
 }
 }elseif ($song_dev=='vmix'){
