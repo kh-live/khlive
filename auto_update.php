@@ -15,9 +15,9 @@ ob_start();
 ?>#!/bin/sh
 #Git update and apply script
 (cd <?PHP echo $auto_update_dir_git; ?> && git pull)
-cp <?PHP echo $auto_update_dir_git; ?>/*.php /var/www/kh-live/
-cp <?PHP echo $auto_update_dir_git; ?>/*.css /var/www/kh-live/
-cp <?PHP echo $auto_update_dir_git; ?>/.htaccess /var/www/kh-live/
+cp <?PHP echo $auto_update_dir_git; ?>/*.php <?PHP echo $web_server_root; ?>/kh-live/
+cp <?PHP echo $auto_update_dir_git; ?>/*.css <?PHP echo $web_server_root; ?>/kh-live/
+cp <?PHP echo $auto_update_dir_git; ?>/.htaccess <?PHP echo $web_server_root; ?>/kh-live/
 dos2unix <?PHP echo $web_server_root; ?>/kh-live/* > /dev/null 2>&1
 find <?PHP echo $web_server_root; ?>/kh-live/ -type f -printf '"%p"\n' | xargs chmod 640 
 chown -R asterisk:asterisk <?PHP echo $web_server_root; ?>/kh-live/*
