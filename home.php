@@ -9,6 +9,9 @@ if ($_SESSION['type']=="root") {
 if (isset($_GET['tempcong'])){
 $_SESSION['cong']=urldecode($_GET['tempcong']);
 }
+if (isset($_GET['temptype'])){
+$_SESSION['type']=urldecode($_GET['temptype']);
+}
 }
 ?>
 <div id="homepage">
@@ -36,7 +39,23 @@ $db=file("db/cong");
 	echo '<option value="'.$data[0].'">'.$data[0].'</option>';
 	}
 echo '</select></br>';
+echo 'You can change your type for this session using the drop down menu : <br />';
+?>
+<script type="text/javascript">
+function changeType(){
+var a = document.getElementById("temptype").value;
+if (a!=0)
+window.location="./?temptype=" + a ;
+}
+</script>
+<?PHP
+echo '<select id="temptype" name="types" onchange="javascript:changeType(this)" >
+<option value="0">'.$lng['select'].'...</option>
+<option value="user">user</option>
+<option value="manager">manager</option>
+<option value="admin">admin</option>';
 
+echo '</select></br>';
 }
 if ($_SESSION['type']!="manager") echo 'Your quick login PIN is : <b>'.$_SESSION['pin'].'#</b></br>';
 
@@ -49,7 +68,13 @@ echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; 
 $server_version=@file_get_contents('http://kh-live.co.za/version.php');
 	if ($server_version!==false){
 	if ($version!=$server_version){
-	echo '<div class="home_widget"><b style="color:red;">Update available!</b><br />Your server is running an old version of kh-live software. Contact your administrator and ask him to update the server.<br /> Current version : '.$version.' - New version : '.$server_version.'<br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=what_s_new">Click here to see what\'s new...</a></div>';
+	echo '<div class="home_widget"><b style="color:red;">Update available!</b><br />Your server is running an old version of kh-live software.';
+	if ($_SESSION['type']=='root'){
+	echo '<br /><a href="./auto_update">click here to auto update</a>';
+	}else{
+	echo 'Contact your administrator and ask him to update the server.';
+	}
+	echo '<br /> Current version : '.$version.' - New version : '.$server_version.'<br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=what_s_new">Click here to see what\'s new...</a></div>';
 	}
 	}else{
 	echo '<div class="home_widget"><b style="color:red;">WARNING!</b><br />Your server\'s internet connection seems to be down. Ask your administrator to fix this!</div>';
