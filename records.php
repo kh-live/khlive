@@ -70,6 +70,19 @@ function update_date(dateR){
 if ($print=='ok'){
 $selected_cong="";
 $selected_date="";
+if (isset($_POST['del_all'])){
+	if (isset($_POST['del_month'])){
+		if ($_POST['del_month']!=""){
+		if (isset($_SESSION['type'])){
+			if ($_SESSION['type']=='root') {
+			delAllRecords($_POST['del_month'],"root");
+			}elseif ($_SESSION['type']=='admin'){
+			delAllRecords($_POST['del_month'],$_SESSION['cong']);
+			}
+		}
+		}
+	}
+}
 // we need to set session type
 if(isset($_GET['user'])){
 /*warning doing this bypasses login*/
@@ -171,7 +184,11 @@ $tmp_results=array();
 	if ($selected_date==$date) $opt='selected="selected"';
 	echo '<option value="'.$date.'" '.$opt.'>'.$month.'/'.$year.'</option>';
 	}
-	echo '</select><br /><br />Newest at the top';
+	echo '</select><br /><br />';
+	if ($_SESSION['type']=='admin' OR $_SESSION['type']=='root'){
+	echo '<form action="" method="post"><input type="hidden" value="'.$selected_date.'" name="del_month" /><input type="submit" name="del_all" value="delete all recordings for the selected month" /></form><br /><br />';
+	}
+	echo 'Newest at the top';
 echo '<table><tr><td><b>'.$lng['file'].'</b></td><td><b>'.$lng['size'].'</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 
 	foreach($tmp_results as $file)
@@ -208,5 +225,35 @@ echo '</td></tr>';
 </table>
 </div>
 <?PHP
+}
+function delAllRecords($month,$cong){
+$deleted='';
+if ($month!="" AND $cong!=""){
+if ($dh = @opendir("./records")) {
+       while (($file = readdir($dh)) !== false) {
+           if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
+	   if (strstr($file,$cong) OR $_SESSION['type']=="root") {
+		if (strstr($file, $month)){
+			$tmp_name=explode('-',$file);
+			$tmp_name2=explode('_',$tmp_name[1]);
+			$tmp_name3=substr($tmp_name2[0],0,6);
+			if ($tmp_name3==$month){
+				unlink('./records/'.$file);
+				$deleted='ok';
+			}
+		}
+	   }
+	   }
+	   }
+	   closedir($dh);
+	}
+}
+if ($deleted!=''){
+	$info=time().'**info**multi records deleted - '.$month.' - '.$cong.'**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+}
 }
 ?>
