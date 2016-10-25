@@ -1007,7 +1007,7 @@ Server state :<br />enable testing functions - the meeting is faked live, all er
 <option value="master" <?PHP if ($server_beta=="master") echo 'selected=selected';?>>Master (only use on kh-live.co.za)</option>
 </select><br />
 server user and group : <br />Set the username and group used to run the servers ( "asterisk:asterisk" by default)<br />
-<input class="field_login" type="text" name="server_user_group" value="<?PHP if isset($server_user_group) {
+<input class="field_login" type="text" name="server_user_group" value="<?PHP if (isset($server_user_group)) {
 echo $server_user_group;
 }else{
 echo 'asterisk:asterisk';
