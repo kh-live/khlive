@@ -209,18 +209,18 @@ case $response in
         ;;
 esac
 
-echo 'Automatic updater installation'
-mkdir /root/update_dir
+echo 'Automatic update configuration'
+#mkdir /root/update_dir
 git config --global http.postbuffer "10m"
-(cd /root/update_dir && git clone https://github.com/kh-live/khlive.git)
-sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' /root/update_dir/khlive/update_script_debian.sh
-sed -i 's/asterisk:asterisk/'$KH_USER':'$KH_GRP'/' /root/update_dir/khlive/update_script_debian.sh
-(cd /root/update_dir/khlive && cp update_script_debian.sh update.sh)
-chmod +x  /root/update_dir/khlive/update.sh
+#(cd /root/update_dir && git clone https://github.com/kh-live/khlive.git)
+#sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' /root/update_dir/khlive/update_script_debian.sh
+sed -i 's/asterisk:asterisk/'$KH_USER':'$KH_GRP'/' ${APACHE_ROOT}kh-live/db/config.php
+#(cd /root/update_dir/khlive && cp update_script_debian.sh update.sh)
+#chmod +x  /root/update_dir/khlive/update.sh
 echo 'activating reboot function'
 sed -i 's_#includedir /etc/sudoers.d_'$KH_USER' ALL=NOPASSWD: /sbin/reboot_'  /etc/sudoers
-echo 'updating to latest version'
-/root/update_dir/khlive/update.sh
+#echo 'updating to latest version'
+#/root/update_dir/khlive/update.sh
 echo 'cleaning up'
 chown -R ${KH_USER}:${KH_GRP} /var/www*
 read -r -p "Do you want to update the operating system? [y/N] " response

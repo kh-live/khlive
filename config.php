@@ -1006,6 +1006,12 @@ Server state :<br />enable testing functions - the meeting is faked live, all er
 <option value="true" <?PHP if ($server_beta=="true") echo 'selected=selected';?>>Testing</option>
 <option value="master" <?PHP if ($server_beta=="master") echo 'selected=selected';?>>Master (only use on kh-live.co.za)</option>
 </select><br />
+server user and group : <br />Set the username and group used to run the servers ( "asterisk:asterisk" by default)<br />
+<input class="field_login" type="text" name="server_user_group" value="<?PHP if isset($server_user_group) {
+echo $server_user_group;
+}else{
+echo 'asterisk:asterisk';
+}?>" /><br />
 Server_in : <br />adress to test if the server is live - localhost used for : icecast actions urls + ices instance + ezstream instance<br />
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
 server_out : <br />Server name (must be the same as set on kh-live.co.za)<br />
