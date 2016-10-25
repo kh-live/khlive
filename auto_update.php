@@ -30,6 +30,7 @@ $info= ob_get_clean();
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+sleep(2);
 chmod($web_server_root.'kh-live/auto_update.sh', 0750);
 exec($web_server_root.'kh-live/auto_update.sh',$return);
 
