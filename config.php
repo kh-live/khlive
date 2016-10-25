@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='2.1';//gen_version leave this comment it's used in auto_update
+$gen_version='2.1.1';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -481,8 +481,11 @@ $fichier = fopen('./config/update.sh', 'w');
 	    
 	     ob_start();
 ?>*/5 * * * * root <?PHP echo $web_server_root; ?>kh-live/config/update.sh
-5 0 * * * root <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
 <?PHP
+if (@$video_dowloader=="yes"){
+?>5 0 * * * root <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
+<?PHP
+}
 //it is very important to finish the cron file with a new line (otherwise it is not executed by cron)
 	          $message = ob_get_clean();
 $fichier = fopen('./config/cron', 'w');
@@ -1053,6 +1056,11 @@ Enable meeting scheduler<br />yes -> the link for scheduler will be shown in men
 <select class="field_login" name="scheduler" >
 <option value="no">no</option>
 <option value="yes" <?PHP if (@$scheduler=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+Enable video downloader<br />yes -> the link for videos will be shown in menu (and videos are downloaded at 00:05) <br />no -> the video downloader is disabled <br />
+<select class="field_login" name="video_dowloader" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$video_dowloader=="yes") echo 'selected=selected';?>>yes</option>
 </select><br />
 </div>
 

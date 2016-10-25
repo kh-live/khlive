@@ -64,7 +64,7 @@ echo '</div>';
 if ($_SESSION['type']=="user"){
 echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; button to view the menu.<br /><br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=user_guide">Click here to view the user guide...</a></div>';
 }else{
-
+if ($server_beta!='master'){
 $server_version=@file_get_contents('http://kh-live.co.za/version.php');
 	if ($server_version!==false){
 	if ($version!=$server_version){
@@ -79,6 +79,7 @@ $server_version=@file_get_contents('http://kh-live.co.za/version.php');
 	}else{
 	echo '<div class="home_widget"><b style="color:red;">WARNING!</b><br />Your server\'s internet connection seems to be down. Ask your administrator to fix this!</div>';
 	}
+}
 }
 if ($_SESSION['meeting_status']=='live'){
 echo '<a class="home_widget_link" href="./listening"><b>Scheduled meetings :</b><br /> There is a <b>live meeting</b> right now! <b><br /><br />Click here to listen in...</b></a>';
@@ -106,7 +107,7 @@ $i=0;
 echo '</div>';
 }
 }else{
-$db='';
+$db=array();
 $db1=file("db/servers");
     foreach($db1 as $line){
         $data=explode ("**",$line);
@@ -118,12 +119,16 @@ if ($url!=""){
 $remote_db=@file_get_contents('http://'.$url.'/kh-live/sched_remote.php');
 	if ($remote_db!==false){
 	$db=explode("\n",$remote_db);
+	}else{
+	echo '<div class="home_widget"><b style="color:red">ERROR</b>
+	<br />Unable to connect to your congregation\'s server. Please let your administrator know.</div>';
 	}
 }
-if ($db!=''){
+if (strlen(implode("", $db))>=10){
 echo '<div class="home_widget"><b>Scheduled meetings :</b><br />';
 $i=0;
     foreach($db as $line){
+    if (strlen($line)>=10){
         $data=explode ("**",$line);
 	$tmp=explode(':',$data[2]);
 	if ($tmp[1]=='0') $data[2]=$data[2].'0';
@@ -132,6 +137,7 @@ $i=0;
 	
 	if (($_SESSION['cong']==$data[0] OR $_SESSION['type']!='user')  AND $data[4]=='yes'){
 	echo 'Meeting for '.$data[0].' : '.@$data[1].' ('.@$data[2].' - '.@$data[3].')<br />';
+	}
 	}
 	$i++;
 	}
@@ -179,10 +185,11 @@ $info=filesize("./records/".$file);
 echo '<br /><a href="./record">Click here to view more...</a></div>';
 }
 //now we show the infos
-$db='';
+$db=array();
+$infos_tmp='';
 if ($server_beta!="master") {
 if (file_exists("db/infos")){
-$infos_tmp='';
+
 $db=file("db/infos");
 	}
 }else{
@@ -200,8 +207,9 @@ $remote_db=@file_get_contents('http://'.$url.'/kh-live/info_remote.php');
 	}
 }
 }
-if ($db!=''){
+if (strlen(implode("", $db))>=10){
 foreach($db as $line){
+if (strlen($line)>=10){
         $data=explode ("**",$line);
 	if ($data[3]=='yes' AND ($data[0]=='all' OR $data[0]==$_SESSION['cong'])){
 	if ($data[2]!=''){
@@ -212,6 +220,7 @@ foreach($db as $line){
 		}
 	}else{
 	$infos_tmp='<div class="home_widget">'.$data[1].'</div>'.$infos_tmp;
+	}
 	}
 	}
 	}

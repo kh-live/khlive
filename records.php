@@ -98,17 +98,13 @@ $db=file("db/users");
 }
 
 if(isset($_GET['cong'])){
-	if ($_GET['cong']!=""){
 $selected_cong=$_GET['cong'];
 $_SESSION['selected_cong_r']=$selected_cong;
 $_SESSION['selected_date_r']="";
-	}
 }
 if(isset($_GET['date'])){
-	if ($_GET['date']!=""){
 $selected_date=$_GET['date'];
 $_SESSION['selected_date_r']=$selected_date;
-	}
 }
 if(isset($_SESSION['selected_cong_r'])) $selected_cong=$_SESSION['selected_cong_r'];
 if(isset($_SESSION['selected_date_r'])) $selected_date=$_SESSION['selected_date_r'];

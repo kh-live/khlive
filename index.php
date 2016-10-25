@@ -272,7 +272,13 @@ include ("./login.php");
 	fputs($file,"down");
 	fclose($file);
 	}
+	if (!file_exists($temp_dir.'test_meeting_'.$_SESSION['cong'])){
+	$file=fopen($temp_dir.'test_meeting_'.$_SESSION['cong'],'w');
+	fputs($file,"down");
+	fclose($file);
+	}
 	$_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
+	$_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
 	}else{
 	$_SESSION['meeting_status']="down";
 	$_SESSION['test_meeting_status']="down";

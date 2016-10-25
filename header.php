@@ -41,7 +41,7 @@ $_SESSION['server_status']="ok";
  if ($_SESSION['type']=="user"){
  echo '<a href="./listening">'.$lng['listening'].'</a>
  <a href="./record">'.$lng['recordings'].'</a>';
-if ($server_beta!="master") echo '<a href="./video">Videos</a>';
+if ($server_beta!="master" AND @$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="manager" AND $server_beta!="master"){
 
@@ -51,7 +51,7 @@ echo '<a href="./meeting">'.$lng['meeting'].'</a>
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
-echo '<a href="./video">Videos</a>';
+if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
 if ($server_beta!="master") {
@@ -69,9 +69,8 @@ echo '<a href="./report">'.$lng['report'].'</a>';
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
-echo '<a href="./users">'.$lng['users'].'</a>
-<a href="./video">Videos</a>
-';
+echo '<a href="./users">'.$lng['users'].'</a>';
+if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }else{
 echo '<a href="./users">'.$lng['users'].'</a>';
 }
@@ -95,9 +94,8 @@ if ($server_beta!="master") {
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
 echo '
-<a href="./users">'.$lng['users'].'</a>
-<a href="./video">Videos</a>
-';
+<a href="./users">'.$lng['users'].'</a>';
+if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }else{
 echo ' <a href="./users">'.$lng['users'].'</a>
 <a href="./servers">Servers</a>';
