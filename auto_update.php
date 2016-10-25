@@ -6,7 +6,6 @@ include './db/config.php';
 $version_start=$version;
 $auto_update_dir=$temp_dir.'kh_auto_update';
 $auto_update_dir_git=$auto_update_dir.'/khlive';
-
 /*update goes here*/
 if (!is_dir($auto_update_dir)){
 mkdir($auto_update_dir);
