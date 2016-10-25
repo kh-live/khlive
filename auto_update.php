@@ -42,7 +42,8 @@ $info=time().'**info**auto updated '.$version_start.' to '.$version_end.'**'.ser
 			if(fputs($file,$info)){
 			fclose($file);
 			}
-echo '<div id="page"><h2>Server Update</h2>updated from '.$version_start.' to '.$version_end.' ! <br /> Now go to configuration page. Check the settings and click <b>save</b> to apply the update.</div>';
+echo '<div id="page"><h2>Server Update</h2>updated from '.$version_start.' to '.$version_end.' ! <br /> Now go to configuration page. 
+<br /> 1. Check the settings and click <b>save</b> to apply the update.<br /> 2. Go back to configuration page and click <b>over-write config!</b> to reload the configuration.</div>';
 }
 }else{
 echo '<div id="page"><h2>Server Update</h2><a href="./auto_update?autoup=ok">click here to update</a></div>';
