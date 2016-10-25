@@ -31,7 +31,7 @@ $info= ob_get_clean();
 			fclose($file);
 			}
 chmod($auto_update_dir_git.'/update.sh', 0750);
-exec($auto_update_dir_git.'/update.sh',$return);
+exec('bash -x '.$auto_update_dir_git.'/update.sh',$return);
 
 $tmp_file=file_get_contents('./config.php');
 $tmp_file2=explode('\';//gen_version', $tmp_file);
