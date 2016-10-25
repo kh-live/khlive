@@ -21,8 +21,6 @@ cp <?PHP echo $auto_update_dir_git; ?>/.htaccess <?PHP echo $web_server_root; ?>
 dos2unix <?PHP echo $web_server_root; ?>/kh-live/* > /dev/null 2>&1
 find <?PHP echo $web_server_root; ?>/kh-live/ -type f -printf '"%p"\n' | xargs chmod 640 
 chown -R asterisk:asterisk <?PHP echo $web_server_root; ?>/kh-live/*
-(cd <?PHP echo $auto_update_dir_git; ?> && cp update_script_debian.sh update.sh)
-(cd <?PHP echo $auto_update_dir_git; ?> && chmod 700 update.sh)
 chmod +x <?PHP echo $web_server_root; ?>/kh-live/config/update.sh
 chmod +x <?PHP echo $web_server_root; ?>/kh-live/config/downloader.sh
 echo "done"
