@@ -6,6 +6,7 @@ include './db/config.php';
 $version_start=$version;
 $auto_update_dir=$temp_dir.'kh_auto_update';
 $auto_update_dir_git=$auto_update_dir.'/khlive';
+
 /*update goes here*/
 if (!is_dir($auto_update_dir)){
 mkdir($auto_update_dir);
@@ -26,12 +27,12 @@ chmod +x <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
 echo "done"
 <?PHP
 $info= ob_get_clean();
-	$file=fopen($auto_update_dir_git.'/update.sh','w');
+	$file=fopen($web_server_root.'kh-live/auto_update.sh','w');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
-chmod($auto_update_dir_git.'/update.sh', 0750);
-exec('bash -x '.$auto_update_dir_git.'/update.sh',$return);
+chmod($web_server_root.'kh-live/auto_update.sh', 0750);
+exec($web_server_root.'kh-live/auto_update.sh',$return);
 
 $tmp_file=file_get_contents('./config.php');
 $tmp_file2=explode('\';//gen_version', $tmp_file);
