@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='2.1.1';//gen_version leave this comment it's used in auto_update
+$gen_version='2.2';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -1123,7 +1123,21 @@ Song type :<br />select which type of song to use<br />
 <select class="field_login" name="song_type" >
 <option value="normal">Orchestral (until 31.12.2016)</option>
 <option value="joy" <?PHP if ($song_type=="joy") echo 'selected=selected';?>>Sing Joyfully (from 01.01.2017)</option>
-<option value="vid" <?PHP if ($song_type=="vid") echo 'selected=selected';?>>Music Video with lyrics (not yet available)</option>
+<?PHP
+if ($song_dev=='vmix'){
+?>
+<option value="vid" <?PHP if ($song_type=="vid") echo 'selected=selected';?>>Music Video with lyrics (from 01.01.2017)</option>
+<?PHP
+}
+?>
+</select><br />
+Video Song quality :<br />select which quality of video songs to use<br />
+<select class="field_login" name="song_quality" >
+<option value="..." >select the quality...</option>
+<option value="240" <?PHP if (@$song_quality=="240") echo 'selected=selected';?>>240P not recommanded</option>
+<option value="360" <?PHP if (@$song_quality=="360") echo 'selected=selected';?>>360P not recommanded</option>
+<option value="480" <?PHP if (@$song_quality=="480") echo 'selected=selected';?>>480P good enough</option>
+<option value="720" <?PHP if (@$song_quality=="720") echo 'selected=selected';?>>720P best</option>
 </select><br />
 Asterisk Audio device :<br />select which input device to use on direct input<br />
 <select class="field_login" name="server_audio" >

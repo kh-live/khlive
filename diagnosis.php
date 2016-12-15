@@ -268,5 +268,7 @@ if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meetin
 	}
 	echo '</form>';
 }
+if (file_exists($temp_dir.'error_ip')) echo '<b>error ip file</b><br />'.file_get_contents($temp_dir.'error_ip').'<br />';
+if (file_exists($temp_dir.'global_ip')) echo '<b>global ip file</b><br />'.file_get_contents($temp_dir.'global_ip').'<br />';
 echo "</div>";
 ?>

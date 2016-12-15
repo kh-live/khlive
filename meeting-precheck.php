@@ -118,6 +118,8 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 					echo '<form action="" method="post">
 					<input name="submit" id="input_login" type="submit" value="Start meeting">
 					</form>';
+				}elseif(strstr($already_meeting1,$_SESSION['cong'])){
+					echo ' The meeting is busy starting...<br/><a href="./meeting-ajax.php">Click here to refresh manually</a>';
 				}else{
 					echo '<b style="color:red;">there is already a meeting on this server started by : '.$already_meeting1.'</b><br />Terminate that one first before you can start yours.<br />';
 				}

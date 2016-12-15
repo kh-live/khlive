@@ -1,6 +1,22 @@
 <?PHP
 if(session_id()==""){session_start();}
 include "db/config.php";
+if (!isset($_SESSION['cong_lang'])){
+$db=file("db/cong");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if ($data[0]==$_SESSION['cong']) {
+	$_SESSION['cong_lang']=@$data[15];
+		}
+}
+}
+if (isset($_GET['type'])){
+if ($_GET['type']=='normal') $_SESSION['song_type']='normal';
+if ($_GET['type']=='joy') $_SESSION['song_type']='joy';
+if ($_GET['type']=='vid') $_SESSION['song_type']='vid';
+}
+if (isset($_SESSION['song_type'])) $song_type=$_SESSION['song_type'];
+if ($song_type!='normal') $max_song_no-=3;
 if (isset($_GET['song_1'])){
 	if ($_GET['song_1'] >=1 AND $_GET['song_1'] <=$max_song_no){
 	$_SESSION['song_1']=$_GET['song_1'];
@@ -162,9 +178,9 @@ if (isset($_GET['play'])){
 	$song_temp='sjjm_E_';
 	}
 	if ($song_type=='vid') {
-	$song_temp_name="sjjv_E_".$_GET['play'].".mp4";
+	$song_temp_name="sjjm_".$_SESSION['cong_lang']."_".$_GET['play']."_r".$song_quality."P.mp4";
 	$song_temp_type='Video';
-	$song_temp='sjjv_E_';
+	$song_temp='sjjm_'.$_SESSION['cong_lang'].'_';
 	}
 	$urls=array();
 	$song_temp_pos='';
@@ -187,7 +203,12 @@ if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
 }
 
+
+if ($song_type=='vid'){
+$result_temp=explode('" type="Video" title="'.$song_temp,$result);
+}else{
 $result_temp=explode('" type="AudioFile" title="'.$song_temp,$result);
+}
 if (isset($result_temp[1])){
 $old_song_pos=substr($result_temp[0],-1);
 }
@@ -251,7 +272,11 @@ if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
 }
 
+if ($song_type=='vid'){
+$result_temp=explode('" type="Video" title="'.$song_temp_name,$result);
+}else{
 $result_temp=explode('" type="AudioFile" title="'.$song_temp_name,$result);
+}
 $song_temp_pos=substr($result_temp[0],-1);
 echo $song_temp_pos;
 curl_close($ch);

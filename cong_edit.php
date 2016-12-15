@@ -14,6 +14,7 @@ if(isset($_POST['submit'])){
 $deleting=cong_del($cong_confirmed, "edit");
 if ($deleting=='ok'){
 			$cong_name=$_POST['cong_name']; //check
+			$cong_lang=$_POST['cong_lang']; //check
 			$cong_no=$_POST['cong_no'];//what's that?
 			$conf_admin=$_POST['conf_admin'];
 			$conf_user=$_POST['conf_user'];
@@ -30,7 +31,7 @@ if ($deleting=='ok'){
 			$stream_quality=$_POST['stream_quality'];
 			$sip_caller_ip=$_POST['sip_caller_ip'];
 
-$adding=cong_add($cong_name, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $voip_type, $answer, $stream_quality, $sip_caller_ip, $cong_no, $conf_admin, $conf_user);
+$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $voip_type, $answer, $stream_quality, $sip_caller_ip, $cong_no, $conf_admin, $conf_user);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 $info=time().'**info**local cong edit successful**'.$cong_name."**\n";
@@ -66,6 +67,7 @@ $db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
 	if ($data[0]==$cong_name) {
+	$cong_lang=@$data[15];
 	$cong_no=$data[1];
 	$conf_admin=$data[2];
 	$conf_user=$data[3];
@@ -97,6 +99,9 @@ Use the form bellow to edit the congregation<br /><br />
 <b><?PHP echo $lng['congregation'];?></b><br />
 No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 <input class="field_login" type="text" name="cong_name" value="<?PHP echo $cong_name;?>"/>
+<br /><b>Congregation language ID</b><br />
+use the same language ID as on Jw.org (English=E Afrikaans=AF).<br />
+<input class="field_login" type="text" name="cong_lang" value="<?PHP echo $cong_lang;?>"/>
 <br /><br />
 <b>Voip account type</b><br />
 none : the congregation streams to the server with Edcast (currently not working).<br />

@@ -8,10 +8,23 @@ $_SESSION['song_2']=file_get_contents($temp_dir.'song_2_'.$_SESSION['cong']);
 if (is_file($temp_dir.'song_3_'.$_SESSION['cong'])){
 $_SESSION['song_3']=file_get_contents($temp_dir.'song_3_'.$_SESSION['cong']);
 }
+if (isset($_SESSION['song_type'])) $song_type=$_SESSION['song_type'];
+if ($song_type!='normal') $max_song_no-=3;
 ?>
 <div id="songs">
 <a href="javascript:showdiv('song-small','songs')">>> HIDE</a>
 <div class="songs">
+Song type : <select id="songtype" onchange="javascript:update_song_type(this.value)">
+<option value="normal">Orchestral (in english until 31.12.2016)</option>
+<option value="joy" <?PHP if ($song_type=="joy") echo 'selected=selected';?>>Sing Joyfully (in english from 01.01.2017)</option>
+<?PHP
+if ($song_dev=='vmix'){
+?>
+<option value="vid" <?PHP if ($song_type=="vid") echo 'selected=selected';?>>Music Video with lyrics 720P (in english from 01.01.2017)</option>
+<?PHP
+}
+?>
+</select><br /><br />
 Song 1 : <select id="song1" onchange="javascript:update_song(1,this.value)">
 <?PHP
 $i=1;
@@ -156,7 +169,7 @@ echo '<br /><input type="submit" id="play_3" value="Play Song '.$_SESSION['song_
 }else{
 echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="disabled" /><input type="submit" id="stop_3" value="Stop..." disabled="disabled" />';
 }
-if ($song_dev=='server'){
+if ($song_dev=='server' AND $song_type!='vid'){
 echo '</div><div class="songs">Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" />';
 }
 }else{
@@ -191,7 +204,6 @@ if (is_file($web_server_root."kh-live/kh-songs/iasnm_E_".$rand_song.".mp3")){
 	 echo '<source src="kh-songs/snnw_E_'.$rand_song.'.mp3" type="audio/mpeg" >';
 	}elseif (is_file($web_server_root."kh-live/kh-songs/iasn_E_".$rand_song.".mp3")){
 	 echo '<source src="kh-songs/iasn_E_'.$rand_song.'.mp3" type="audio/mpeg" >';
-	exec("/usr/bin/mocp -l ".$web_server_root."kh-live/kh-songs/iasn_E_".$rand_song.".mp3");
 	}else{
 	 echo '<source src="kh-songs/iasn_E_'.$rand_song.'.m4a" type="audio/mp4" >';
 	}
@@ -284,6 +296,29 @@ song.type="audio/mpeg";
    
     }
 xmlhttp.open("GET","song.php?song_"+ id +"=" + no, true);
+xmlhttp.send();
+}
+function update_song_type(stype){
+if(stype.length < 1) { return; }
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+    window.location="./meeting";
+    }
+   
+    }
+xmlhttp.open("GET","song.php?type=" + stype, true);
 xmlhttp.send();
 }
 <?PHP

@@ -371,7 +371,7 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 function hideMenu(){
 if (document.getElementById("menu").style.display!= "block"){
 document.getElementById("menu").style.display="block";
-document.getElementById("hide_menu").innerHTML="&#10006;";
+document.getElementById("hide_menu").innerHTML="<svg xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns=\"http://www.w3.org/2000/svg\" height=\"21\" width=\"22\" version=\"1.1\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><g transform=\"translate(-361 -514)\" stroke=\"#000\" stroke-width=\"2.93px\" fill=\"none\"><path d=\"m364 533 15.5-15.5\"/><path d=\"m364 517 15.5 15.5\"/></g></svg>";
 	if(document.getElementById("homepage")!== null){
 	document.getElementById("homepage").style.marginLeft="195px";
 	}else{
@@ -379,7 +379,7 @@ document.getElementById("hide_menu").innerHTML="&#10006;";
 	}
 }else{
 document.getElementById("menu").style.display="none";
-document.getElementById("hide_menu").innerHTML="&#9776;";
+document.getElementById("hide_menu").innerHTML="<svg xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns=\"http://www.w3.org/2000/svg\" height=\"21\" width=\"22\" version=\"1.1\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><g transform=\"translate(-361 -514)\" stroke=\"#000\" stroke-width=\"2.93px\" fill=\"none\"><path d=\"m361 516h22\"/><path d=\"m361 525h22\"/><path d=\"m361 534h22\"/></g></svg>";
 	if(document.getElementById("homepage")!== null){
 	document.getElementById("homepage").style.marginLeft="5px";
 	}else{

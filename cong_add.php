@@ -11,6 +11,7 @@ if(isset($_POST['submit'])){
 		if ($_POST['cong_name']!=""){
 		//we obviously need to check the input
 			$cong_name=$_POST['cong_name']; //check
+			$cong_lang=$_POST['cong_lang']; //check
 			$phone_no=@$_POST['phone_no'];
 			$voip_type=$_POST['voip_type'];
 			$stream=$_POST['stream'];
@@ -24,7 +25,7 @@ if(isset($_POST['submit'])){
 			$stream_quality=$_POST['stream_quality'];
 			$sip_caller_ip=$_POST['sip_caller_ip'];
 			
-$adding=cong_add($cong_name, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $voip_type, $answer, $stream_quality, $sip_caller_ip);
+$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $voip_type, $answer, $stream_quality, $sip_caller_ip);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 $info=time().'**info**local cong add successful**'.$cong_name."**\n";
@@ -58,6 +59,9 @@ Click <a href="./congregations">here</a> to edit more congregations.<br /><br />
 <b><?PHP echo $lng['congregation'];?></b><br />
 No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 <input class="field_login" type="text" name="cong_name" />
+<br /><b>Congregation language ID</b><br />
+use the same language ID as on Jw.org (English=E Afrikaans=AF)<br />
+<input class="field_login" type="text" name="cong_lang" />
 <br /><br />
 <b>Voip account type</b><br />
 none : the congregation streams to the server with Edcast .<br />

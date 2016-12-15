@@ -60,7 +60,22 @@ echo '</select></br>';
 if ($_SESSION['type']!="manager") echo 'Your quick login PIN is : <b>'.$_SESSION['pin'].'#</b></br>';
 
 echo '</div>';
-
+if ($server_beta=='master' AND $_SESSION['type']!="user"){
+$ip='';
+$url='';
+$db1=file("db/servers");
+    foreach($db1 as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$_SESSION['cong'])){
+	$ip=$data[1];
+	$url=$data[0];
+	}
+	}
+if ($ip!='' AND $url!=''){
+echo '<div class="home_widget"><b>Your local server</b><br />Here is the link to your local server (at the kingdom hall) for administration purposes : <br />
+<a href="http://'.$url.'">'.$url.'</a> ( <a href="http://'.$ip.'">'.$ip.'</a> )</div>';
+}
+}
 if ($_SESSION['type']=="user"){
 echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; button to view the menu.<br /><br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=user_guide">Click here to view the user guide...</a></div>';
 }else{

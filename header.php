@@ -35,7 +35,13 @@ $_SESSION['server_status']="ok";
 ?>
 </div>
 
-<div id="hide_menu" onclick="javascript:hideMenu()">&#9776;</div>
+<div id="hide_menu" onclick="javascript:hideMenu()"><svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="21" width="22" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<g transform="translate(-361 -514)" stroke="#000" stroke-width="2.93px" fill="none">
+<path d="m361 516h22"/>
+<path d="m361 525h22"/>
+<path d="m361 534h22"/>
+</g>
+</svg></div>
 <div id="menu"><a href="./login"><?PHP echo $lng['home'];?></a>
  <?PHP
  if ($_SESSION['type']=="user"){
