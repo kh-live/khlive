@@ -404,6 +404,7 @@ xmlhttp.onreadystatechange=function()
     {
     resp=xmlhttp.responseText;
     if (resp!=""){
+    document.getElementById("play_rand").disabled=false;
 	document.getElementById("play_rand").value="Play Pause";
 	document.getElementById("stop_rand").disabled = false;
 	document.getElementById("play_rand").onclick= function(){
@@ -412,6 +413,7 @@ xmlhttp.onreadystatechange=function()
     }
     }
     }
+    document.getElementById("play_rand").disabled=true;
 xmlhttp.open("GET","song.php?play=rand", true);
 xmlhttp.send();
 }
@@ -461,6 +463,7 @@ xmlhttp.onreadystatechange=function()
     resp=xmlhttp.responseText;
     if (resp!=""){
 	document.getElementById("play_rand").value = "Play Random";
+	document.getElementById("play_rand").disabled = false;
 	document.getElementById("stop_rand").disabled = false;
 	document.getElementById("play_rand").onclick= function(){
 		play_rand();
