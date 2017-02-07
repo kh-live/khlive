@@ -168,9 +168,15 @@ if (isset($_GET['play'])){
 	if (is_numeric($_GET['play'])){
 	if ($_GET['play'] >=1 AND $_GET['play'] <=$max_song_no) {
 	if ($song_type=='normal'){
+	if ($_GET['play']<=135){
 	$song_temp_name="iasnm_E_".$_GET['play'].".mp3";
 	$song_temp_type='AudioFile';
 	$song_temp='iasnm_E_';
+	}else{
+	$song_temp_name="snnw_E_".$_GET['play'].".mp3";
+	$song_temp_type='AudioFile';
+	$song_temp='snnw_E_';
+	}
 	}
 	if ($song_type=='joy') {
 	$song_temp_name="sjjm_E_".$_GET['play'].".mp3";

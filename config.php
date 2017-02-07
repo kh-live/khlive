@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='2.2';//gen_version leave this comment it's used in auto_update
+$gen_version='2.2.1';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
