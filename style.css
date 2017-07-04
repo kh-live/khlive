@@ -652,3 +652,42 @@ padding-bottom:10px;
 	z-index:110;
 }
 }
+@font-face{
+	font-family: test1;
+	src:url('./fonts/digital-7-mono.ttf');
+}
+@font-face{
+	font-family: test2;
+	src:url('./fonts/Orbitron-Black.ttf');
+}
+#meeting_time{
+	font-family: 'test2', sans-serif;
+	top:40px;
+	left:0;
+	width:100%;
+	background-color: black;
+	margin:0;
+	color:white;
+	text-align: center;
+}
+#meeting_overall{
+	background-color:black;
+display:inline-block;
+	padding:15px;
+	text-align:center;
+	font-size:0.8em;
+}
+#meeting_times, #meeting_clock{
+	font-family: 'test1', sans-serif;
+	text-align:center;
+	font-size:1em;
+	display:inline-block;
+	padding-left:30px;
+	padding-right:30px;
+}
+#hours, #minutes, #secondes, #meeting_clock h1{
+display:inline-block;
+}
+ #meeting_clock{
+display:none;
+ }

@@ -19,12 +19,10 @@ if ($test_time!==FALSE){
 				$cong=$data[0];
 				$day=$data[1];
 				$start_time=explode(':',$data[2]);
-				if ($start_time[1]=='0') $data[2]=$data[2].'0';
 				$stop_time=explode(':',$data[3]);
-				if ($stop_time[1]=='0') $data[3]=$data[3].'0';
 				$enabled=$data[4];
 				if (($enabled=='yes') AND (date('D',time())==$day)){
-					$smeetings.= '- <b>'.$cong.'</b> meeting from '.$data[2].' to '.$data[3].' </br>';
+					$smeetings.= '- <b>'.$cong.'</b> meeting from '.sprintf('%02d:%02d', $start_time[0],$start_time[1]).' to '.sprintf('%02d:%02d', $stop_time[0],$stop_time[1]).' </br>';
 				}
 				}
 			}

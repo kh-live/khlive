@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='2.2.1';//gen_version leave this comment it's used in auto_update
+$gen_version='2.3';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -1062,6 +1062,11 @@ Enable meeting scheduler<br />yes -> the link for scheduler will be shown in men
 <select class="field_login" name="scheduler" >
 <option value="no">no</option>
 <option value="yes" <?PHP if (@$scheduler=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+Enable meeting timing<br />yes -> the link for timing will be shown in menu <br />no -> timing is disabled <br />
+<select class="field_login" name="timing_conf" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$timing_conf=="yes") echo 'selected=selected';?>>yes</option>
 </select><br />
 Enable video downloader<br />yes -> the link for videos will be shown in menu (and videos are downloaded at 00:05) <br />no -> the video downloader is disabled <br />
 <select class="field_login" name="video_dowloader" >

@@ -22,10 +22,8 @@ $i=0;
 	echo '<tr';
 	if (@$data[4]!='yes') echo ' style="color:grey;" ';
 	$tmp=explode(':',$data[2]);
-	if ($tmp[1]=='0') $data[2]=$data[2].'0';
-	$tmp=explode(':',$data[3]);
-	if ($tmp[1]=='0') $data[3]=$data[3].'0';
-	echo'><td>'.$i.'</td><td>'.$data[0].'</td><td>'.@$data[1].'</td><td>'.@$data[2].'</td><td>'.@$data[3].'</td>';
+	$tmp1=explode(':',$data[3]);
+	echo'><td>'.$i.'</td><td>'.$data[0].'</td><td>'.@$data[1].'</td><td>'.sprintf('%02d:%02d', $tmp[0],$tmp[1]).'</td><td>'.sprintf('%02d:%02d', $tmp1[0],$tmp1[1]).'</td>';
 	if ($_SESSION['type']=='root' OR $_SESSION['cong']==$data[0]){
 	echo '<td><a href="./sched_edit?id='.$i.'">'.$lng['edit'].'</a> - <a href="./sched_delete?id='.$i.'">'.$lng['delete'].'</a></td>';
 	}else{

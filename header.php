@@ -57,6 +57,9 @@ echo '<a href="./meeting">'.$lng['meeting'].'</a>
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
+	if(@$timing_conf=='yes'){
+echo '<a href="./timings">Timing</a>';
+}
 if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
@@ -75,10 +78,13 @@ echo '<a href="./report">'.$lng['report'].'</a>';
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
+	if(@$timing_conf=='yes'){
+echo '<a href="./timings">Timing</a>';
+}
 echo '<a href="./users">'.$lng['users'].'</a>';
 if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }else{
-echo '<a href="./users">'.$lng['users'].'</a>';
+echo '<a href="./timings">Timing</a><a href="./users">'.$lng['users'].'</a>';
 }
 }
 if ($_SESSION['type']=="root"){
@@ -99,8 +105,10 @@ if ($server_beta!="master") {
 	if(@$scheduler=='yes'){
 	echo '<a href="./scheduler">Scheduler</a>';
 	}
-echo '
-<a href="./users">'.$lng['users'].'</a>';
+if(@$timing_conf=='yes'){
+echo '<a href="./timings">Timing</a>';
+}
+echo '<a href="./users">'.$lng['users'].'</a>';
 if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }else{
 echo ' <a href="./users">'.$lng['users'].'</a>
@@ -108,6 +116,7 @@ echo ' <a href="./users">'.$lng['users'].'</a>
 }
 }
 ?>
+<a  href="http://wiki.kh-live.co.za" target="_blank">Help</a>
 <a  id="logout" href="./logout"><?PHP echo $lng['logout'];?></a>
 </div>
 

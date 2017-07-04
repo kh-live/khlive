@@ -608,8 +608,8 @@ include "iax-gen.php";
 //we must check that users are not left orphan if it's not an edit
 return 'ok';
 }
-function sched_add($congregation, $day, $time_start, $time_stop, $enable){
-$file_content=$congregation.'**'.$day.'**'.$time_start.'**'.$time_stop.'**'.$enable."**\n";
+function sched_add($congregation, $day, $time_start, $time_stop, $enable, $timing){
+$file_content=$congregation.'**'.$day.'**'.$time_start.'**'.$time_stop.'**'.$enable.'**'.$timing."**\n";
 $file=fopen('db/sched','a');
 			if(fputs($file,$file_content)){
 			fclose($file);
@@ -674,6 +674,41 @@ if ($db!=''){
 			return 'ok';
 			}else{
 			return 'error saving db/infos while delete';
+			}
+			}
+}
+}
+function timing_add($name, $timings){
+$file_content=$name.'**'.serialize($timings)."**\n";
+$file=fopen('db/timings','a');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			return 'ok';
+			}else{
+			return 'error saving db/timings while add';
+			}
+}
+function timing_del($id){
+$db=file("db/timings");
+if ($db!=''){
+			$file_content="";
+			$i=0;
+	foreach($db as $line){
+		if ($i!=$id){
+		$file_content.=$line;
+		}
+		$i++;
+	}
+			$file=fopen('db/timings','w');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			return 'ok';
+			}else{
+			//when we delete the last line in the file, fputs will give an error but it will still work....
+			if ($file_content==''){
+			return 'ok';
+			}else{
+			return 'error saving db/timings while delete';
 			}
 			}
 }

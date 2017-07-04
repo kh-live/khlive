@@ -15,8 +15,9 @@ if(isset($_POST['submit'])){
 			$start_time=$_POST['start_time_hour'].':'.$_POST['start_time_min'];
 			$stop_time=$_POST['stop_time_hour'].':'.$_POST['stop_time_min'];
 			$enable=$_POST['enable'];
+			$timing=$_POST['timing'];
 			
-$adding=sched_add($congregation,$day,$start_time,$stop_time,$enable);
+$adding=sched_add($congregation,$day,$start_time,$stop_time,$enable,$timing);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 $info=time().'**info**new schedule meeting add successful**'.$congregation."**\n";
@@ -114,6 +115,25 @@ for ($i=0; $i<=23; $i++){
 ?>
 </select>min
 <br /><br />
+<b>Timing</b><br />
+<select name="timing">
+<option value="0"><?PHP echo $lng['select'];?>...</option>
+<?PHP
+$db=file("db/timings");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	$total_length=0;
+	$timings=unserialize($data[1]);
+	foreach ($timings as $key=>$value){
+		if (strstr($key,'length')){
+		$total_length+=$value;
+		}
+	}
+	echo '<option value="'.$data[0].'">'.$data[0].' ('.$total_length.'min)</option>';
+	}
+	
+?>
+</select><br /><br />
 <b>Enable this meeting</b><br />
 <select name="enable">
 <option value="yes">yes</option>

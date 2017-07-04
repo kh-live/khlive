@@ -2,7 +2,8 @@
 if (isset($vmix)){
 	if ($vmix=='yes'){
 ?>
-<div id="vmix_title" onclick="javascript:vMixToggle()">&uArr; vMix &uArr;</div><div id="vmix_ctrl"><div id="vmix_lib"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo $vmix_lib_path; ?></b><br /><br /></div><div id="vmix_status">Connecting to vmix...</div></div>
+<div id="vmix_title" onclick="javascript:vMixToggle()">&uArr; vMix &uArr;</div><div id="vmix_ctrl"><div id="vmix_lib"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo $vmix_lib_path; ?></b><br /><br /></div><div id="vmix_status">Connecting to vmix...</div>
+<div id="timing_overlay"><input id="show_over" type="button" onclick="javascript:vMixShow()" value="show timing overlay" /><input id="hide_over" disabled="disabled" type="button" onclick="javascript:vMixHide()" value="hide timing overlay" /></div></div>
 </div>
 <script type="text/javascript">
 var parseXml;
@@ -38,6 +39,48 @@ document.getElementById("vmix_title").innerHTML="&dArr; vMix &dArr;";
 document.getElementById("vmix_ctrl").style.marginBottom="";
 document.getElementById("vmix_title").innerHTML="&uArr; vMix &uArr;";
 }
+}
+function vMixShow(){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+   }
+  }
+  document.getElementById('show_over').disabled='disabled';
+  document.getElementById('hide_over').disabled='';
+xmlhttp.open("GET","timing-vmix.php?show=1", true);
+xmlhttp.send();
+}
+function vMixHide(){
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+   }
+  }
+  document.getElementById('show_over').disabled='';
+  document.getElementById('hide_over').disabled='disabled';
+xmlhttp.open("GET","timing-vmix.php?hide=1", true);
+xmlhttp.send();
 }
 function vMixLibSet(id){
 if (window.XMLHttpRequest)
@@ -198,8 +241,10 @@ var timing= (hours < 10 ? "0" + hours : hours) +":"+ (minutes < 10 ? "0" + minut
 	 }
 	}else if (input.getAttribute('state')=="Completed"){
 	document.getElementById("vmix_status").innerHTML+="<input type=\"submit\" onclick=\"javascript:vMixStop("+ j +")\" value=\"&#9209; stop\" /><input type=\"submit\" onclick=\"javascript:vMixRePlay("+ j +","+ active +")\" value=\"&#9658; re-play\" />";
+	}else if (input.getAttribute('type')=="Browser"){
+	document.getElementById("vmix_status").innerHTML+="<input style=\"color:red;border-color:red;\" type=\"submit\" value=\"overlay\" />";
 	}else{
-	 document.getElementById("vmix_status").innerHTML+="<input style=\"color:red;border-color:red;\" type=\"submit\" value=\"playing\" /><input type=\"submit\" onclick=\"javascript:vMixPause("+ j +")\" value=\"&#9612;&#9612; pause\" /><input type=\"submit\" onclick=\"javascript:vMixStop("+ j +")\" value=\"&#9194; restart\" />";
+	 document.getElementById("vmix_status").innerHTML+="<input style=\"color:red;border-color:red;\" type=\"submit\" value=\"playing\" onclick=\"javascript:vMixActivate("+ j +","+ active +")\" /><input type=\"submit\" onclick=\"javascript:vMixPause("+ j +")\" value=\"&#9612;&#9612; pause\" /><input type=\"submit\" onclick=\"javascript:vMixStop("+ j +")\" value=\"&#9194; restart\" />";
 	}
 	if (j!=1){
 	document.getElementById("vmix_status").innerHTML+="<input type=\"submit\" onclick=\"javascript:vMixClose("+ j +")\" value=\"&#9167; eject\" /> ";

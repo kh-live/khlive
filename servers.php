@@ -27,12 +27,18 @@ $db=file("db/servers");
 	$string=time()."**status";
 	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$response=@file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
+	if ($response!=""){
 	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ok"){
 	$status="<b style=\"color:green;\">LIVE - ".$dec[0]."</b>";
+	}elseif(@$dec[0]=="timeout"){
+	$status="<b style=\"color:orange;\">TIME OUT OF SYNC- ".$dec[1]-time()."</b>";
 	}else{
-	$status="<b style=\"color:red;\">OFFLINE</b>";
+	$status="<b style=\"color:red;\">ERROR-".$decrypted."-".$response."</b>";
+	}
+	}else{
+	$status="<b style=\"color:grey;\">OFFLINE</b>";
 	}
 	$_SESSION['server_'.str_replace(".","",$data[1])]=$status.' (cached)';
 	}

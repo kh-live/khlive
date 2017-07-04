@@ -209,7 +209,7 @@ if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
 }
 
-
+curl_close($ch);
 if ($song_type=='vid'){
 $result_temp=explode('" type="Video" title="'.$song_temp,$result);
 }else{
@@ -231,6 +231,7 @@ curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 $result = curl_exec($ch);
 
 $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
 if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
@@ -242,7 +243,7 @@ die('no_space_left');
 }
 }
 
-curl_close($ch);
+
 $url = 'http://'.$vmix_url.'/api?function=AddInput&value='.$song_temp_type.urlencode('|'.$vmix_song_path.$song_temp_name);
 $ch = curl_init();
 
@@ -342,49 +343,46 @@ if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
 }
 curl_close($ch);
-//we put the yeartext back
-//this must be done in a ajax call or something WaitForCompletion keeps the socket open until the song is finished but php times out.
-/*
-$url = 'http://'.$vmix_url.'/api?function=WaitForCompletion&input=2';
-$ch = curl_init();
 
-curl_setopt($ch,CURLOPT_HTTPHEADER, array('User-Agent : PHP'));
-curl_setopt($ch,CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-$result = curl_exec($ch);
-
-$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-if ( $status != 200 ) {
-    die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
+	}
+	}elseif ($_GET['play']=="rand"){
+	exec("/usr/bin/mocp -x");
+	echo "Playing Random...";
+	exec("/usr/bin/mocp -S");
+	exec("/usr/bin/mocp -c");
+	exec("/usr/bin/mocp -a ".$web_server_root."kh-live/kh-songs/");
+	exec("/usr/bin/mocp -t shuffle");
+	exec("/usr/bin/mocp -p");
+	$info=time().'**info**random song started**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
+	}
+if (isset($_GET['stop'])){
+	
+	if ($_GET['stop']=="true") {
+	exec("/usr/bin/mocp -x");
+	echo "Stopped...";
+	$info=time().'**info**song stopped**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
 }
-
-curl_close($ch);
-
-$url = 'http://'.$vmix_url.'/api?function=ActiveInput&input=1';
-$ch = curl_init();
-
-curl_setopt($ch,CURLOPT_HTTPHEADER, array('User-Agent : PHP'));
-curl_setopt($ch,CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-$result = curl_exec($ch);
-
-$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-if ( $status != 200 ) {
-    die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
+if (isset($_GET['pause'])){
+	
+	if ($_GET['pause']=="true") {
+	exec("/usr/bin/mocp -G");
+	echo "Paused...";
+	$info=time().'**info**song paused**'.$_SESSION['user'].'**'.$_SESSION['cong']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
 }
-
-curl_close($ch);
-*/	
-	}
-	}
-	}
 }
 ?>

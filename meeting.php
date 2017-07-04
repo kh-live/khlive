@@ -8,7 +8,45 @@ exit();
 
 echo '<div id="page">
 <h2>'.$lng['meeting'].'</h2>';
+if (@$timing_conf=='yes'){
 ?>
+<script type="text/javascript">
+function refreshPage(){
+//we need to make a ajax call to meeting-time.php and update the content
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    resp=xmlhttp.responseText;
+
+    MyDiv=document.getElementById('timing_container');
+    MyDiv.innerHTML=resp;
+   var arr = MyDiv.getElementsByTagName('script');
+for (var n = 0; n < arr.length; n++) {
+    eval(arr[n].innerHTML);
+    }
+    }
+  }
+      clearInterval(clock);
+    clearTimeout(refresh);
+xmlhttp.open("GET","./meeting-time.php", true);
+xmlhttp.send();
+}
+</script>
+<div id="timing_container">
+<?PHP
+include 'meeting-time.php';
+?>
+</div>
+<?PHP } ?>
 <script type="text/javascript">
   function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
@@ -18,6 +56,7 @@ echo '<div id="page">
 </iframe>
 
 <?PHP
+
 include 'meeting-songs.php';
 include 'meeting-vmix.php';
 ?>

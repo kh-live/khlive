@@ -228,6 +228,9 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			}
 	}
 }
+if ($page=="time"){
+include 'timing-standalone.php';
+	}
 if (!isset($_SESSION['user'])){
 include ("./login.php");
 }else{
@@ -337,6 +340,14 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./info_delete.php");
 	}elseif($page=="info_edit"){
 	include ("./info_edit.php");
+	}elseif($page=="timings"){
+	include ("./timings.php");
+	}elseif($page=="timing_add"){
+	include ("./timing_add.php");
+	}elseif($page=="timing_delete"){
+	include ("./timing_delete.php");
+	}elseif($page=="timing_edit"){
+	include ("./timing_edit.php");
 	}
 	}
 //manger links only

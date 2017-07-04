@@ -77,7 +77,6 @@ if (@$_POST['submit']!="Yes, Stop it"){
 </head>
 <body>
 <?PHP
-echo 'Server Time : '.date('H:i',time()).'<br /><br />';
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
 if ($server_beta!='true'){
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));

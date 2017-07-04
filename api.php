@@ -5,7 +5,7 @@ include 'functions.php';
 if (isset($_GET['q'])){
 $decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($api_key), base64_decode($_GET['q']), MCRYPT_MODE_CBC, md5(md5($api_key))), "\0");
 $query=explode("**", $decrypted);
-	if ($query[0]+60>=time()){
+	if ($query[0]+60>=time() OR time()>=$query[0]-60){
 		if ($query[1]=="status"){
 		$string=$version."@@@ok";
 		}elseif($query[1]=="fetch_users"){
@@ -224,8 +224,8 @@ $query=explode("**", $decrypted);
 	}
 		}
 		}
-	if ($string!=""){
-	$string=="nothing@@@ko";
+	if ($string==""){
+	$string="nothing@@@ko";
 		}
 	}else{
 	//api_key is undefined when we timeout on master side
@@ -238,7 +238,12 @@ $query=explode("**", $decrypted);
 	}
 	}
 	}
-	$string=="timeout@@@".time();
+	$string="timeout@@@".time();
+	}
+	$info=time().'**info**API call**Query : '.$decrypted.'**Response : '.$string."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
 	}
 		$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($api_key), $string, MCRYPT_MODE_CBC, md5(md5($api_key))));
 		echo $encrypted;

@@ -171,6 +171,8 @@ echo '<br /><input type="submit" id="play_3" value="select a song..." disabled="
 }
 if ($song_dev=='server' AND $song_type!='vid'){
 echo '</div><div class="songs">Random Songs:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" />';
+}elseif ($song_type=='vid'){
+echo '</div><div class="songs">Random Songs on server:<br /><input type="submit" id="play_rand" value="Play Random" /><input type="submit" id="stop_rand" value="Stop Random" />';
 }
 }else{
 	if ($song_type=='normal'){

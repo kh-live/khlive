@@ -104,7 +104,7 @@ use the same language ID as on Jw.org (English=E Afrikaans=AF).<br />
 <input class="field_login" type="text" name="cong_lang" value="<?PHP echo $cong_lang;?>"/>
 <br /><br />
 <b>Voip account type</b><br />
-none : the congregation streams to the server with Edcast (currently not working).<br />
+none : the congregation streams to the server with Edcast.<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate.<br />
 Direct input : Use the sound input/output on the server. this requires USB stack to be limited to 1.1<br />

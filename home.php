@@ -109,12 +109,10 @@ $i=0;
     foreach($db as $line){
         $data=explode ("**",$line);
 	$tmp=explode(':',$data[2]);
-	if ($tmp[1]=='0') $data[2]=$data[2].'0';
-	$tmp=explode(':',$data[3]);
-	if ($tmp[1]=='0') $data[3]=$data[3].'0';
+	$tmp1=explode(':',$data[3]);
 	
 	if (($_SESSION['cong']==$data[0] OR $_SESSION['type']!='user')  AND $data[4]=='yes'){
-	echo 'Meeting for '.$data[0].' : '.@$data[1].' ('.@$data[2].' - '.@$data[3].')<br />';
+	echo 'Meeting for '.$data[0].' : '.@$data[1].' ('.sprintf('%02d:%02d', $tmp[0],$tmp[1]).' - '.sprintf('%02d:%02d', $tmp1[0],$tmp1[1]).')<br />';
 	}
 	$i++;
 	}
