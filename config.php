@@ -1068,6 +1068,12 @@ Enable meeting timing<br />yes -> the link for timing will be shown in menu <br 
 <option value="no">no</option>
 <option value="yes" <?PHP if (@$timing_conf=="yes") echo 'selected=selected';?>>yes</option>
 </select><br />
+Meeting timing vmix overlay multiplier<br />1 -> normal<br />anything else -> to fit your screen <br />
+<select class="field_login" name="timing_multi" >
+<option value="1">1</option>
+<option value="0.75" <?PHP if (@$timing_multi=="0.75") echo 'selected=selected';?>>0.75</option>
+<option value="0.5" <?PHP if (@$timing_multi=="0.5") echo 'selected=selected';?>>0.5</option>
+</select><br />
 Enable video downloader<br />yes -> the link for videos will be shown in menu (and videos are downloaded at 00:05) <br />no -> the video downloader is disabled <br />
 <select class="field_login" name="video_dowloader" >
 <option value="no">no</option>

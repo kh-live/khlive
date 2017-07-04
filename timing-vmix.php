@@ -233,9 +233,9 @@ window.location='./timing-vmix.php';
 	background-color:black;
 	padding:15px;
 	text-align:center;
-	font-size:1em;
+	font-size:calc(<?PHP echo @$timing_multi; ?> * 2em);
 	display:inline-block;
-	max-width: 400px;
+	max-width: calc(<?PHP echo @$timing_multi; ?> * 800px);
 }
 #meeting_overall p{
 	display:none;
@@ -243,7 +243,7 @@ window.location='./timing-vmix.php';
 #meeting_times, #meeting_clock{
 	font-family: 'test1', sans-serif;
 	text-align:center;
-	font-size:1.8em;
+	font-size:calc(<?PHP echo @$timing_multi; ?> * 4em);
 	display:inline-block;
 	padding-left:30px;
 	padding-right:30px;
