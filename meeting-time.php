@@ -138,7 +138,7 @@ echo '<div id="meeting_overall">'.$meeting_status.'</div>';
 <div id="meeting_clock"><h1>88</h1>:<h1>88</h1>:<h1>88</h1></div>
 <div id="meeting_times">
 <?PHP
-if ($elapsed>0){
+if (isset($timings)){
 $seconds=$duration_left;
 $hours = floor($seconds / 3600);
 $mins = floor($seconds / 60 % 60);
@@ -153,7 +153,7 @@ echo '<h1 id="hours">'.date('H', time()).'</h1>:<h1 id="minutes">'.date('i', tim
 </div>
 
 <?PHP
-if ($elapsed>0){
+if (isset($timings)){
 $scripts.='
 clearInterval(clock);
 targetTime=new Date(Date.now()+'.($duration_left*1000).');
@@ -185,7 +185,8 @@ document.getElementById("hours").innerHTML=hours;
 }
 
 function countdownTarget(){
-
+clearInterval(clock);
+clock=setInterval(function(){countdownTarget();},100);
 var timeLeft=(targetTime.getTime()-Date.now())/1000;
 var secondes=Math.floor(timeLeft %60);
 var minutes=Math.floor((timeLeft / 60 ) %60);
