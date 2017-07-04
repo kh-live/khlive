@@ -32,7 +32,7 @@ if (strstr($result_temp[0], 'number="4"')){
 die('no_space_left');
 }
 //the browser input doesn't exist we must add it first
-$url = 'http://'.$vmix_url.'/api?function=AddInput&value=Browser'.urlencode('|http://'.$_SERVER['SERVER_ADDR'].':'.$_SERVER['SERVER_PORT'].'/timing-vmix.php');
+$url = 'http://'.$vmix_url.'/api?function=AddInput&value=Browser'.urlencode('|http://'.$_SERVER['SERVER_ADDR'].':'.$_SERVER['SERVER_PORT'].'/kh-live/timing-vmix.php');
 $ch = curl_init();
 
 curl_setopt($ch,CURLOPT_HTTPHEADER, array('User-Agent : PHP'));

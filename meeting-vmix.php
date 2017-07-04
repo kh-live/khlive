@@ -3,8 +3,14 @@ if (isset($vmix)){
 	if ($vmix=='yes'){
 ?>
 <div id="vmix_title" onclick="javascript:vMixToggle()">&uArr; vMix &uArr;</div><div id="vmix_ctrl"><div id="vmix_lib"><b>LIBRARY</b><br/>Select the files you want to display : <br /> Note it has to be in the following directory : <b><?PHP echo $vmix_lib_path; ?></b><br /><br /></div><div id="vmix_status">Connecting to vmix...</div>
-<div id="timing_overlay"><input id="show_over" type="button" onclick="javascript:vMixShow()" value="show timing overlay" /><input id="hide_over" disabled="disabled" type="button" onclick="javascript:vMixHide()" value="hide timing overlay" /></div></div>
-</div>
+<?PHP
+if (@$timing_conf=='yes'){
+?>
+<div id="timing_overlay"><input id="show_over" type="button" onclick="javascript:vMixShow()" value="show timing overlay" /><input id="hide_over" disabled="disabled" type="button" onclick="javascript:vMixHide()" value="hide timing overlay" /></div>
+<?PHP
+}
+?>
+</div></div>
 <script type="text/javascript">
 var parseXml;
 var lastId=0;
