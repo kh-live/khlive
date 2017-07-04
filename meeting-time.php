@@ -138,7 +138,7 @@ echo '<div id="meeting_overall">'.$meeting_status.'</div>';
 <div id="meeting_clock"><h1>88</h1>:<h1>88</h1>:<h1>88</h1></div>
 <div id="meeting_times">
 <?PHP
-if ($duration_left!=''){
+if ($elapsed>0){
 $seconds=$duration_left;
 $hours = floor($seconds / 3600);
 $mins = floor($seconds / 60 % 60);
@@ -153,7 +153,7 @@ echo '<h1 id="hours">'.date('H', time()).'</h1>:<h1 id="minutes">'.date('i', tim
 </div>
 
 <?PHP
-if ($duration_left!=''){
+if ($elapsed>0){
 $scripts.='
 clearInterval(clock);
 targetTime=new Date(Date.now()+'.($duration_left*1000).');
