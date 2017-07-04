@@ -1,8 +1,9 @@
 <?PHP
+include 'db/config.php';
 if (isset($_GET['show'])){
 	if ($_GET['show']==1){
 	//show the overlay in vmix
-	include 'db/config.php';
+	
 $url = 'http://'.$vmix_url.'/api';
 $ch = curl_init();
 
@@ -135,7 +136,6 @@ curl_close($ch);
 if (isset($_GET['hide'])){
 	if ($_GET['hide']==1){
 	//hide the overlay in vmix
-	include 'db/config.php';
 	
 $url = 'http://'.$vmix_url.'/api?function=OverlayInput1Out';
 $ch = curl_init();
