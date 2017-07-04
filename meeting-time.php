@@ -185,8 +185,6 @@ document.getElementById("hours").innerHTML=hours;
 }
 
 function countdownTarget(){
-clearInterval(clock);
-clock=setInterval(function(){countdownTarget();},100);
 var timeLeft=(targetTime.getTime()-Date.now())/1000;
 var secondes=Math.floor(timeLeft %60);
 var minutes=Math.floor((timeLeft / 60 ) %60);

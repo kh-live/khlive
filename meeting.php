@@ -36,7 +36,6 @@ for (var n = 0; n < arr.length; n++) {
     }
   }
       clearInterval(clock);
-    clearTimeout(refresh);
 xmlhttp.open("GET","./meeting-time.php", true);
 xmlhttp.send();
 }
