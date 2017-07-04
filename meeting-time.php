@@ -171,7 +171,9 @@ var serverTime=<?PHP echo time(); ?>;
 var delta = Date.now() - serverTime*1000;
 var clock;
 var targetTime;
+var testTemp;
 function syncClock(){
+if (testTemp!='1'){
 var adjustedTime=new Date(Date.now()-delta);
 var secondes=adjustedTime.getSeconds();
 var minutes=adjustedTime.getMinutes();
@@ -183,8 +185,10 @@ document.getElementById("secondes").innerHTML=secondes;
 document.getElementById("minutes").innerHTML=minutes;
 document.getElementById("hours").innerHTML=hours;
 }
+}
 
 function countdownTarget(){
+testTemp='1';
 var timeLeft=(targetTime.getTime()-Date.now())/1000;
 var secondes=Math.floor(timeLeft %60);
 var minutes=Math.floor((timeLeft / 60 ) %60);
