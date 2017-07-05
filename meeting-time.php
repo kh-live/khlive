@@ -183,6 +183,8 @@ if (("" + hours).length==1) hours= "0" + hours;
 document.getElementById("secondes").innerHTML=secondes;
 document.getElementById("minutes").innerHTML=minutes;
 document.getElementById("hours").innerHTML=hours;
+}else{
+clearTimeout(clock);
 }
 }
 
