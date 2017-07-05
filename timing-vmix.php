@@ -154,6 +154,7 @@ if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
 }
 curl_close($ch);
+/*
 $url = 'http://'.$vmix_url.'/api';
 $ch = curl_init();
 
@@ -195,7 +196,7 @@ $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 if ( $status != 200 ) {
     die("Error: call to URL $url failed with status $status, response $result, curl_error " . curl_error($ch) . ", curl_errno " . curl_errno($ch));
 }
-curl_close($ch);
+curl_close($ch);*/
 	exit();
 	}
 }
