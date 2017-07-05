@@ -15,17 +15,17 @@ function refreshPage(){
 //we need to make a ajax call to meeting-time.php and update the content
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+  xmlhttpTime=new XMLHttpRequest();
   }
 else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttpTime=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.onreadystatechange=function()
+xmlhttpTime.onreadystatechange=function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  if (xmlhttpTime.readyState==4 && xmlhttpTime.status==200)
     {
-    resp=xmlhttp.responseText;
+    resp=xmlhttpTime.responseText;
 
     MyDiv=document.getElementById('timing_container');
     MyDiv.innerHTML=resp;
@@ -36,8 +36,8 @@ for (var n = 0; n < arr.length; n++) {
     }
   }
       clearInterval(clock);
-xmlhttp.open("GET","./meeting-time.php", true);
-xmlhttp.send();
+xmlhttpTime.open("GET","./meeting-time.php", true);
+xmlhttpTime.send();
 }
 </script>
 <div id="timing_container">
