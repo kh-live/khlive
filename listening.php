@@ -254,6 +254,44 @@ function counter (i){
 </script>
 <div id="page">
 <?PHP echo '<h2>'.$lng['listening'].'</h2>'.$lng['listening_text'].'<br /><br />';
+if (@$timing_conf=='yes'){
+?>
+<script type="text/javascript">
+function refreshPage(){
+//we need to make a ajax call to meeting-time.php and update the content
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttpTime=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttpTime=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttpTime.onreadystatechange=function()
+  {
+  if (xmlhttpTime.readyState==4 && xmlhttpTime.status==200)
+    {
+    resp=xmlhttpTime.responseText;
+
+    MyDiv=document.getElementById('timing_container');
+    MyDiv.innerHTML=resp;
+   var arr = MyDiv.getElementsByTagName('script');
+for (var n = 0; n < arr.length; n++) {
+    eval(arr[n].innerHTML);
+    }
+    }
+  }
+      clearInterval(clock);
+xmlhttpTime.open("GET","./meeting-time.php", true);
+xmlhttpTime.send();
+}
+</script>
+<div id="timing_container">
+<?PHP
+include 'meeting-time.php';
+?>
+</div>
+<?PHP } 
 	if (@$scheduler=='yes'){
 			//we display when the next schedulded meeting is going to take palce
 			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings :<br />';
