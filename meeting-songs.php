@@ -532,12 +532,12 @@ var link = document.getElementById("play_"+i);
 		play_song(no, songNo);
 		}
 }
-<?PHP if ($song_dev!='vmix') { ?>
+
 var link = document.getElementById("play_rand");
 	link.onclick= function(){
 		play_rand();
 		}
-<?PHP } ?>
+
 for (var i = 1; i <= 3; ++i) {
 var link = document.getElementById("stop_"+i);
 	link.onclick= function(){
@@ -546,13 +546,12 @@ var link = document.getElementById("stop_"+i);
 		stop_song(no, songNo);
 		}
 }
-<?PHP if ($song_dev!='vmix') { ?>
+
 var link = document.getElementById("stop_rand");
 	link.onclick= function(){
 		stop_rand();
 		}
 <?PHP
-	}
 }
 ?>
 </script>
