@@ -49,44 +49,44 @@ document.getElementById("vmix_title").innerHTML="&uArr; vMix &uArr;";
 function vMixShow(){
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+  xmlhttpVM=new XMLHttpRequest();
   }
 else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttpVM=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.onreadystatechange=function()
+xmlhttpVM.onreadystatechange=function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  if (xmlhttpVM.readyState==4 && xmlhttpVM.status==200)
     {
-    resp=xmlhttp.responseText;
+    resp=xmlhttpVM.responseText;
    }
   }
   document.getElementById('show_over').disabled='disabled';
   document.getElementById('hide_over').disabled='';
-xmlhttp.open("GET","timing-vmix.php?show=1", true);
-xmlhttp.send();
+xmlhttpVM.open("GET","timing-vmix.php?show=1", true);
+xmlhttpVM.send();
 }
 function vMixHide(){
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+  xmlhttpVM=new XMLHttpRequest();
   }
 else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttpVM=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.onreadystatechange=function()
+xmlhttpVM.onreadystatechange=function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  if (xmlhttpVM.readyState==4 && xmlhttpVM.status==200)
     {
-    resp=xmlhttp.responseText;
+    resp=xmlhttpVM.responseText;
    }
   }
   document.getElementById('show_over').disabled='';
   document.getElementById('hide_over').disabled='disabled';
-xmlhttp.open("GET","timing-vmix.php?hide=1", true);
-xmlhttp.send();
+xmlhttpVM.open("GET","timing-vmix.php?hide=1", true);
+xmlhttpVM.send();
 }
 function vMixLibSet(id){
 if (window.XMLHttpRequest)
