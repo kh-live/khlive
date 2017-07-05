@@ -197,7 +197,7 @@ if (is_array(@$reboot)){
 echo '<br /><br />rebooting ...<br /><br />Click <a href="./">here</a> to refresh the page once the server has rebooted.';
 }else{
 	//we dont do the test when we start the test meeting
-if(!isset($_POST['submit']) AND $server_beta==true){
+if(!isset($_POST['submit'])){
 	$ping='';
 	$dns='';
 	$iax='';
@@ -272,5 +272,7 @@ if (file_exists($temp_dir.'error_ip')) echo '<b>error ip file</b><br />'.file_ge
 if (file_exists($temp_dir.'global_ip')) echo '<b>global ip file</b><br />'.file_get_contents($temp_dir.'global_ip').'<br />';
 exec ('wget -q -O - http://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s/[^0-9.]//g', $resp_exec);
 echo 'kh-live/ip.php : '.implode("",$resp_exec).'<br />';
+echo ' <h2>Force Update</h2>
+<p>Click <a href="./auto_update">here</a> to force updating the server</p>';
 echo "</div>";
 ?>

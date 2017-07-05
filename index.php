@@ -340,14 +340,6 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./info_delete.php");
 	}elseif($page=="info_edit"){
 	include ("./info_edit.php");
-	}elseif($page=="timings"){
-	include ("./timings.php");
-	}elseif($page=="timing_add"){
-	include ("./timing_add.php");
-	}elseif($page=="timing_delete"){
-	include ("./timing_delete.php");
-	}elseif($page=="timing_edit"){
-	include ("./timing_edit.php");
 	}
 	}
 //manger links only
@@ -365,6 +357,14 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./sched_delete.php");
 	}elseif($page=="sched_edit"){
 	include ("./sched_edit.php");
+	}elseif($page=="timings"){
+	include ("./timings.php");
+	}elseif($page=="timing_add"){
+	include ("./timing_add.php");
+	}elseif($page=="timing_delete"){
+	include ("./timing_delete.php");
+	}elseif($page=="timing_edit"){
+	include ("./timing_edit.php");
 	}
 	}
 //everybody's links
