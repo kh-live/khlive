@@ -239,5 +239,24 @@ if (strlen($line)>=10){
 	}
 echo $infos_tmp;
 }
+if ($_SESSION['type']!="user"){
+	echo '<div class="home_widget"><b>Disk space</b>
+	<br />';
+	$bytes = disk_free_space(".");
+    $si_prefix = array( 'B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB' );
+    $base = 1024;
+    $class = min((int)log($bytes , $base) , count($si_prefix) - 1);
+    echo 'Disk Space remaining : '.sprintf('%1.2f' , $bytes / pow($base,$class)) . ' ' . $si_prefix[$class] . '<br />';
+    $bytes1 = disk_total_space(".");
+    $class = min((int)log($bytes1 , $base) , count($si_prefix) - 1);
+    echo 'Total Disk Space : '.sprintf('%1.2f' , $bytes1 / pow($base,$class)) . ' ' . $si_prefix[$class] . '<br />';
+    $percent=floor($bytes/$bytes1*100);
+    if ($percent < 5){
+    echo '<b style="color:red">WARNING Percentage available : '.$percent.'%</b>';
+    }else{
+    echo 'Percentage available : '.$percent.'%';
+    }
+	echo '</div>';
+	}
 ?>
 </div>
