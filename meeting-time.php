@@ -167,13 +167,21 @@ clock=setInterval(function(){syncClock();},100);
 }
 ?>
 <script type="text/javascript">
+if (typeof serverTime === 'undefined') {
 var serverTime=<?PHP echo time(); ?>;
-var delta = Date.now() - serverTime*1000;
+}
+if (typeof window.delta === 'undefined') {
+window.delta = Date.now() - serverTime*1000;
+}
+if (typeof clock === 'undefined') {
 var clock;
+}
+if (typeof targetTime === 'undefined') {
 var targetTime;
+}
 function syncClock(){
 if (window.testTemp!='1'){
-var adjustedTime=new Date(Date.now()-delta);
+var adjustedTime=new Date(Date.now()-window.delta);
 var secondes=adjustedTime.getSeconds();
 var minutes=adjustedTime.getMinutes();
 var hours=adjustedTime.getHours();
@@ -184,7 +192,7 @@ document.getElementById("secondes").innerHTML=secondes;
 document.getElementById("minutes").innerHTML=minutes;
 document.getElementById("hours").innerHTML=hours;
 }else{
-clearTimeout(clock);
+clearInterval(clock);
 }
 }
 
