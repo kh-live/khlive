@@ -25,7 +25,7 @@ echo 'updating app database'
 apt-get update
 echo 'installing required software'
 #remember to say no when asked to configure icecast2
-apt-get install screen wget nano tar dos2unix apache2 php5 libapache2-mod-php5 php5-mcrypt icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
+apt-get install screen wget nano tar dos2unix apache2 php5 libapache2-mod-php5 php5-mcrypt php5-curl alsa-base icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
 mkdir /home/${KH_USER}
 mkdir /home/${KH_USER}/.moc
 chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
@@ -238,7 +238,7 @@ service apache2 restart
 echo 'Restarting icecast2 server'
 service icecast2 restart
 echo 'If you have a USB sound card. Plug it in now. make sure it is connected to some speakers. We will do a sound check once it is installed.'
-read -r -p "Do you want to install the USB sound card now? [y/N] " response
+read -r -p "Do you want to install the USB sound card support now? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY])
        echo 'Installing sound card...'
@@ -246,6 +246,8 @@ usermod -a -G audio ${KH_USER}
 mkdir /home/${KH_USER}
 chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
 cp /root/update_dir/khlive/asound.conf /etc/asound.conf
+ cp /etc/asound.conf /home/${KH_USER}/.asoundrc
+ chown ${KH_USER}:${KH_GRP} /home/${KH_USER}/.asoundrc
 echo 'Testing sound card...'
 speaker-test -c 2 -l 5
 alsamixer

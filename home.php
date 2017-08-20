@@ -198,6 +198,7 @@ $info=filesize("./records/".$file);
 echo '<br /><a href="./record">Click here to view more...</a></div>';
 }
 //now we show the infos
+$url='';
 $db=array();
 $infos_tmp='';
 if ($server_beta!="master") {
