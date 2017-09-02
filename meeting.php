@@ -5,7 +5,13 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
-
+$db4=file("db/cong");
+    foreach($db4 as $line){
+    $data=explode ("**",$line);
+	if ($data[0]==$_SESSION['cong']){
+	$meeting_type=$data[5];
+}
+}
 echo '<div id="page">
 <h2>'.$lng['meeting'].'</h2>';
 if (@$timing_conf=='yes'){
@@ -40,12 +46,17 @@ xmlhttpTime.open("GET","./meeting-time.php", true);
 xmlhttpTime.send();
 }
 </script>
+<?PHP
+if ($meeting_type!="none"){
+?>
 <div id="timing_container">
 <?PHP
 include 'meeting-time.php';
 ?>
 </div>
-<?PHP } ?>
+<?PHP
+}
+} ?>
 <script type="text/javascript">
   function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
@@ -55,9 +66,10 @@ include 'meeting-time.php';
 </iframe>
 
 <?PHP
-
+if ($meeting_type!="none"){
 include 'meeting-songs.php';
 include 'meeting-vmix.php';
+}
 ?>
 </div>
 <script type="text/javascript">

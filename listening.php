@@ -16,6 +16,7 @@ $_SESSION['user']=$_GET['user'];
 $_SESSION['cong']=$_GET['cong'];
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 $_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
+
 echo '<html><head>
 <style type="text/css">
 body {
@@ -293,7 +294,14 @@ function counter (i){
 </script>
 <div id="page">
 <?PHP echo '<h2>'.$lng['listening'].'</h2>'.$lng['listening_text'].'<br /><br />';
-if (@$timing_conf=='yes'){
+$db0=file("db/cong");
+    foreach($db0 as $line){
+    $data=explode ("**",$line);
+	if ($data[0]==$_SESSION['cong']){
+	$meeting_type=$data[5];
+}
+}
+if (@$timing_conf=='yes' AND ($meeting_type!="none")){
 ?>
 <script type="text/javascript">
 function refreshPage(){
@@ -331,7 +339,7 @@ include 'meeting-time.php';
 ?>
 </div>
 <?PHP } 
-	if (@$scheduler=='yes'){
+	if (@$scheduler=='yes' AND ($meeting_type!="none")){
 			//we display when the next schedulded meeting is going to take palce
 			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings :<br />';
 			$smeetings='';

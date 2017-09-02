@@ -8,7 +8,7 @@ if ($test_time!==FALSE){
 		$min=$now - 60 ;
 		$max=$now + 60;
 		if (($min <= $test_time) AND ($test_time <= $max)){
-			if ($meeting_processor!='scheduler' AND @$scheduler=='yes'){
+			if ($meeting_processor!='scheduler' AND @$scheduler=='yes' AND $meeting_type!='none'){
 			//we display when the next schedulded meeting is going to take palce
 			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings for today (automatic start and stop) :<br />';
 			$smeetings='';
@@ -145,7 +145,7 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 			}
 		}elseif ($meeting_type=='none'){
 			if ($meeting_processor!='scheduler'){
-			echo 'Press the "connect" button on Edcast to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy).';
+			echo 'Press the "connect" button on Edcast/BoradcastMyself to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy or Edcast).';
 			}
 		}else{
 			if (isset($_SESSION['cong_phone_no'])){
