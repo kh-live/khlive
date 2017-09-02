@@ -6,7 +6,7 @@ include "404.php";
 exit(); 
 }
 $cong_name=$_SESSION['cong'];
-if(isset($_POST['submit'])){
+if(isset($_POST['submit']) AND $server_beta!='master'){
 	if($_POST['submit']=="Start test"){
 if ($server_beta=='false'){
 //start meeting
@@ -247,6 +247,7 @@ Local router : '.$local.'<br />';
 IAX trunk : '.$iax.'<br />*/
 /*<b>SIP local link connectivity:</b><br />
 Congregation computer : '.$sip.'<br />*/
+if ($server_beta!='master'){
 echo '<h1>Reboot</h1>
 <p>do not reboot if there is a meeting live! You might loose connection until the server restarts!</p>
 <form action="" method="post">
@@ -254,6 +255,8 @@ echo '<h1>Reboot</h1>
 </form>
 ';
 }
+}
+if ($server_beta!='master'){
 echo '<h2>Test meeting :</h2>Start/stop a test meeting, if you want to test the system without needing the congregation\'s computer to be on.<br />Do not start a test while a real meeting is live as it may break things.<br /><br />';
 if($server_beta=='stream'){
 echo 'Make sure you have some mp3s in the recordings folder<br /><br />';
@@ -268,11 +271,14 @@ if (strstr($_SESSION['meeting_status'],"down") AND strstr($_SESSION['test_meetin
 	}
 	echo '</form>';
 }
+}
+if ($server_beta!='master'){
 if (file_exists($temp_dir.'error_ip')) echo '<b>error ip file</b><br />'.file_get_contents($temp_dir.'error_ip').'<br />';
 if (file_exists($temp_dir.'global_ip')) echo '<b>global ip file</b><br />'.file_get_contents($temp_dir.'global_ip').'<br />';
 exec ('wget -q -O - http://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s/[^0-9.]//g', $resp_exec);
 echo 'kh-live/ip.php : '.implode("",$resp_exec).'<br />';
 echo ' <h2>Force Update</h2>
 <p>Click <a href="./auto_update">here</a> to force updating the server</p>';
+}
 echo "</div>";
 ?>

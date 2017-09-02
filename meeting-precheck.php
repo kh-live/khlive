@@ -101,7 +101,24 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 									if (strstr($file, "meeting_")){
 										$content=implode("",file($path . $file));
 										if (strstr($content, 'live')) {
-											$already_meeting1=$file;
+											//we prevent starting the meeting only if that congregation also uses direct or direct-stream
+											$db1=file('./db/cong');
+												if ($db1!=''){
+												foreach($db1 as $line){
+												$data=explode('**', $line);
+												$cong=$data[0];
+												$tmp_file=str_replace('test_meeting_','',$file);
+												$tmp_file1=str_replace('meeting_','',$tmp_file);
+													if (str_replace(' ', '_',$cong)==$tmp_file1){
+														if (($data[5]=="direct" OR $data[5]=='direct-stream')){
+														$already_meeting1=$file;
+														}
+													}
+												}
+												}else{
+												$already_meeting1='cant read cong db';;
+												}
+											
 										}
 									}
 								}
