@@ -47,12 +47,12 @@ window.location='./time';
 	padding-top:30px;
 	padding-bottom:30px;
 	text-align:center;
-	font-size:2em;
+	font-size:1em;
 }
 #meeting_times, #meeting_clock{
 	font-family: 'test1', sans-serif;
 	text-align:center;
-	font-size:5em;
+	font-size:3em;
 }
 #hours, #minutes, #secondes, #meeting_clock h1{
 display:inline-block;
