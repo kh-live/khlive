@@ -70,15 +70,21 @@ if (isset($_GET['cong'])){
     foreach($db as $line){
         $data=explode ("**",$line);
 	if (strstr($data[3], $_GET['cong'])){
-	$_SESSION['time_cong']=$_GET['cong'];
-	$_SESSION['url_cong']=$data[0];
+	$url_cong=$data[0];
+	if ($_SERVER['REMOTE_ADDR']==$data[1]){
+	$url_cong=$data[4];
+	if (!filter_var($url_cong, FILTER_VALIDATE_IP) {
+	echo ' Please configure your local ip address on kh-live correctly then try again.';
+	die();
+	}
+	}
 	}
   }
 }
-if (isset($_SESSION['time_cong'])){
+if (isset($url_cong)){
 	//we must include the remote timing related to that cong
 	echo '<script type="text/javascript">
-window.location="http://'.$_SESSION['url_cong'].'/kh-live/time";
+window.location="http://'.$url_cong.'/kh-live/time";
 </script>';
 	}else{
 	?>

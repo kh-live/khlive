@@ -20,9 +20,9 @@ if(isset($_POST['submit'])){
 			$server_url=$_POST['server_url'];
 			$server_api=$_POST['server_api'];
 			$congs=$_POST['congs'];
+			$localip=$_POST['localip'];
 			
-			
-			$info=$server_name."**".$server_url."**".$server_api."**".$congs."**\n";
+			$info=$server_name."**".$server_url."**".$server_api."**".$congs."**".$localip."**\n";
 
 			$file=fopen('./db/servers','a');
 			if(fputs($file,$info)){
@@ -57,6 +57,9 @@ Add anew server<br /><br />
 <br /><br />
 <b>congregations linked to server (separate with ";")</b><br />
 <input class="field_login" type="text" name="congs" />
+<br /><br />
+<b>server local ip address (192.168.1.123 or similar)</b><br />
+<input class="field_login" type="text" name="localip" />
 <br /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
