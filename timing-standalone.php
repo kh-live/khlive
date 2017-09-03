@@ -73,7 +73,7 @@ if (isset($_GET['cong'])){
 	$url_cong=$data[0];
 	if ($_SERVER['REMOTE_ADDR']==$data[1]){
 	$url_cong=$data[4];
-	if (!filter_var($url_cong, FILTER_VALIDATE_IP) {
+	if (!filter_var($url_cong, FILTER_VALIDATE_IP)) {
 	echo ' Please configure your local ip address on kh-live correctly then try again.';
 	die();
 	}
