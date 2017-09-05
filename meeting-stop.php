@@ -1,7 +1,10 @@
 <?PHP
 //we need db/config.php for this to work
-//we can't stop a meeting that's started by a relay
-if ($meeting_type!="none"){
+
+if ($meeting_type=="none"){
+//we can't automatically stop a meeting that's started by a relay
+die();
+}else{
 $_SESSION['meeting_stop_time']=time();
 	if (is_file($temp_dir.'song_1_'.$_SESSION['cong'])){
 unlink($temp_dir.'song_1_'.$_SESSION['cong']);

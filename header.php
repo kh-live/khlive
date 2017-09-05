@@ -65,8 +65,9 @@ if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 if ($_SESSION['type']=="admin"){
 if ($server_beta!="master") {
 echo '<a href="./diagnosis">Diagnosis</a>';
+echo '<a href="./download">'.$lng['file_transfer'].'</a>';
 }
-echo '<a href="./download">'.$lng['file_transfer'].'</a>
+echo'
 <a href="./listening">'.$lng['listening'].'</a>';
 if ($server_beta!="master") {
 echo '<a href="./meeting">'.$lng['meeting'].'</a>';
@@ -84,7 +85,7 @@ echo '<a href="./timings">Timing</a>';
 echo '<a href="./users">'.$lng['users'].'</a>';
 if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }else{
-echo '<a href="./timings">Timing</a><a href="./users">'.$lng['users'].'</a>';
+echo '<a href="./users">'.$lng['users'].'</a>';
 }
 }
 if ($_SESSION['type']=="root"){

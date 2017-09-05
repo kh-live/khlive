@@ -28,7 +28,10 @@ Extension: meet_me_".$_SESSION['cong']."_admin
 Priority: 1
 ";
 }
-if ($meeting_type!='direct-stream'){
+if ($meeting_type=='none'){
+//we don't do anything the meeting can't start with scheduler
+die();
+}elseif ($meeting_type!='direct-stream'){
 $file=fopen('/tmp/meeting_'.$_SESSION['cong'].'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
