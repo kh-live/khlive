@@ -63,7 +63,7 @@ No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 use the same language ID as on Jw.org (English=E Afrikaans=AF)<br />
 <input class="field_login" type="text" name="cong_lang" />
 <br /><br />
-<b>Voip account type</b><br />
+<b>Account type</b><br />
 none : the congregation streams to the server with Edcast .<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate (currently not working).<br />
@@ -115,10 +115,11 @@ stream_to_server :<br />server to send the stream to. usually localhost.<br />
 <b>Stream type</b><br />
 ogg: compatible with Chrome Firefox and Opera<br />
 mp3 : compatible with IE Chrome Safari and Firefox (V.21+, Vista+).<br />
-both : will stream in both formats at the same time. Only available when editing the cong.<br />
+both : will stream in both formats at the same time. Only in NO VOIP mode. Account type must be "direct stream" or "none".<br />
 <select name="stream_type">
 <option value="ogg">ogg</option>
 <option value="mp3">mp3</option>
+<option value="both">both</option>
 </select><br /><br /><br />
 <b>Congregation pwd (Voip/Stream)</b><br />
 Generated automaticaly (do not use weaker password).<br />

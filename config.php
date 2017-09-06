@@ -695,7 +695,7 @@ $fichier = fopen('./config/indications.conf', 'w');
 	   	ob_start();
 ?><icecast>
     <limits>
-        <sources>2</sources>
+        <sources><?PHP echo $max_stream_no; ?></sources>
     </limits>
     <authentication>
         <source-password><?PHP echo $master_key; ?></source-password>
@@ -838,7 +838,7 @@ $info4 = "<ezstream>
     <svrinfobitrate>".$bitrate."</svrinfobitrate>
     <svrinfoquality>1</svrinfoquality>
     <svrinfochannels>1</svrinfochannels>
-    <svrinfosamplerate>8000</svrinfosamplerate>
+    <svrinfosamplerate>".$sound_quality."</svrinfosamplerate>
     <svrinfopublic>0</svrinfopublic>
 </ezstream>";
 $file=fopen('./config/asterisk-ices-'.$cong_name.'.xml','w');
@@ -874,7 +874,7 @@ $info4="<?xml version=\"1.0\"?>
         </metadata>
         <input>
             <module>stdinpcm</module>
-            <param name=\"rate\">8000</param>
+            <param name=\"rate\">".$sound_quality."</param>
             <param name=\"channels\">1</param>
             <param name=\"metadata\">0</param>
             <param name=\"metadatafilename\"> </param>
@@ -887,7 +887,7 @@ $info4="<?xml version=\"1.0\"?>
             <yp>0</yp>
             <encode>  
                 <quality>".$stream_quality."</quality>
-                <samplerate>8000</samplerate>
+                <samplerate>".$sound_quality."</samplerate>
                 <channels>1</channels>
             </encode>
             <downmix>0</downmix>
@@ -1117,6 +1117,39 @@ test_ip :<br />local ip to ping<br />
 
 <div class="subgroup" onclick="javascript:toogleDiv(5)">Audio interface</div>
 <div class="subgroups" id="subgroup5">
+<?PHP
+if (!isset($max_stream_no)){
+$max_stream_no="2";
+}
+?>
+Maximum number of simutaneous streams (note that one congregation can use two streams at once)<br />
+<select class="field_login" name="max_stream_no" >
+<option value="2">2</option>
+<option value="3" <?PHP if ($max_stream_no=="3") echo 'selected=selected';?>>3</option>
+<option value="4" <?PHP if ($max_stream_no=="4") echo 'selected=selected';?>>4</option>
+<option value="5" <?PHP if ($max_stream_no=="5") echo 'selected=selected';?>>5</option>
+<option value="6" <?PHP if ($max_stream_no=="6") echo 'selected=selected';?>>6</option>
+<option value="7" <?PHP if ($max_stream_no=="7") echo 'selected=selected';?>>7</option>
+<option value="8" <?PHP if ($max_stream_no=="8") echo 'selected=selected';?>>8</option>
+<option value="9" <?PHP if ($max_stream_no=="9") echo 'selected=selected';?>>9</option>
+<option value="10" <?PHP if ($max_stream_no=="10") echo 'selected=selected';?>>10</option>
+</select><br />
+<?PHP
+if (!isset($sound_quality)){
+$sound_quality="8000";
+}
+?>
+Stream and Recording sample rate in Hz. 8000Hz is the default on raspberry pi. <br />The higher the better quality, but it will also consume more processing power and more storage and more bandwidth.<br />
+<select class="field_login" name="sound_quality" >
+<option value="8000">8000 Hz (default)</option>
+<option value="11025" <?PHP if ($sound_quality=="11025") echo 'selected=selected';?>>11025 Hz</option>
+<option value="16000" <?PHP if ($sound_quality=="16000") echo 'selected=selected';?>>16000 Hz</option>
+<option value="22050" <?PHP if ($sound_quality=="22050") echo 'selected=selected';?>>22050 Hz</option>
+<option value="32000" <?PHP if ($sound_quality=="32000") echo 'selected=selected';?>>32000 Hz</option>
+<option value="44100" <?PHP if ($sound_quality=="44100") echo 'selected=selected';?>>44100 Hz (cd quality)</option>
+<option value="48000" <?PHP if ($sound_quality=="48000") echo 'selected=selected';?>>48000 Hz</option>
+<option value="96000" <?PHP if ($sound_quality=="96000") echo 'selected=selected';?>>96000 Hz (top notch HiFi)</option>
+</select><br />
 Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)<br />
 <input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />
 <?PHP

@@ -200,6 +200,7 @@ global $port;
 global $server_audio;
 global $alsa_in;
 global $alsa_out;
+global $sound_quality;
 if ($stream_server=="") $stream_server=$server_in;
 
 		$db=file("db/cong");
@@ -418,7 +419,7 @@ if ($stream_type=="mp3" OR $stream_type=="both"){
     <svrinfobitrate>".$bitrate."</svrinfobitrate>
     <svrinfoquality>1</svrinfoquality>
     <svrinfochannels>1</svrinfochannels>
-    <svrinfosamplerate>8000</svrinfosamplerate>
+    <svrinfosamplerate>".$sound_quality."</svrinfosamplerate>
     <svrinfopublic>0</svrinfopublic>
 </ezstream>";
 
@@ -458,7 +459,7 @@ $info4="<?xml version=\"1.0\"?>
         </metadata>
         <input>
             <module>stdinpcm</module>
-            <param name=\"rate\">8000</param>
+            <param name=\"rate\">".$sound_quality."</param>
             <param name=\"channels\">1</param>
             <param name=\"metadata\">0</param>
             <param name=\"metadatafilename\"> </param>
@@ -471,7 +472,7 @@ $info4="<?xml version=\"1.0\"?>
             <yp>0</yp>
             <encode>  
                 <quality>".$stream_quality."</quality>
-                <samplerate>8000</samplerate>
+                <samplerate>".$sound_quality."</samplerate>
                 <channels>1</channels>
             </encode>
             <downmix>0</downmix>

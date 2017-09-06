@@ -103,7 +103,7 @@ No spaces allowed (use "_" instead). One "_" and only one "_" required.<br />
 use the same language ID as on Jw.org (English=E Afrikaans=AF).<br />
 <input class="field_login" type="text" name="cong_lang" value="<?PHP echo $cong_lang;?>"/>
 <br /><br />
-<b>Voip account type</b><br />
+<b>Account type</b><br />
 none : the congregation streams to the server with Edcast.<br />
 SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate.<br />
@@ -154,12 +154,12 @@ stream_to_server :<br />server to send the stream to. usually localhost.<br />
 <b>Stream type</b><br />
 ogg: compatible with Chrome Firefox and Opera<br />
 mp3 : compatible with IE Chrome Safari and Firefox (V.21+, Vista+).<br />
-both : will stream in both formats at the same time. Only in NO VOIP mode. Cong must be in direct stream mode.<br />
+both : will stream in both formats at the same time. Only in NO VOIP mode. Account type must be "direct stream" or "none".<br />
 <select name="stream_type">
 <option value="ogg" <?PHP if ($stream_type=="ogg") echo 'selected=selected';?>>ogg</option>
 <option value="mp3" <?PHP if ($stream_type=="mp3") echo 'selected=selected';?>>mp3</option>
 <?PHP
-if ($server_beta=='stream' AND $voip_type=="direct-stream"){
+if (($server_beta=='stream' AND $voip_type=="direct-stream") OR ($voip_type=="none")){
 ?>
 <option value="both" <?PHP if ($stream_type=="both") echo 'selected=selected';?>>both</option>
 <?PHP
