@@ -6,6 +6,7 @@ include "404.php";
 exit(); 
 }
 include 'functions.php';
+
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['save']){
 		if ($_POST['cong_confirmed']!=""){
@@ -137,19 +138,32 @@ sip_caller_ip :<br />limit cong meeting call to this IP (leave blank if no limit
 </select><br /><br />
 stream_to_server :<br />server to send the stream to. usually localhost.<br />
 <input class="field_login" type="text" name="stream_server" value="<?PHP echo @$stream_server;?>" /><br /><br />
-<b>Streaming quality</b><br />
+<b>Streaming quality @ <?PHP echo $sound_quality; ?> Hz</b><br />
 <select name="stream_quality">
-<option value="0" <?PHP if ($stream_quality=="0") echo 'selected=selected';?>>0 (15 kb/s - low quality)</option>
-<option value="1" <?PHP if ($stream_quality=="1") echo 'selected=selected';?>>1 (18 kb/s)</option>
-<option value="2" <?PHP if ($stream_quality=="2") echo 'selected=selected';?>>2 (21 kb/s)</option>
-<option value="3" <?PHP if ($stream_quality=="3") echo 'selected=selected';?>>3 (24 kb/s - default)</option>
-<option value="4" <?PHP if ($stream_quality=="4") echo 'selected=selected';?>>4 (27 kb/s)</option>
-<option value="5" <?PHP if ($stream_quality=="5") echo 'selected=selected';?>>5 (30 kb/s)</option>
-<option value="6" <?PHP if ($stream_quality=="6") echo 'selected=selected';?>>6 (33 kb/s)</option>
-<option value="7" <?PHP if ($stream_quality=="7") echo 'selected=selected';?>>7 (36 kb/s)</option>
-<option value="8" <?PHP if ($stream_quality=="8") echo 'selected=selected';?>>8 (39 kb/s)</option>
-<option value="9" <?PHP if ($stream_quality=="9") echo 'selected=selected';?>>9 (41 kb/s)</option>
-<option value="10" <?PHP if ($stream_quality=="10") echo 'selected=selected';?>>10 (43 kb/s - high quality)</option>
+<?PHP $multiplier= ($sound_quality / 8000);
+$bitrate = (15 * $multiplier);
+?>
+<option value="0" <?PHP if ($stream_quality=="0") echo 'selected=selected';?>>0 (<?PHP echo round($bitrate); ?> kb/s - low quality)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="1" <?PHP if ($stream_quality=="1") echo 'selected=selected';?>>1 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="2" <?PHP if ($stream_quality=="2") echo 'selected=selected';?>>2 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="3" <?PHP if ($stream_quality=="3") echo 'selected=selected';?>>3 (<?PHP echo round($bitrate); ?> kb/s - default)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="4" <?PHP if ($stream_quality=="4") echo 'selected=selected';?>>4 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="5" <?PHP if ($stream_quality=="5") echo 'selected=selected';?>>5 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="6" <?PHP if ($stream_quality=="6") echo 'selected=selected';?>>6 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="7" <?PHP if ($stream_quality=="7") echo 'selected=selected';?>>7 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="8" <?PHP if ($stream_quality=="8") echo 'selected=selected';?>>8 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="9" <?PHP if ($stream_quality=="9") echo 'selected=selected';?>>9 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="10" <?PHP if ($stream_quality=="10") echo 'selected=selected';?>>10 (<?PHP echo round($bitrate); ?> kb/s - high quality)</option>
 </select><br /><br />
 <b>Stream type</b><br />
 ogg: compatible with Chrome Firefox and Opera<br />

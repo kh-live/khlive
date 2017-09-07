@@ -100,17 +100,30 @@ stream_to_server :<br />server to send the stream to. usually localhost.<br />
 <input class="field_login" type="text" name="stream_server"  /><br /><br />
 <b>Streaming quality</b><br />
 <select name="stream_quality">
-<option value="0">0 (15 kb/s)</option>
-<option value="1">1 (18 kb/s)</option>
-<option value="2" >2 ( kb/s)</option>
-<option value="3" <?PHP echo 'selected=selected';?>>3 ( kb/s - default)</option>
-<option value="4">4 ( kb/s)</option>
-<option value="5" >5 ( kb/s)</option>
-<option value="6" >6 ( kb/s)</option>
-<option value="7" >7 ( kb/s)</option>
-<option value="8" >8 ( kb/s)</option>
-<option value="9" >9 ( kb/s)</option>
-<option value="10" >10 ( kb/s)</option>
+<?PHP $multiplier= ($sound_quality / 8000);
+$bitrate = (15 * $multiplier);
+?>
+<option value="0" >0 (<?PHP echo round($bitrate); ?> kb/s - low quality)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="1" >1 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="2" >2 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="3" selected="selected" >3 (<?PHP echo round($bitrate); ?> kb/s - default)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="4" >4 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="5" >5 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="6" >6 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="7" >7 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="8" >8 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="9" >9 (<?PHP echo round($bitrate); ?> kb/s)</option>
+<?PHP $bitrate += (2 * $multiplier); ?>
+<option value="10" >10 (<?PHP echo round($bitrate); ?> kb/s - high quality)</option>
 </select><br /><br />
 <b>Stream type</b><br />
 ogg: compatible with Chrome Firefox and Opera<br />

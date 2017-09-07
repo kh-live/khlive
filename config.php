@@ -1139,16 +1139,18 @@ if (!isset($sound_quality)){
 $sound_quality="8000";
 }
 ?>
-Stream and Recording sample rate in Hz. 8000Hz is the default on raspberry pi. <br />The higher the better quality, but it will also consume more processing power and more storage and more bandwidth.<br />
+Stream and Recording sample rate in Hz. 8000Hz is the default on raspberry pi. <br />
+The higher the better quality, but it will also consume more processing power and more storage and more bandwidth.<br />
+(In brackets the highest frequency recorded is noted - everything above 20kHz can't be heard by humans)<br />
 <select class="field_login" name="sound_quality" >
-<option value="8000">8000 Hz (default)</option>
-<option value="11025" <?PHP if ($sound_quality=="11025") echo 'selected=selected';?>>11025 Hz</option>
-<option value="16000" <?PHP if ($sound_quality=="16000") echo 'selected=selected';?>>16000 Hz</option>
-<option value="22050" <?PHP if ($sound_quality=="22050") echo 'selected=selected';?>>22050 Hz</option>
-<option value="32000" <?PHP if ($sound_quality=="32000") echo 'selected=selected';?>>32000 Hz</option>
-<option value="44100" <?PHP if ($sound_quality=="44100") echo 'selected=selected';?>>44100 Hz (cd quality)</option>
-<option value="48000" <?PHP if ($sound_quality=="48000") echo 'selected=selected';?>>48000 Hz</option>
-<option value="96000" <?PHP if ($sound_quality=="96000") echo 'selected=selected';?>>96000 Hz (top notch HiFi)</option>
+<option value="8000">8000 Hz (3.6kHz - default)</option>
+<option value="11025" <?PHP if ($sound_quality=="11025") echo 'selected=selected';?>>11025 Hz (5kHz)</option>
+<option value="16000" <?PHP if ($sound_quality=="16000") echo 'selected=selected';?>>16000 Hz (7.2kHz)</option>
+<option value="22050" <?PHP if ($sound_quality=="22050") echo 'selected=selected';?>>22050 Hz (10kHz)</option>
+<option value="32000" <?PHP if ($sound_quality=="32000") echo 'selected=selected';?>>32000 Hz (14.5kHz)</option>
+<option value="44100" <?PHP if ($sound_quality=="44100") echo 'selected=selected';?>>44100 Hz (20kHz - cd quality)</option>
+<option value="48000" <?PHP if ($sound_quality=="48000") echo 'selected=selected';?>>48000 Hz (21.8kHz - default mp3)</option>
+<option value="96000" <?PHP if ($sound_quality=="96000") echo 'selected=selected';?>>96000 Hz (43.6kHz - Hi Res Audio)</option>
 </select><br />
 Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)<br />
 <input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />
