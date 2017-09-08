@@ -1150,7 +1150,7 @@ The higher the better quality, but it will also consume more processing power an
 <option value="32000" <?PHP if ($sound_quality=="32000") echo 'selected=selected';?>>32000 Hz (14.5kHz)</option>
 <option value="44100" <?PHP if ($sound_quality=="44100") echo 'selected=selected';?>>44100 Hz (20kHz - cd quality)</option>
 <option value="48000" <?PHP if ($sound_quality=="48000") echo 'selected=selected';?>>48000 Hz (21.8kHz - default mp3)</option>
-<option value="96000" <?PHP if ($sound_quality=="96000") echo 'selected=selected';?>>96000 Hz (43.6kHz - Hi Res Audio)</option>
+<option value="96000" disabled="disabled" >96000 Hz (43.6kHz - Hi Res Audio)</option>
 </select><br />
 Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)<br />
 <input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />

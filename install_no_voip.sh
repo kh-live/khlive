@@ -245,7 +245,7 @@ case $response in
 usermod -a -G audio ${KH_USER}
 mkdir /home/${KH_USER}
 chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
-cp /root/update_dir/khlive/asound.conf /etc/asound.conf
+cp ${APACHE_ROOT}kh-live/asound.conf /etc/asound.conf
  cp /etc/asound.conf /home/${KH_USER}/.asoundrc
  chown ${KH_USER}:${KH_GRP} /home/${KH_USER}/.asoundrc
 echo 'Testing sound card...'
