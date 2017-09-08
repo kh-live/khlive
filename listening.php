@@ -5,6 +5,7 @@ $print='ok';
 
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
+//we're accessing the page through an iframe
 $a = session_id();
 if ($a == ''){
 session_start();
@@ -120,15 +121,18 @@ $db=file("db/servers");
 	}
 	}
 if ($url==""){
-echo 'Could not find your congregations server...';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br />Could not find your congregations server...</div>';
 }else{
 //we check if the meeting is live or not
 if ($_SESSION['meeting_status']=='live'){
-echo '<div id="page"><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
 }else{
 echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><div id="feeds">'.$lng['nolive'].' :<br /><br /><u>'.$lng['not_available'].'</u><br /><br /></div>'.$lng['listen_records'].'<br /></div>';
 }
 }
+}else{
+//on slave server page accessed not through iframe
+echo '<div id="page"><h2>'.$lng['listening'].'</h2>';
 }
 }
 if ($print=='ok'){
@@ -292,8 +296,8 @@ function counter (i){
  }
 }
 </script>
-<div id="page">
-<?PHP echo '<h2>'.$lng['listening'].'</h2>'.$lng['listening_text'].'<br /><br />';
+<?PHP
+echo $lng['listening_text'].'<br /><br />';
 $db0=file("db/cong");
     foreach($db0 as $line){
     $data=explode ("**",$line);
@@ -479,10 +483,12 @@ Your answer :<br /><textarea name="answer" id="answer"></textarea><br /><br />
 	}
 }
 ?>
-</div>
+
 <?PHP
 }
 if (strstr($test, ".php")){
 echo '</body></html>';
+}else{
+echo '</div>';
 }
 ?>
