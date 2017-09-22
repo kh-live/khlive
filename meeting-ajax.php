@@ -289,7 +289,7 @@ if(isset($_POST['submit'])){
 						</form></i>';
 					}elseif( $time_since_bypass <= (10*60*60)){
 					echo '<i style="padding:10px;background-color:yellow;color:black;display:block;">The Auto Stop is bypassed. Dont forget to stop the meeting manually!
-						</form></i><br /><br />';
+						</i><br /><br />';
 					}
 				}
 			}
@@ -304,9 +304,12 @@ include 'meeting-listeners.php';
 }else{
 	if(isset($_POST['submit'])){
 		if($_POST['submit']=="Start meeting"){
+			//we make sure the request was made within two minutes otherwise it could be an old request recycled by apache
+			if (((time() - 120) <= $_POST['otp_time']) AND (  $_POST['otp_time'] <= (time() + 120))){
 		//start meeting
 		$meeting_processor='ajax';
 		include 'meeting-start.php';
+			}
 		}
 	}else{
 		//if the meeting just stopped
@@ -361,7 +364,7 @@ include 'meeting-listeners.php';
 			echo '<b style="color:red;">The meeting failed to start!</b><br />';
 			}
 		}
-		//otherwise
+		//otherwise  we do prechecks before we show the form to start meeting
 		$meeting_processor='ajax';
 		include 'meeting-precheck.php';
 	}

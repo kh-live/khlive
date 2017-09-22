@@ -131,7 +131,8 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 				echo 'Click on the button bellow to start the meeting manually.<br /><b style="color:green;">We\'ll try to connect to the server\'s sound card...</b><br /><br />';
 				if ($already_meeting1==''){
 					echo '<form action="" method="post">
-					<input name="submit" id="input_login" type="submit" value="Start meeting">
+					<input name="otp_time" type="hidden" value="'.time().'" />
+					<input name="submit" id="input_login" type="submit" value="Start meeting" />
 					</form>';
 				}elseif(strstr($already_meeting1,$_SESSION['cong'])){
 					echo ' The meeting is busy starting...<br/><a href="./meeting-ajax.php">Click here to refresh manually</a>';
@@ -181,7 +182,8 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 								if ($meeting_processor!='scheduler'){
 								echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
 								echo '<form action="" method="post">
-								<input name="submit" id="input_login" type="submit" value="Start meeting">
+								<input name="otp_time" type="hidden" value="'.time().'" />
+								<input name="submit" id="input_login" type="submit" value="Start meeting" />
 								</form>';
 								}
 							}else{
@@ -200,7 +202,8 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 								if ($meeting_processor!='scheduler'){
 								echo '<b style="color:green;">The number seems to be reachable.</b><br /><br />';
 								echo '<form action="" method="post">
-								<input name="submit" id="input_login" type="submit" value="Start meeting">
+								<input name="otp_time" type="hidden" value="'.time().'" />
+								<input name="submit" id="input_login" type="submit" value="Start meeting" />
 								</form>';
 								}
 							}else{
