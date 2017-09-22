@@ -486,6 +486,10 @@ if (@$video_dowloader=="yes"){
 ?>5 0 * * * root <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
 <?PHP
 }
+if (@$auto_stop=="yes"){
+?>55 23 * * * root wget -q -O /dev/null http://<?PHP echo $server_in; ?>/kh-live/auto_stop.php
+<?PHP
+}
 //it is very important to finish the cron file with a new line (otherwise it is not executed by cron)
 	          $message = ob_get_clean();
 $fichier = fopen('./config/cron', 'w');
@@ -1078,6 +1082,11 @@ Enable video downloader<br />yes -> the link for videos will be shown in menu (a
 <select class="field_login" name="video_dowloader" >
 <option value="no">no</option>
 <option value="yes" <?PHP if (@$video_dowloader=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+Enable failsafe automatic meeting stop<br />yes -> any meeting still streaming at 23:55 will be stopped automatically <br />no ->automatic failsafe is disabled <br />
+<select class="field_login" name="auto_stop" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$auto_stop=="yes") echo 'selected=selected';?>>yes</option>
 </select><br />
 </div>
 
