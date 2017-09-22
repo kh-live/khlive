@@ -14,8 +14,8 @@ body{
 	margin-left:80px;
 }
 .live_user{
-	width:190px;
-	height:200px;
+	width:90px;
+	height:100px;
 	float:left;
 	z-index:100;
 }
@@ -29,7 +29,8 @@ body{
 	background-color:#AAAAAA;
 	border: 1px solid black;
 	padding: 5px;
-	width:450px;
+	max-width:450px;
+	width:100%;
 }
 #meeting_answer a,#meeting_answer-small a {
 	color:white;
