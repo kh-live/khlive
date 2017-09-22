@@ -19,6 +19,10 @@ body{
 	float:left;
 	z-index:100;
 }
+.live_user img{
+width:90px;
+height:90px;
+}
 .stop{
 	color:red;
 }
@@ -31,6 +35,7 @@ body{
 	padding: 5px;
 	max-width:450px;
 	width:100%;
+	box-sizing: border-box;
 }
 #meeting_answer a,#meeting_answer-small a {
 	color:white;
