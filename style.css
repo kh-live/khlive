@@ -401,6 +401,9 @@ font-size:18px;
 #send{
 	float:right;
 }
+#songtype{
+	width:100%;
+}
 #songs{
 	position:absolute;
 	top:100px;
@@ -451,10 +454,11 @@ border: 1px solid rgba(0, 0, 0, 1);
 	margin-right:0;
 	top:auto;
 	right:auto;
-	width:auto;
+	width:100%;
 	text-align:center;
 	margin-bottom:20px;
 	margin-top:20px;
+	box-sizing: border-box;
 }
 .songs{
 	width:200px;

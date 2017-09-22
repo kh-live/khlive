@@ -15,7 +15,7 @@ body{
 }
 .live_user{
 	width:90px;
-	height:100px;
+	height:110px;
 	float:left;
 	z-index:100;
 }
