@@ -83,17 +83,21 @@ if(d2.length < 1) { return; }
 if(session_id()==""){session_start();}
 date_default_timezone_set ('Africa/Johannesburg');
 include "db/config.php";
+if ( $server_beta=='true'){
+//we're in testing mode
+echo '</head>
+<body>';
+include 'meeting-listeners.php';
+}else{
 //when stopping, it takes 23 secondes to hangup the call (or more on alpine linux)
 //this is not set until later...
 if(@$_SESSION['meeting_just_stopped']==1){
 //meeting finished we don't refresh
 }elseif(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop it"){
-//refresh during the meeting. we don't refresh in testing mode
-if ($server_beta!='true'){
+//refresh during the meeting.
  echo '<meta http-equiv="refresh" content=5>';
- }
 }else{
-if ((@$_POST['submit']!="Yes, Stop it") AND $server_beta!='true') {
+if (@$_POST['submit']!="Yes, Stop it") {
 //refresh before the meeting starts
  echo '<meta http-equiv="refresh" content='.$timer.'>';
 }
@@ -103,9 +107,8 @@ if ((@$_POST['submit']!="Yes, Stop it") AND $server_beta!='true') {
 <body>
 <?PHP
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
-if ($server_beta!='true'){
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
-}
+
 	$db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
@@ -210,7 +213,7 @@ bitrates (kbps):  8 16 24 32 40 48 56 64
 		}
 	}
 /*first everything that happens when the meeting is live*/	
-	if (strstr($_SESSION['meeting_status'],"live") OR $server_beta=='true'){ //for testing we trick it to believe it's live
+	if (strstr($_SESSION['meeting_status'],"live") ){ 
 	
 if(isset($_POST['submit'])){
 	if($_POST['submit']=="Stop meeting"){
@@ -393,6 +396,7 @@ include 'meeting-listeners.php';
 		$meeting_processor='ajax';
 		include 'meeting-precheck.php';
 	}
+}
 }
 }
 ?>

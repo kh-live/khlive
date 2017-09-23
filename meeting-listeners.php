@@ -1,6 +1,19 @@
 <?PHP
 	echo '<b>Users live : </b><br /><br />';
+	if ($server_beta=''){
+	//we generate a list of live users
+	$db=array(
+	'1**Test Listener 1**start_cong**stream-start_cong.ogg**'.time().'**normal**1**',
+	'2**Test Listener 2**start_cong**phone_live**'.time().'**normal**3**',
+	'3**Test Listener 3**start_cong**phone_record**'.time().'**normal**1**',
+	'4**Test Listener 4**start_cong**phone_live**'.time().'**request**10**',
+	'5**Test Listener 5**start_cong**stream-start_cong.ogg**'.time().'**request--paragraph 1--This is a test answer by a test listener**5**',
+	'6**Test Listener 6**start_cong**phone_live**'.time().'**answering**10**',
+	'7**Test Listener 7**start_cong**phone_live**'.time().'**answering--paragraph 2--This is a test answer by a test listener**1**'
+	);
+	}else{
 	$db=file("db/live_users");
+	}
 	if (count($db)==0){
 	echo 'No live users';
 	}else{
