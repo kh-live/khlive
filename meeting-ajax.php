@@ -16,7 +16,7 @@ body{
 .live_user{
 	width:100%;
 	max-width:450px;
-	height:110px;
+	height:90px;
 	box-sizing: border-box;
 	z-index:100;
 }
@@ -24,14 +24,14 @@ body{
 	width:100%;
 	max-width:450px;
 	box-sizing: border-box;
-	height:110px;
+	height:90px;
 	background-color:#f6eadb;
 	z-index:100;
 }
 .live_user_name{
 float:right;
 }
-.live_user img{
+.live_user img, .live_user_1 img{
 width:90px;
 height:90px;
 }
@@ -87,7 +87,7 @@ if ($server_beta!='true'){
  echo '<meta http-equiv="refresh" content=5>';
  }
 }else{
-if (@$_POST['submit']!="Yes, Stop it"){
+if ((@$_POST['submit']!="Yes, Stop it") AND $server_beta!='true') {
 //refresh before the meeting starts
  echo '<meta http-equiv="refresh" content='.$timer.'>';
 }
