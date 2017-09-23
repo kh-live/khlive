@@ -14,10 +14,22 @@ body{
 	margin-left:80px;
 }
 .live_user{
-	width:90px;
+	width:100%;
+	max-width:450px;
 	height:110px;
-	float:left;
+	box-sizing: border-box;
 	z-index:100;
+}
+.live_user_1{
+	width:100%;
+	max-width:450px;
+	box-sizing: border-box;
+	height:110px;
+	background-color:#f6eadb;
+	z-index:100;
+}
+.live_user_name{
+float:right;
 }
 .live_user img{
 width:90px;
@@ -27,9 +39,6 @@ height:90px;
 	color:red;
 }
 #meeting_answer{
-	position:fixed;
-	top:0px;
-	right:0px;
 	background-color:#AAAAAA;
 	border: 1px solid black;
 	padding: 5px;
@@ -73,9 +82,13 @@ include "db/config.php";
 if(@$_SESSION['meeting_just_stopped']==1){
 //meeting finished we don't refresh
 }elseif(strstr($_SESSION['meeting_status'],"live") AND @$_POST['submit']!="Yes, Stop it"){
+//refresh during the meeting. we don't refresh in testing mode
+if ($server_beta!='true'){
  echo '<meta http-equiv="refresh" content=5>';
+ }
 }else{
 if (@$_POST['submit']!="Yes, Stop it"){
+//refresh before the meeting starts
  echo '<meta http-equiv="refresh" content='.$timer.'>';
 }
 }
