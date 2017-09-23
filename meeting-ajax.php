@@ -41,7 +41,7 @@ body{
 .live_user_link {
 display:inline-block;
     width:100%;
-    height:100%;
+    height:90px;
     text-decoration:none;
     color:black;
 }
@@ -58,7 +58,7 @@ height:90px;
 	box-sizing: border-box;
 }
 .meeting_answer a{
-background-color: #eb691d;
+background-color: #61b131;
     color: white;
     display: inline-block;
     font-weight: bolder;
