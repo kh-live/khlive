@@ -1,6 +1,6 @@
 <?PHP
 	echo '<b>Users live : </b><br /><br />';
-	if ($server_beta=''){
+	if ($server_beta='true'){
 	//we generate a list of live users
 	$db=array(
 	'1**Test Listener 1**start_cong**stream-start_cong.ogg**'.time().'**normal**1**',
