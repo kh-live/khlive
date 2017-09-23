@@ -8,8 +8,8 @@
 	'3**Listener 3 (over internet stream - answering to paragraph 2)**start_cong**stream-start_cong.ogg**'.time().'**answering--paragraph 2--This is a test answer by a test listener**1**',
 	'4**Listener 4 (over VOIP - click on the cross to disconnect user)**start_cong**phone_live**'.time().'**normal****',
 	'5**Listener 5 (over VOIP - listening to a recorded meeting)**start_cong**phone_record**'.time().'**normal****',
-	'6**Listener 6 (over VOIP - wanting to answer with voice answer)**start_cong**phone_live**'.time().'**request****',
-	'7**Listener 7 (over VOIP - answering)**start_cong**phone_live**'.time().'**answering****'
+	'6**Listener 6 (over VOIP - wanting to answer with voice answer - click here to open his microphone)**start_cong**phone_live**'.time().'**request****',
+	'7**Listener 7 (over VOIP - answering - click here to close his microphone)**start_cong**phone_live**'.time().'**answering****'
 	);
 	}else{
 	$db=file("db/live_users");
@@ -17,7 +17,7 @@
 	if (count($db)==0){
 	echo 'No live users';
 	}else{
-	echo '<b>Listeners list : </b><br /><br />';
+	echo '<b style="font-size:1.2em;">Listeners list : </b><br /><br />';
 	$user_class='live_user';
 	foreach($db as $line){
 	
@@ -62,10 +62,10 @@
 	$tmp=explode("--",$data[5]);
 	$paragraph=$tmp[1];
 	$answer=$tmp[2];
-	echo '<div class="'.$user_class.'"><img src="./img/comp3.png" /><div class="live_user_name"><b>'.$data[1].'</b></div></div>
+	echo '<div class="'.$user_class.'"><img src="./img/comp3.png" /><div class="live_user_name"><b>'.$data[1].'</b></div>
 	<div id="meeting_answer">
 	<a href="./answer.php?action=sms_cancel&client='.$data[1].'&cong='.$data[2].'">NOT answered</a> <a href="./answer.php?action=sms_stop&client='.$data[1].'&cong='.$data[2].'">ANSWERED</a>
-<b>ANSWER :<br />from : '.$data[1].'<br />to : '.$paragraph.'</b><br />'.urldecode($answer).'</div>';
+<b>ANSWER :<br />from : '.$data[1].'<br />to : '.$paragraph.'</b><br />'.urldecode($answer).'</div></div>';
 	}
 	}else{
 	//should not happen

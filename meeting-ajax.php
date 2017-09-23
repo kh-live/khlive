@@ -35,12 +35,14 @@ body{
 .live_user_name{
     margin-left: 100px;
     margin-top: -80px;
-    position: absolute;
+    position: relative;
 }
 .live_user_link {
 display:inline-block;
     width:100%;
     height:100%;
+    text-decoration:none;
+    color:black;
 }
 .live_user img, .live_user_1 img{
 width:90px;
