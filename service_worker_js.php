@@ -1,7 +1,7 @@
 <?PHP
 header('Content-Type: text/javascript');
 ?>
-var CACHE_NAME = 'kh-live-cache-v1';
+var CACHE_NAME = 'kh-live-cache-v2';
 var urlsToCache = [
   '/time'
 ];
@@ -14,6 +14,24 @@ self.addEventListener('install', function(event) {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
+  );
+});
+
+self.addEventListener('activate', function(event) {
+  console.log('Activating new service worker...');
+
+  var cacheWhitelist = [CACHE_NAME];
+
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
 });
 

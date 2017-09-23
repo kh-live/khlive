@@ -23,6 +23,11 @@ window.location='./time';
 }
 </script>
 <style type="text/css">
+body{
+	margin:0;
+	font-size:16px;
+	font-family:arial,sans-serif;
+}
 @font-face{
 	font-family: test1;
 	src:url('./fonts/digital-7-mono.ttf');
@@ -61,6 +66,27 @@ display:inline-block;
  color:rgba(255,255,255,0.05);
 position:absolute;
 width:100%;
+}
+.congs_list{
+line-height:50px;
+width:100%;
+text-align:center;
+background-color:#f0f4f8;
+box-sizing: border-box;
+display: block;
+color:black;
+text-decoration: none;
+text-transform: uppercase;
+max-width:400px;
+margin:10px auto;
+ }
+ .congs_list:hover{
+ text-decoration:underline;
+ background-color:#eee;
+ }
+ #cong_list{
+ padding:20px;
+ text-align:center;
  }
 </style>
 <?PHP
@@ -100,22 +126,18 @@ window.location="http://'.$url_cong.'/kh-live/time";
     });
   });
 }
-function updateCong(){
-var e=document.getElementById("cong");
-var value = e.options[e.selectedIndex].value;
+function updateCong(value){
 window.location='./time?cong=' + value;
 }
 </script>
+<div id="cong_list">
 	<?PHP
-	echo '<h1 style="color:white;" >Select your cong :</h1><br />
-	<select id="cong" name="cong" onchange="javascript:updateCong()">
-<option value="0">'.$lng['select'].'...</option>';
 	$db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
-	echo '<option value="'.$data[0].'">'.$data[0].'</option>';
+	echo '<a class="congs_list" href="javascript:updateCong(\''.$data[0].'\')" >'.$data[0].'</a>';
 	}
-echo '</select><br /><br />';
+	echo '</div>';
 	}
 	}else{
 	include ("./meeting-time.php");

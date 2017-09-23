@@ -3,7 +3,7 @@
 <style type="text/css">
 body{
 	margin:0;
-	padding:0;
+	padding:10px;
 	font-size:16px;
 	color:black;
 	font-family:arial,sans-serif;
@@ -36,7 +36,8 @@ body{
     margin-left: 100px;
     margin-top: -80px;
     position: relative;
-    min-height:80px;
+    min-height:70px;
+    padding-bottom:10px;
 }
 .live_user_link {
 display:inline-block;
@@ -74,7 +75,7 @@ background-color: #61b131;
 text-decoration:underline;
 }
 .user_count{
-height:30px;
+line-height:30px;
 margin-top:10px;
 margin-left:10px;
 position:absolute;
