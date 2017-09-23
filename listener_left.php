@@ -69,7 +69,7 @@ if ($_GET['action']=="phone_remove"){
 			$file_content="";
 	foreach($db as $line){
         $data=explode ("**",$line);
-		if ($data[0]==$client){
+		if ($data[1]==$client){
 		$duration=time()-$data[4];
 		}else{
 		$file_content.=$line;
