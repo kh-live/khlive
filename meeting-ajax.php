@@ -41,7 +41,7 @@ body{
 .live_user_link {
 display:inline-block;
     width:100%;
-    height:90px;
+    min-height:90px;
     text-decoration:none;
     color:black;
 }
