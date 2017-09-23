@@ -414,7 +414,7 @@ include 'meeting-time.php';
 }
 }
 
-	if(strstr($_SESSION['meeting_status'],"live") OR $server_beta='true'){
+	if(strstr($_SESSION['meeting_status'],"live") OR $server_beta=='true'){
 	echo $lng['yeslive'].' :<br /><br />';
     
     if (strstr($_SERVER['HTTP_HOST'],'192.168.')){
