@@ -71,7 +71,6 @@ include 'meeting-songs.php';
 include 'meeting-vmix.php';
 }
 ?>
-</div>
 <script type="text/javascript">
 var showWarning='no';
 window.onbeforeunload = testT;

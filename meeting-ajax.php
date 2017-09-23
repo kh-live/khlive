@@ -35,7 +35,7 @@ body{
 .live_user_name{
     margin-left: 100px;
     margin-top: -80px;
-    position: absolute
+    position: absolute;
 }
 .live_user_link {
 display:inline-block;
