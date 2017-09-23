@@ -19,6 +19,8 @@ body{
 	height:90px;
 	box-sizing: border-box;
 	z-index:100;
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
+	margin-bottom:15px;
 }
 .live_user_1{
 	width:100%;
@@ -27,9 +29,13 @@ body{
 	height:90px;
 	background-color:#f0f4f8;
 	z-index:100;
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
+	margin-bottom:15px;
 }
 .live_user_name{
-float:right;
+    margin-left: 100px;
+    margin-top: -80px;
+    position: absolute;
 }
 .live_user img, .live_user_1 img{
 width:90px;
