@@ -25,7 +25,7 @@ body{
 	max-width:450px;
 	box-sizing: border-box;
 	height:90px;
-	background-color:#f6eadb;
+	background-color:#f0f4f8;
 	z-index:100;
 }
 .live_user_name{

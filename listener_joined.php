@@ -21,7 +21,10 @@ if (isset($cong)) unset($cong);
 	$db=file("db/users");
     foreach($db as $line){
         $data=explode ("**",$line);
-	if ($data[0]==$user) $cong=$data[3];
+	if ($data[0]==$user) {
+	$cong=$data[3];
+	$user=$data[2];
+	}
 	}
 	
 	if (isset($cong)){
