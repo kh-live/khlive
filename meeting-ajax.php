@@ -16,7 +16,7 @@ body{
 .live_user{
 	width:100%;
 	max-width:450px;
-	height:90px;
+	min-height:90px;
 	box-sizing: border-box;
 	z-index:100;
 	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
@@ -26,7 +26,7 @@ body{
 	width:100%;
 	max-width:450px;
 	box-sizing: border-box;
-	height:90px;
+	min-height:90px;
 	background-color:#f0f4f8;
 	z-index:100;
 	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
@@ -36,6 +36,7 @@ body{
     margin-left: 100px;
     margin-top: -80px;
     position: relative;
+    min-height:80px;
 }
 .live_user_link {
 display:inline-block;
@@ -51,20 +52,26 @@ height:90px;
 .stop{
 	color:red;
 }
-#meeting_answer{
-	background-color:#AAAAAA;
-	border: 1px solid black;
+.meeting_answer{
 	padding: 5px;
-	max-width:450px;
 	width:100%;
 	box-sizing: border-box;
 }
-#meeting_answer a,#meeting_answer-small a {
-	color:white;
-	text-decoration:none;
-	font-weight:bolder;
-	float:right;
-	padding-left:50px;
+.meeting_answer a{
+background-color: #eb691d;
+    color: white;
+    display: inline-block;
+    font-weight: bolder;
+    line-height: 30px;
+    margin: 5px;
+    padding:5px;
+    text-align: center;
+    text-decoration: none;
+    width: 120px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.19);
+}
+.meeting_answer a:hover{
+text-decoration:underline;
 }
 .user_count{
 height:30px;
