@@ -1,6 +1,6 @@
 <?PHP
 	
-	if ($server_beta='true'){
+	if ($server_beta=='true'){
 	//we generate a list of live users
 	$db=array(
 	'1**Listener 1 (over internet stream - 10 people listening together)**start_cong**stream-start_cong.ogg**'.time().'**normal**10**',
