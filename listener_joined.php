@@ -23,7 +23,9 @@ if (isset($cong)) unset($cong);
         $data=explode ("**",$line);
 	if ($data[0]==$user) {
 	$cong=$data[3];
+	/*we replace the username with full name. This breaks the answering system. It has to be done on the meeting page
 	$user=$data[2];
+	*/
 	}
 	}
 	
