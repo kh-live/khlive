@@ -146,7 +146,12 @@ if (($meeting_type=="direct" OR $meeting_type=='direct-stream')){
 			}
 		}elseif ($meeting_type=='none'){
 			if ($meeting_processor!='scheduler'){
-			echo 'Press the "connect" button on Edcast/BoradcastMyself to start the meeting.<br />The meeting wont be recorded on the server side.<br /> You have to record it yourself (with Audactiy or Edcast).';
+			echo 'Press the "connect" button on Edcast/BoradcastMyself to start the meeting.<br />';
+			if ($record=='no'){
+			echo 'The meeting won\'t be recorded on the server side.<br /> You have to record it yourself (with Audactiy or Edcast).';
+			}else{
+			echo '<b style="color:green;">The meeting will be recorded on the server side!</b>';
+			}
 			}
 		}else{
 			if (isset($_SESSION['cong_phone_no'])){
