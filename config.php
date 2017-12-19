@@ -773,6 +773,7 @@ if ($stream=='yes'){
 	<mount-name><?PHP echo $stream_path; ?></mount-name>
 	<username>source</username>
         <password><?PHP echo $voip_password; ?></password><?PHP echo $dump_file; ?>
+	
 <authentication type="url">
 	<option name="mount_add" value="http://<?PHP echo $server_in; ?>/kh-live/stream_start.php"/>
         <option name="mount_remove" value="http://<?PHP echo $server_in; ?>/kh-live/stream_end.php"/>
