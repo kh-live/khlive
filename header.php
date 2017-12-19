@@ -9,7 +9,7 @@ exit();
 <!DOCTYPE html>
 <head>
 <title>KH Live!</title>
-<link rel="icon" sizes="144x144" href="/img/logo-small.png">
+<link rel="icon" sizes="144x144" href="./img/logo-small.png">
 <style type="text/css">
 <?PHP
 include "./style.css";

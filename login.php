@@ -9,6 +9,7 @@ exit();
 <html>
 <head>
 <title><?PHP echo $lng['signin'];?></title>
+<link rel="icon" sizes="144x144" href="./img/logo-small.png">
 <style type="text/css">
 <?PHP
 include "./style.css";
