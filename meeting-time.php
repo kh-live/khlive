@@ -1,3 +1,10 @@
+<?PHP
+/*
+IMPORTANT! DO NOT MODIFY THIS FILE IF YOU WANT TO CUSTOMIZE THE TIMING. 
+DO CHANGES ONLY IN TIMING-STANDALONE-TESTING.PHP
+THIS FILE IS USED TO GENERATE THE TIMINGS ON USER LISTENING PAGE AND MANAGER MEETING PAGE AS WELL
+*/
+?>
 <div id="meeting_time">
 <?PHP
 $scripts='';
@@ -146,7 +153,6 @@ $secs = floor($seconds % 60);
 echo '<h1 id="hours">'.sprintf('%02d',$hours).'</h1>:<h1 id="minutes">'.sprintf('%02d',$mins).'</h1>:<h1 id="secondes">'.sprintf('%02d',$secs).'</h1>';
 }else{
 echo '<h1 id="hours">'.date('H', time()).'</h1>:<h1 id="minutes">'.date('i', time()).'</h1>:<h1 id="secondes">'.date('s', time()).'</h1>';
-//echo '<h1 id="hours">00</h1>:<h1 id="minutes">00</h1>:<h1 id="secondes">15</h1>';
 }
 ?>
 </div>

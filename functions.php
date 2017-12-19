@@ -314,13 +314,24 @@ exten=> test_meeting_".$cong_name.",1,Answer()
 				
 			//we need to releoad the dialplan as we've made changes to it. We dont need to do anything about meetme.cong as it is reload everytime we start a meetme()
 			exec($asterisk_bin.' -rx "dialplan reload"');
-			
+//do we need to record the stream (dump-file)? Only if we use edcast to stream.
+$dump_file="";
+if($record=='yes' AND $voip_type=='none'){
+	if ($stream_type=="ogg"){
+	$dump_file='
+	<dump-file>'.$web_server_root.'kh-live/records/'.$cong_name.'-%Y%m%d_%H%M%S.ogg</dump-file>';
+	}else{
+	$dump_file='
+	<dump-file>'.$web_server_root.'kh-live/records/'.$cong_name.'-%Y%m%d_%H%M%S.mp3</dump-file>';
+	}
+}
+if ($stream=='yes'){
 if ($stream_type=="both"){
 $info2="<!--mount-".$cong_name."-->
 <mount>
 	<mount-name>/stream-".$cong_name."</mount-name>
 	<username>source</username>
-        <password>".$voip_pwd."</password>
+        <password>".$voip_pwd."</password>".$dump_file."
 <authentication type=\"url\">
 	<option name=\"mount_add\" value=\"http://".$server_in."/kh-live/stream_start.php\"/>
         <option name=\"mount_remove\" value=\"http://".$server_in."/kh-live/stream_end.php\"/>
@@ -353,7 +364,7 @@ $info2="<!--mount-".$cong_name."-->
 <mount>
 	<mount-name>".$stream_path."</mount-name>
 	<username>source</username>
-        <password>".$voip_pwd."</password>
+        <password>".$voip_pwd."</password>".$dump_file."
 <authentication type=\"url\">
 	<option name=\"mount_add\" value=\"http://".$server_in."/kh-live/stream_start.php\"/>
         <option name=\"mount_remove\" value=\"http://".$server_in."/kh-live/stream_end.php\"/>
@@ -366,6 +377,7 @@ $info2="<!--mount-".$cong_name."-->
 <!--lastmount-->
 ";
 }
+
 	$db=file("config/icecast.xml");
 			$file_content="";
 	foreach($db as $line){
@@ -381,7 +393,7 @@ $info2="<!--mount-".$cong_name."-->
 			}else{
 			return 'error saving /config/icecast.xml';
 			}
-
+}
 			// we need to restart icecast as it's config file changed
 			//icecast needs to run as the same user as the webserver for it to work
 			//we should still check that we dont edit the cong while there is a meeting in that same cong...
@@ -413,7 +425,7 @@ if ($stream_type=="mp3" OR $stream_type=="both"){
     <filename>stdin</filename>
     <stream_once>1</stream_once>
     <svrinfoname>My Stream</svrinfoname>
-    <svrinfourl>http://".$server_in.":".$port."/stream-".$cong_name."</svrinfourl>
+    <svrinfourl>http://".$server_out.":".$port."/stream-".$cong_name."</svrinfourl>
     <svrinfogenre>Live calls</svrinfogenre>
     <svrinfodescription>Stream from ".str_replace("_"," ", $cong_name)." Meeting</svrinfodescription>
     <svrinfobitrate>".$bitrate."</svrinfobitrate>
@@ -455,7 +467,7 @@ $info4="<?xml version=\"1.0\"?>
             <name>".str_replace("_"," ", $cong_name)." Meeting </name>
             <genre>Live calls</genre>
             <description>Stream from ".str_replace("_"," ", $cong_name)." Meeting</description>
-            <url>http://".$server_in.":".$port."/stream-".$cong_name.".ogg</url>
+            <url>http://".$server_out.":".$port."/stream-".$cong_name.".ogg</url>
         </metadata>
         <input>
             <module>stdinpcm</module>

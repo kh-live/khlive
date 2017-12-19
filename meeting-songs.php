@@ -10,6 +10,9 @@ $_SESSION['song_3']=file_get_contents($temp_dir.'song_3_'.$_SESSION['cong']);
 }
 if (isset($_SESSION['song_type'])) $song_type=$_SESSION['song_type'];
 if ($song_type!='normal') $max_song_no-=3;
+if($song_dev=="jwapp"){
+//maybe we can show a nice shortcut or something to go to jwapp
+}else{
 ?>
 <div id="songs">
 <a href="javascript:showdiv('song-small','songs')">>> HIDE</a>
@@ -555,3 +558,6 @@ var link = document.getElementById("stop_rand");
 }
 ?>
 </script>
+<?PHP
+}
+?>

@@ -51,8 +51,14 @@ include_once "db/config.php";
 			}
 	if ($ij<=0){
 	//This is also called from meeting.php when there is two users with the same name.
-	echo " not listening to the meeting. Press play above.";
+	if (isset($_GET['ajax_meeting_page'])){
+		if ($_GET['ajax_meeting_page']=='ok'){
+		header('Location: ./meeting-ajax.php');
+		}		
+		}else{
+	echo '<div id="error">Error! It seems you\'re not listening to the meeting. Press play above or refresh the page. Then you\'ll be able to answer.</div>';
 	exit;
+	}
 	}
 	if($action=="answering"){
 	exec($asterisk_bin.' -rx "meetme list '.$conf.' concise"',$conf_db);	

@@ -41,7 +41,7 @@
 	}
 	}elseif(strstr($data[5],"request")){
 	if($data[3]=="phone_live"){
-	echo '<div class="'.$user_class.'"><a class="live_user_link" href="./answer.php?action=answering&client='.urlencode($data[1]).'&cong='.$data[2].'&type='.$data[3].'&conf='.$data[0].'"><img src="./img/phone2.png" /><div class="live_user_name"><b>'.$data[1].'</b></div></a></div>';
+	echo '<div class="'.$user_class.'"><a class="live_user_link" href="./answer.php?ajax_meeting_page=ok&action=answering&client='.urlencode($data[1]).'&cong='.$data[2].'&type='.$data[3].'&conf='.$data[0].'"><img src="./img/phone2.png" /><div class="live_user_name"><b>'.$data[1].'</b></div></a></div>';
 	}elseif($data[3]=="phone_record"){
 	//listening to a recording while the meeting is on... shouldnt happen
 	// cant answer
@@ -49,11 +49,11 @@
 	//this is streaming
 	$tmp=explode("--",$data[5]);
 	$paragraph=$tmp[1];
-	echo '<div class="'.$user_class.'"><a class="live_user_link" href="./answer.php?action=sms_a&client='.$data[1].'&cong='.$data[2].'"><img src="./img/comp2.png" /><div class="live_user_name"><b>'.$data[1].'</b><br /><i style="color:rgba(0,0,0,0.7)">(Answer to :'.urldecode($paragraph).')</i></div></a></div>';
+	echo '<div class="'.$user_class.'"><a class="live_user_link" href="./answer.php?ajax_meeting_page=ok&action=sms_a&client='.$data[1].'&cong='.$data[2].'"><img src="./img/comp2.png" /><div class="live_user_name"><b>'.$data[1].'</b><br /><i style="color:rgba(0,0,0,0.7)">(Answer to :'.urldecode($paragraph).')</i></div></a></div>';
 	}
 	}elseif(strstr($data[5],"answering")){
 	if($data[3]=="phone_live"){
-	echo '<div class="'.$user_class.'"><a class="live_user_link" href="./answer.php?action=stop&client='.urlencode($data[1]).'&cong='.$data[2].'&type='.$data[3].'&conf='.$data[0].'"><img src="./img/phone3.png" /><div class="live_user_name"><b>'.$data[1].'</b></div></a></div>';
+	echo '<div class="'.$user_class.'"><a class="live_user_link" href="./answer.php?ajax_meeting_page=ok&action=stop&client='.urlencode($data[1]).'&cong='.$data[2].'&type='.$data[3].'&conf='.$data[0].'"><img src="./img/phone3.png" /><div class="live_user_name"><b>'.$data[1].'</b></div></a></div>';
 	}elseif($data[3]=="phone_record"){
 	//listening to a recording while the meeting is on... shouldnt happen
 	// cant answer
@@ -65,7 +65,7 @@
 	echo '<div class="'.$user_class.'"><img src="./img/comp3.png" /><div class="live_user_name"><b>'.$data[1].'</b></div>
 	<div class="meeting_answer">
 	<b>ANSWER :<br />to : '.$paragraph.'</b><br />'.urldecode($answer).'<br />
-	<a href="./answer.php?action=sms_cancel&client='.$data[1].'&cong='.$data[2].'">NOT answered</a> <a href="./answer.php?action=sms_stop&client='.$data[1].'&cong='.$data[2].'">ANSWERED</a></div></div>';
+	<a href="./answer.php?ajax_meeting_page=ok&action=sms_cancel&client='.$data[1].'&cong='.$data[2].'">NOT answered</a> <a href="./answer.php?ajax_meeting_page=ok&action=sms_stop&client='.$data[1].'&cong='.$data[2].'">ANSWERED</a></div></div>';
 	}
 	}else{
 	//should not happen

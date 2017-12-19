@@ -39,10 +39,11 @@ body{
 }
 #meeting_time{
 	font-family: 'test2', sans-serif;
-	position:absolute;
-	top:40px;
-	left:0;
-	width:100%;
+ position:fixed;
+ left:calc(50% - 250px);
+ top:calc(50% - 250px);
+	width:500px;
+	height:500px;
 	background-color: black;
 	margin:0;
 	color:white;
@@ -50,18 +51,34 @@ body{
 #meeting_overall{
 	background-color:black;
 	width:100%;
-	padding-top:30px;
-	padding-bottom:30px;
+	padding-top:80px;
+	padding-bottom:50px;
 	text-align:center;
 	font-size:<?PHP echo $timing_font_size_1; ?>em;
 }
-#meeting_times, #meeting_clock{
+#meeting_clock{
+display:none;
+}
+#meeting_times{
+color:black;
 	font-family: 'test1', sans-serif;
 	text-align:center;
 	font-size:<?PHP echo $timing_font_size_2; ?>em;
+	line-height:1.1em;
 }
-#hours, #minutes, #secondes, #meeting_clock h1{
+#hours, #minutes, #meeting_clock h1{
 display:inline-block;
+margin-top:0px;
+margin-bottom:0px;
+}
+#hours, #minutes {
+color:white;
+}
+ #secondes{
+display:block;
+margin-top:15px;
+margin-bottom:15px;
+color:white;
 }
  #meeting_clock{
  color:rgba(255,255,255,0.05);
@@ -108,6 +125,11 @@ margin:10px auto;
  overflow:hidden;
  border:0;
  }
+ #svg_clock{
+ position:fixed;
+ left:calc(50% - 250px);
+ top:calc(50% - 250px);
+ }
 </style>
 <?PHP
 if ($server_beta=='master'){
@@ -117,7 +139,6 @@ if (isset($_GET['cong'])){
         $data=explode ("**",$line);
 	if (strstr($data[3], $_GET['cong'])){
 	$url_cong=$data[0];
-	//we don't need that because we don't redirect to the remote server. we use a curl call in remote.php to get the timing info.
 	/*if ($_SERVER['REMOTE_ADDR']==$data[1] ){
 	$url_cong=$data[4];
 	if (!filter_var($url_cong, FILTER_VALIDATE_IP)) {
@@ -161,6 +182,12 @@ window.location='./redirect?cong=' + value;
 	}
 	}else{
 	include ("./meeting-time.php");
+	echo '<svg id="svg_clock" width="500" height="500" viewBox="0 0 500 500" >
+    <circle cx="250" cy="250" r="240" stroke-dasharray="1,6" stroke-width="1"  stroke="white" fill="transparent" />
+    <circle cx="250" cy="250" r="240" transform="rotate(-90 250 250)" stroke-dasharray="1507,1507 " stroke-width="3" stroke-dashoffset="0" stroke="white" fill="none">
+       <animate attributeType="XML" attributeName="stroke-dashoffset" from="1507" to="0" dur="60s" repeatCount="1" fill="freeze" />
+    </circle>
+</svg>';
 	}
 echo '</body>
 	</html>';

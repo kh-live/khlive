@@ -8,6 +8,7 @@ body{
 	background-color:#eee;
 	overflow-x:hidden;
 }
+
 #please_wait{
 	display:none;
 	background-color:rgba(0,0,0,0.8);
@@ -89,24 +90,13 @@ text-decoration:underline;
 #titles{
 	width:200px;
 		margin:0 auto;
-		height:80px;
+		height:168px;
 		padding:20px 10px;
 		text-align:center;
 }
-#title1{
-	font-size:40px;
-	display:inline;
-	    color: rgba(255, 255, 255, 0.6);
-    text-shadow: 1px 2px 3px #fff, 0 0 0 #000;
-	font-weight:400;
-}
-#title2{
-	font-size:30px;
-	display:inline;
-		    color: rgba(255, 255, 255, 0.3);
-    text-shadow: 1px 2px 3px #fff, 0 0 0 #000;
-	font-style:italic;
-	font-weight:300;
+#title_img{
+	width:158px;
+	height:158px;
 }
 #input_login{
 	width:180px;
@@ -147,7 +137,7 @@ background:linear-gradient( rgba(235,105,29,1), rgba(235,105,29,0.7));
 	box-shadow:none;
 }
 #menu a{
-	color:#EB691D;
+	color:rgba(1,159,217,1);
 	text-decoration:none;
 	font-weight:bold;
 	display: block;
@@ -166,7 +156,7 @@ margin-bottom:20px;
 	background-color:rgba(0,0,0,0.1);
 }
 #page a {
-	color:#EB691D;
+	color:rgba(1,159,217,1);
 	text-decoration:none;
 
 }
@@ -196,13 +186,13 @@ margin-bottom:20px;
 }
 /**********CSS*******/
 
-#title_mobile, #title_mobile2{
+#title_mobile2{
 	display:none;
 }
 #title3 {
 	position:fixed;
 	font-size:30px;
-	color:#aaa;
+	color:rgba(1,159,217,1);
 	left:0;
 	width:100%;
 	padding-left:40px;
@@ -247,8 +237,6 @@ margin-bottom:20px;
 }
 #logout{
 	color:red!important;
-
-	
 }
 #hide_menu{
 	font-size: 30px;

@@ -30,7 +30,9 @@ $query=explode("**", $decrypted);
         $data=explode ("**",$line);
 	if ($data[0]==$server_name){
 	$api_key=$data[2];
-		$content.=$server_name."**".$new_ip."**".$api_key."**".$data[3]."**\n";
+	$ip_addr='';
+	if ($data[4]!='' AND $data[4]!="\n") $ip_addr=$data[4];
+		$content.=$server_name."**".$new_ip."**".$api_key."**".$data[3]."**".$ip_addr."**\n";
 		}else{
 		$content.=$line;
 		}

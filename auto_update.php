@@ -20,6 +20,7 @@ cp <?PHP echo $auto_update_dir_git; ?>/*.php <?PHP echo $web_server_root; ?>kh-l
 cp <?PHP echo $auto_update_dir_git; ?>/*.css <?PHP echo $web_server_root; ?>kh-live/
 cp <?PHP echo $auto_update_dir_git; ?>/.htaccess <?PHP echo $web_server_root; ?>kh-live/
 cp <?PHP echo $auto_update_dir_git; ?>/fonts/*.ttf <?PHP echo $web_server_root; ?>kh-live/fonts
+cp <?PHP echo $auto_update_dir_git; ?>/img/*.png <?PHP echo $web_server_root; ?>kh-live/img
 dos2unix <?PHP echo $web_server_root; ?>kh-live/* > /dev/null 2>&1
 find <?PHP echo $web_server_root; ?>kh-live/ -type f -printf '"%p"\n' | xargs chmod 640 
 chown -R asterisk:asterisk <?PHP echo $web_server_root; ?>kh-live/*

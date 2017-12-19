@@ -228,8 +228,12 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			}
 	}
 }
-if ($page=="time"){
-include 'timing-standalone.php';
+if ($page=="time" OR $page=='redirect'){
+	if (@$timing_style=='testing'){
+		include 'timing-standalone-testing.php';
+	}else{
+		include 'timing-standalone.php';
+	}
 	}
 if (!isset($_SESSION['user'])){
 include ("./login.php");

@@ -17,10 +17,8 @@ include "./style.css";
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
 </head>
 <body>
-<div id="titles">
-<div id="title1">KH</div>
-<div id="title2">Live!</div><br />
-<div id="title_mobile">mobile</div>
+<div id="titles" >
+<img id="title_img" src="./img/logo.png" alt="KH-Live! Streaming" />
 </div>
 <div id="login">
 <a href="javascript:show_quick_login()">Quick Login</a> | Standard Login

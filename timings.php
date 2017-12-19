@@ -34,7 +34,13 @@ if (isset($_GET['copy'])){
 <h2>Timing</h2>
 This manages the meeting timings. You still need to link it to a scheduled meeting in the scheduler.<br /><br />
 Click <a href="./time" target="_blank">HERE</a> to view the timer.<br /><br />
+<?PHP
+if ($_SESSION['type']=='root' OR $_SESSION['type']=='admin'){
+?>
 <a href="./timing_add">Add a new timing</a><br /><br />
+<?PHP
+}
+?>
 <table>
 <?PHP
 echo '<tr><td><b>ID</b></td><td><b>name</b></td><td><b>'.$lng['actions'].'</b></td></tr>';

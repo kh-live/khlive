@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='2.3.2';//gen_version leave this comment it's used in auto_update
+$gen_version='2.3.3';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -738,23 +738,41 @@ $fichier = fopen('./config/indications.conf', 'w');
 		$phone_no=$data[4];
 		$voip_type=$data[5]; //none/sip/iax
 		$stream=$data[6]; //yes/no
-		$stream_type=$data[7]; //ogg/mp3
+		$stream_type=$data[7]; //ogg/mp3/both
 		$voip_password=$data[8]; //rand 16char
 		$trunk=$data[9]; //yes/no
 		$record=$data[10]; //yes/no
 		$answer=$data[11]; //yes/no 
-		if ($stream_type=="mp3"){
-			$stream_path="/stream-".$cong_name;
-			}else{
+		$stream_server=$data[14];
+		if ($stream_server=="") $stream_server=$server_in;
+		
+		if ($stream_type=="ogg"){
 			$stream_path="/stream-".$cong_name.".ogg";
+			}else{
+			$stream_path="/stream-".$cong_name;
 			}
+			//do we need to record the stream (dump-file)? Only if we use edcast to stream.
+$dump_file="";
+if($record=='yes' AND $voip_type=='none'){
+	if ($stream_type=="ogg"){
+	$dump_file='
+	<dump-file>'.$web_server_root.'kh-live/records/'.$cong_name.'-%Y%m%d_%H%M%S.ogg</dump-file>
+	';
+	}else{
+	$dump_file='
+	<dump-file>'.$web_server_root.'kh-live/records/'.$cong_name.'-%Y%m%d_%H%M%S.mp3</dump-file>
+	';
+	}
+}
+if ($stream=='yes'){
+
 		?>
 		
 <!--mount-<?PHP echo $cong_name; ?>-->
 <mount>
 	<mount-name><?PHP echo $stream_path; ?></mount-name>
 	<username>source</username>
-        <password><?PHP echo $voip_password; ?></password>
+        <password><?PHP echo $voip_password; ?></password><?PHP echo $dump_file; ?>
 <authentication type="url">
 	<option name="mount_add" value="http://<?PHP echo $server_in; ?>/kh-live/stream_start.php"/>
         <option name="mount_remove" value="http://<?PHP echo $server_in; ?>/kh-live/stream_end.php"/>
@@ -769,7 +787,7 @@ if ($stream_type=='both'){
 ?>
 <!--mount-<?PHP echo $cong_name; ?>-->
 <mount>
-	<mount-name><?PHP echo "/stream-".$cong_name; ?></mount-name>
+	<mount-name><?PHP echo "/stream-".$cong_name.".ogg"; ?></mount-name>
 	<username>source</username>
         <password><?PHP echo $voip_password; ?></password>
 <authentication type="url">
@@ -782,6 +800,7 @@ if ($stream_type=='both'){
 </mount>
 <!--mount-end-<?PHP echo $cong_name ; ?>-->
 <?PHP
+}
 }
 }
 //not sure if we need changeowner on alpine...
@@ -822,15 +841,18 @@ $db=file("db/cong");
 		$record=$data[10]; //yes/no
 		$answer=$data[11]; //yes/no 
 		$stream_quality=$data[12];
+		$stream_server=$data[14];
+		if ($stream_server=="") $stream_server=$server_in;
 		if ($stream_type=="mp3"){
 			$stream_path="/stream-".$cong_name;
 			}else{
 			$stream_path="/stream-".$cong_name.".ogg";
 			}
+			if ($stream=='yes'){
 				if ($stream_type=="mp3" OR $stream_type=="both"){
 $bitrate=15+(3*$stream_quality);
 $info4 = "<ezstream>
-    <url>http://".$server_in.":".$port."/stream-".$cong_name."</url>
+    <url>http://".$stream_server.":".$port."/stream-".$cong_name."</url>
     <sourcepassword>".$voip_password."</sourcepassword>
     <format>MP3</format>
     <filename>stdin</filename>
@@ -884,7 +906,7 @@ $info4="<?xml version=\"1.0\"?>
             <param name=\"metadatafilename\"> </param>
         </input>
         <instance>
-            <hostname>".$server_in."</hostname>
+            <hostname>".$stream_server."</hostname>
             <port>".$port."</port>
             <password>".$voip_password."</password>
             <mount>/stream-".$cong_name.".ogg</mount>
@@ -906,30 +928,8 @@ $info4="<?xml version=\"1.0\"?>
 			echo '<div id="error_msg">'.$lng['error'].'4</div>';
 			}
 		}
-	}
-	
-include "sip-gen.php";
-include "alsa-gen.php";
-include "iax-gen.php";
 
-	$db=file("db/cong");
-    foreach($db as $line){
-        $data=explode ("**",$line);
-		$cong_name=$data[0];
-		$cong_id=$data[1];
-		$meetme_admin_pin=$data[2];
-		$meetme_user_pin=$data[3];
-		$phone_no=$data[4];
-		$voip_type=$data[5]; //none/sip/iax
-		$stream=$data[6]; //yes/no
-		$stream_type=$data[7]; //ogg/mp3
-		$voip_password=$data[8]; //rand 16char
-		$trunk=$data[9]; //yes/no
-		$record=$data[10]; //yes/no
-		$answer=$data[11]; //yes/no 
-		$stream_quality=$data[12];
-		
-			    			ob_start();
+ob_start();
 ?>Channel: Local/ices_<?PHP echo $cong_name; ?>@test-menu
 MaxRetries: 0
 WaitTime: 60
@@ -945,7 +945,14 @@ $fichier = fopen('./config/stream_'.$cong_name.'.call', 'w');
 	    }else{
 	    // error saving
 	    }
-}
+	    
+	  }
+	}
+	
+include "sip-gen.php";
+include "alsa-gen.php";
+include "iax-gen.php";
+
 	}
 }
 if(isset($_POST['submit'])){
@@ -1016,9 +1023,9 @@ echo $server_user_group;
 }else{
 echo 'asterisk:asterisk';
 }?>" /><br />
-Server_in : <br />adress to test if the server is live - localhost used for : icecast actions urls + ices instance + ezstream instance<br />
+Server_in : <br />default stream server address. Usually "localhost". Used for : cron and asterisk web server wgets + icecast actions urls + ices instance* + ezstream instance*. *It can be overriden by congregation config.<br />
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
-server_out : <br />Server name (must be the same as set on kh-live.co.za)<br />
+server_out : <br />Fully qualified Server name (must be the same as set on kh-live.co.za). This is the address at which the server is reachable from the internet.<br />
 <input class="field_login" type="text" name="server_out" value="<?PHP echo $server_out;?>" /><br />
 web_server_root : <br />root for webserver with trailing /<br />
 <input class="field_login" type="text" name="web_server_root" value="<?PHP echo $web_server_root;?>" /><br />
@@ -1066,17 +1073,6 @@ Enable meeting scheduler<br />yes -> the link for scheduler will be shown in men
 <select class="field_login" name="scheduler" >
 <option value="no">no</option>
 <option value="yes" <?PHP if (@$scheduler=="yes") echo 'selected=selected';?>>yes</option>
-</select><br />
-Enable meeting timing<br />yes -> the link for timing will be shown in menu <br />no -> timing is disabled <br />
-<select class="field_login" name="timing_conf" >
-<option value="no">no</option>
-<option value="yes" <?PHP if (@$timing_conf=="yes") echo 'selected=selected';?>>yes</option>
-</select><br />
-Meeting timing vmix overlay multiplier<br />1 -> normal<br />anything else -> to fit your screen <br />
-<select class="field_login" name="timing_multi" >
-<option value="1">1</option>
-<option value="0.75" <?PHP if (@$timing_multi=="0.75") echo 'selected=selected';?>>0.75</option>
-<option value="0.5" <?PHP if (@$timing_multi=="0.5") echo 'selected=selected';?>>0.5</option>
 </select><br />
 Enable video downloader<br />yes -> the link for videos will be shown in menu (and videos are downloaded at 00:05) <br />no -> the video downloader is disabled <br />
 <select class="field_login" name="video_dowloader" >
@@ -1165,14 +1161,15 @@ Mp3 encoder speed<br />no of seconds encoded in one second (26 for raspberry B+)
 <input class="field_login" type="text" name="encoder_speed" value="<?PHP echo @$encoder_speed;?>" /><br />
 <?PHP
 if (!isset($song_dev)){
-$song_dev="client";
+$song_dev="jwapp";
 }
 ?>
-Where to play the songs: <br />client -> streams the song to the computer you use to manage the meeting.<br />server -> uses server sound card. <br />vmix -> plays the song on vmix<br />
+Where to play the songs: <br />client -> streams the song to the computer you use to manage the meeting.<br />server -> uses server sound card. <br />vmix -> plays the song on vmix<br />jwapp -> plays the song with jw library app (this should be the default)<br />
 <select class="field_login" name="song_dev" >
 <option value="client">client</option>
 <option value="server" <?PHP if ($song_dev=="server") echo 'selected=selected';?>>server</option>
 <option value="vmix" <?PHP if ($song_dev=="vmix") echo 'selected=selected';?>>vmix</option>
+<option value="jwapp" <?PHP if ($song_dev=="jwapp") echo 'selected=selected';?>>jwapp</option>
 </select><br />
 Song type :<br />select which type of song to use<br />
 <select class="field_login" name="song_type" >
@@ -1224,6 +1221,66 @@ Enable vmix autopause<br />yes -> vmix pauses automatically an input that's not 
 <select class="field_login" name="vmix_auto_pause" >
 <option value="no">no</option>
 <option value="yes" <?PHP if (@$vmix_auto_pause=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+</div>
+<div class="subgroup" onclick="javascript:toogleDiv(7)">Timing</div>
+<div class="subgroups" id="subgroup7">
+Enable meeting timing<br />yes -> the link for timing will be shown in menu <br />no -> timing is disabled <br />
+<select class="field_login" name="timing_conf" >
+<option value="no">no</option>
+<option value="yes" <?PHP if (@$timing_conf=="yes") echo 'selected=selected';?>>yes</option>
+</select><br />
+Timing standalone style<br />default -> use the default timing style<br />testing -> use the testing timing style<br />
+<select class="field_login" name="timing_style" >
+<option value="default">default</option>
+<option value="testing" <?PHP if (@$timing_syle=="testing") echo 'selected=selected';?>>testing</option>
+</select><br />
+Timing standalone font size for small text<br />
+<select class="field_login" name="timing_font_size_1" >
+<option value="1">1 (default)</option>
+<option value="2" <?PHP if (@$timing_font_size_1=="2") echo 'selected=selected';?>>2</option>
+<option value="3" <?PHP if (@$timing_font_size_1=="3") echo 'selected=selected';?>>3</option>
+<option value="4" <?PHP if (@$timing_font_size_1=="4") echo 'selected=selected';?>>4</option>
+<option value="5" <?PHP if (@$timing_font_size_1=="5") echo 'selected=selected';?>>5</option>
+<option value="6" <?PHP if (@$timing_font_size_1=="6") echo 'selected=selected';?>>6</option>
+<option value="7" <?PHP if (@$timing_font_size_1=="7") echo 'selected=selected';?>>7</option>
+<option value="8" <?PHP if (@$timing_font_size_1=="8") echo 'selected=selected';?>>8</option>
+<option value="9" <?PHP if (@$timing_font_size_1=="9") echo 'selected=selected';?>>9</option>
+<option value="10" <?PHP if (@$timing_font_size_1=="10") echo 'selected=selected';?>>10</option>
+</select><br />
+<?PHP
+if (!isset($timing_font_size_2)){
+$timing_font_size_2="3";
+}
+?>
+Timing standalone font size for clock<br />
+<select class="field_login" name="timing_font_size_2" >
+<option value="1" <?PHP if (@$timing_font_size_2=="1") echo 'selected=selected';?>>1</option>
+<option value="2" <?PHP if (@$timing_font_size_2=="2") echo 'selected=selected';?>>2</option>
+<option value="3" <?PHP if (@$timing_font_size_2=="3") echo 'selected=selected';?>>3 (default)</option>
+<option value="4" <?PHP if (@$timing_font_size_2=="4") echo 'selected=selected';?>>4</option>
+<option value="5" <?PHP if (@$timing_font_size_2=="5") echo 'selected=selected';?>>5</option>
+<option value="6" <?PHP if (@$timing_font_size_2=="6") echo 'selected=selected';?>>6</option>
+<option value="7" <?PHP if (@$timing_font_size_2=="7") echo 'selected=selected';?>>7</option>
+<option value="8" <?PHP if (@$timing_font_size_2=="8") echo 'selected=selected';?>>8</option>
+<option value="9" <?PHP if (@$timing_font_size_2=="9") echo 'selected=selected';?>>9</option>
+<option value="10" <?PHP if (@$timing_font_size_2=="10") echo 'selected=selected';?>>10</option>
+<option value="11" <?PHP if (@$timing_font_size_2=="11") echo 'selected=selected';?>>11</option>
+<option value="12" <?PHP if (@$timing_font_size_2=="12") echo 'selected=selected';?>>12</option>
+<option value="13" <?PHP if (@$timing_font_size_2=="13") echo 'selected=selected';?>>13</option>
+<option value="14" <?PHP if (@$timing_font_size_2=="14") echo 'selected=selected';?>>14</option>
+<option value="15" <?PHP if (@$timing_font_size_2=="15") echo 'selected=selected';?>>15</option>
+<option value="16" <?PHP if (@$timing_font_size_2=="16") echo 'selected=selected';?>>16</option>
+<option value="17" <?PHP if (@$timing_font_size_2=="17") echo 'selected=selected';?>>17</option>
+<option value="18" <?PHP if (@$timing_font_size_2=="18") echo 'selected=selected';?>>18</option>
+<option value="19" <?PHP if (@$timing_font_size_2=="19") echo 'selected=selected';?>>19</option>
+<option value="20" <?PHP if (@$timing_font_size_2=="20") echo 'selected=selected';?>>20</option>
+</select><br />
+Meeting timing vmix overlay multiplier<br />1 -> normal<br />anything else -> to fit your screen <br />
+<select class="field_login" name="timing_multi" >
+<option value="1">1</option>
+<option value="0.75" <?PHP if (@$timing_multi=="0.75") echo 'selected=selected';?>>0.75</option>
+<option value="0.5" <?PHP if (@$timing_multi=="0.5") echo 'selected=selected';?>>0.5</option>
 </select><br />
 </div>
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />

@@ -1,7 +1,21 @@
 <?PHP
 header('Content-Type: text/javascript');
+/*
+.then(function(response) {
+
+  // TODO 5 - Respond with custom 404 page
+
+  return caches.open(staticCacheName).then(function(cache) {
+    if (event.request.url.indexOf('test') < 0) {
+      cache.put(event.request.url, response.clone());
+    }
+    return response;
+  });
+});
+
+*/
 ?>
-var CACHE_NAME = 'kh-live-cache-v2';
+var CACHE_NAME = 'kh-live-cache-v4';
 var urlsToCache = [
   '/time'
 ];
@@ -65,7 +79,9 @@ self.addEventListener('fetch', function(event) {
 
             caches.open(CACHE_NAME)
               .then(function(cache) {
+	        if (event.request.url=='time') {
                 cache.put(event.request, responseToCache);
+		}
               });
 
             return response;
