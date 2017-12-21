@@ -134,6 +134,7 @@ if ($dh = @opendir($temp_dir."kh-backup")) {
                         if(fputs($file,$info)){
                         fclose($file);
                         }
+	$log.= '<b style="color:green;">Backup restored successfuly! Now <a href="./configure?action=ok">CLICK HERE</a> to apply the restored backup configuration.<br /></b>';
     }
 }
 ?>
