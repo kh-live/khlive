@@ -344,6 +344,8 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./info_delete.php");
 	}elseif($page=="info_edit"){
 	include ("./info_edit.php");
+	}elseif($page=="back_up"){
+	include ("./backup.php");
 	}
 	}
 //manger links only

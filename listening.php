@@ -332,7 +332,7 @@ for (var n = 0; n < arr.length; n++) {
     }
     }
   }
-      clearInterval(clock);
+      //clearInterval(window.KhClock);
 xmlhttpTime.open("GET","./meeting-time.php", true);
 xmlhttpTime.send();
 }

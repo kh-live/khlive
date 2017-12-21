@@ -65,6 +65,7 @@ if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
 if ($server_beta!="master") {
+echo '<a href="./back_up">Backup/Restore</a>';
 echo '<a href="./diagnosis">Diagnosis</a>';
 echo '<a href="./download">'.$lng['file_transfer'].'</a>';
 }
@@ -90,6 +91,7 @@ echo '<a href="./users">'.$lng['users'].'</a>';
 }
 }
 if ($_SESSION['type']=="root"){
+echo '<a href="./back_up">Backup/Restore</a>';
 echo '<a href="./configure">Configuration</a>
 <a href="./congregations">'.$lng['congregations'].'</a>
 <a href="./diagnosis">Diagnosis</a>

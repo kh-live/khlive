@@ -5,10 +5,12 @@ DO CHANGES ONLY IN TIMING-STANDALONE-TESTING.PHP
 THIS FILE IS USED TO GENERATE THE TIMINGS ON USER LISTENING PAGE AND MANAGER MEETING PAGE AS WELL
 */
 ?>
+
 <div id="meeting_time">
 <?PHP
 $scripts='';
 include "db/config.php";
+if ($server_beta=='true') date_default_timezone_set('Africa/Johannesburg');
 $temp='';
 $meeting_status='No meeting today';
   if ($dh = @opendir($temp_dir)) {
@@ -81,6 +83,7 @@ if ($scheduler=='yes'){
 		$scripts.='
 		clearTimeout(refresh);
 		refresh=setTimeout(function(){refreshPage();},(60-'.date('s',time()).')*1000);
+		window.testTemp=\'0\';
 		';
 		}elseif ((date('G',time())<$start_time[0]) OR ((date('G',time())==$start_time[0]) AND (date('i',time())<$start_time[1]))){
 		//the meeting will start later today
@@ -108,9 +111,12 @@ if ($scheduler=='yes'){
 while($j<=50){
 if (isset($timings['name'.$j])){
 	if (($globaltime<=$elapsed) AND ($elapsed<=$globaltime+($timings['length'.$j]*60))){
-		$part_name=$timings['name'.$j].' - '.$timings['length'.$j].'min';
+		
 		//we set the timer with the length that's left for this part
 		$duration_left=$globaltime+($timings['length'.$j]*60)-$elapsed;
+		if ($duration_left>=0){
+		$part_name=$timings['name'.$j].' - '.$timings['length'.$j].'min';
+		}
 	}
 	$globaltime+=($timings['length'.$j]*60);
 }
@@ -159,16 +165,16 @@ echo '<h1 id="hours">'.date('H', time()).'</h1>:<h1 id="minutes">'.date('i', tim
 </div>
 
 <?PHP
-if (isset($timings)){
+if (isset($timings) AND $duration_left>0){
 $scripts.='
-clearInterval(clock);
+clearInterval(window.KhClock);
 targetTime=new Date(Date.now()+'.($duration_left*1000).');
-clock=setInterval(function(){countdownTarget();},100);
+window.KhClock=setInterval(function(){countdownTarget();},100);
 ';
 
 }else{
 $scripts.='
-clock=setInterval(function(){syncClock();},100);
+window.KhClock=setInterval(function(){syncClock();},100);
 ';
 }
 ?>
@@ -178,9 +184,6 @@ var serverTime=<?PHP echo time(); ?>;
 }
 if (typeof window.delta === 'undefined') {
 window.delta = Date.now() - serverTime*1000;
-}
-if (typeof clock === 'undefined') {
-var clock;
 }
 if (typeof targetTime === 'undefined') {
 var targetTime;
@@ -198,7 +201,7 @@ document.getElementById("secondes").innerHTML=secondes;
 document.getElementById("minutes").innerHTML=minutes;
 document.getElementById("hours").innerHTML=hours;
 }else{
-clearInterval(clock);
+clearInterval(window.KhClock);
 }
 }
 
@@ -212,7 +215,7 @@ if (("" + secondes).length==1) secondes= "0" + secondes;
 if (("" + minutes).length==1) minutes= "0" + minutes;
 if (("" + hours).length==1) hours= "0" + hours;
 		if(timeLeft<=0){
-		clearInterval(clock);
+		clearInterval(window.KhClock);
 		document.getElementById("meeting_times").innerHTML="<h1 id=\"hours\">TIMEOUT!</h1>";
 		}else{
 document.getElementById("secondes").innerHTML=secondes;

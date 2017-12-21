@@ -84,7 +84,7 @@ $server_version=@file_get_contents('http://kh-live.co.za/version.php');
 	if ($server_version!==false){
 	if ($version!=$server_version){
 	echo '<div class="home_widget"><b style="color:red;">Update available!</b><br />Your server is running an old version of kh-live software.';
-	if ($_SESSION['type']=='root'){
+	if ($_SESSION['type']=='root' OR $_SESSION['type']=='admin'){
 	echo '<br /><a href="./auto_update">click here to update the server</a>';
 	}else{
 	echo 'Contact your administrator and ask him to update the server.';

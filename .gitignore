@@ -1,7 +1,6 @@
 /.project
+/backup
 /index.tdl.php
-/config
-/db
 /downloads
 /kh-songs
 /z-archives
@@ -15,3 +14,5 @@ z_archives/WHMDDNS.php
 logins/*
 *.mp3
 style - Copy.css
+/config
+/db
