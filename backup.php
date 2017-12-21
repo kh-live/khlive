@@ -134,7 +134,6 @@ if ($dh = @opendir($temp_dir."kh-backup")) {
                         if(fputs($file,$info)){
                         fclose($file);
                         }
-	$log.= '<b style="color:green;">Backup restored successfuly!</b>';
     }
 }
 ?>
