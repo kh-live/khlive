@@ -191,6 +191,7 @@ if ($conf_admin=="") $conf_admin=rand(10000,99999);
 if ($conf_user=="") $conf_user=rand(10000,99999);
 global $lng;
 global $server_in;
+global $server_out;
 global $web_server_root;
 global $asterisk_bin;
 global $icecast_bin;
