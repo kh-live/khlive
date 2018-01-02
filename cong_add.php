@@ -20,12 +20,11 @@ if(isset($_POST['submit'])){
 			$voip_pwd=$_POST['voip_pwd'];
 			$trunk=$_POST['trunk'];
 			$record=$_POST['record'];
-			$voip_type=$_POST['voip_type'];
 			$answer=$_POST['answer'];
 			$stream_quality=$_POST['stream_quality'];
 			$sip_caller_ip=$_POST['sip_caller_ip'];
 			
-$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $voip_type, $answer, $stream_quality, $sip_caller_ip);
+$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 $info=time().'**info**local cong add successful**'.$cong_name."**\n";

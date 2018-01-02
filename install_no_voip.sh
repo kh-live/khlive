@@ -10,13 +10,10 @@ then
 echo 'Please run the script as root! sudo ./install.sh'
 else
 echo 'configuring IP address to '$IP_ADDR
-sed -i 's/iface eth0 inet manual/auto eth0\
-iface eth0 inet static\
-address '$IP_ADDR'\
-netmask 255.255.255.0\
-gateway '$IP_GW'\
-dns-nameservers 8.8.8.8\
-dns-nameservers 8.8.4.4/' /etc/network/interfaces
+sed -i 's/#interface eth0/interface eth0\
+static ip_address='$IP_ADDR'\
+static routers='$IP_GW'\
+static domain_name_servers=8.8.8.8/' /etc/network/interfaces
 echo 'configuring time zone'
 dpkg-reconfigure tzdata
 echo 'Change your password'
@@ -25,7 +22,7 @@ echo 'updating app database'
 apt-get update
 echo 'installing required software'
 #remember to say no when asked to configure icecast2
-apt-get install screen wget nano tar dos2unix apache2 php5 libapache2-mod-php5 php5-mcrypt php5-curl alsa-base icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
+apt-get install screen wget nano tar dos2unix apache2 php7.0 libapache2-mod-php7.0 php7.0-mcrypt php7.0-curl php7.0-zip alsa-base icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
 mkdir /home/${KH_USER}
 mkdir /home/${KH_USER}/.moc
 chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
@@ -43,7 +40,7 @@ a2enmod rewrite
 #awk '{for(i=1;i<=NF;i++){if(x<3&&$i=="AllowOverride None"){x++;sub("AllowOverride None","AllowOverride all",$i)}}}1' /etc/apache2/sites-available/default
 #sed -i 's/multiviews//' /etc/apache2/sites-available/default
 #sed -i 's/indexes//' /etc/apache2/sites-available/default
-sed -i 's:session.gc_maxlifetime = 1440:session.gc_maxlifetime = 7200:' /etc/php5/apache2/php.ini
+sed -i 's:session.gc_maxlifetime = 1440:session.gc_maxlifetime = 7200:' /etc/php/7.0/apache2/php.ini
 sed -i 's:#Include conf-available/serve-cgi-bin.conf:<Directory '$APACHE_ROOT'>\
 Options -MultiViews +FollowSymLinks\
 AllowOverride all\
@@ -53,7 +50,8 @@ allow from all\
 sed -i 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER='$KH_USER'/' /etc/apache2/envvars
 sed -i 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP='$KH_GRP'/' /etc/apache2/envvars
 chown ${KH_USER}:${KH_GRP} /var/lock/apache2/
-chown ${KH_USER}:${KH_GRP} /var/lib/php5/
+chown -R ${KH_USER}:${KH_GRP} /var/lib/php*
+
 echo 'Downloading and installing kh-live software'
 mkdir ${APACHE_ROOT}kh-live
 (cd ${APACHE_ROOT}kh-live && wget http://kh-live.co.za/downloads/khlive_latest.tar)
@@ -98,7 +96,7 @@ sed -i 's:;   write list = root, @lpadmin:[khsongs]\
 comment= KH songs\
 path='$APACHE_ROOT'kh-live/kh-songs/\
 browseable=Yes\
-writeable=yes\
+writeable=No\
 only guest=no\
 create mask=0777\
 directory mask=0777\
@@ -127,85 +125,6 @@ force user = '$KH_USER':' /etc/samba/smb.conf
         ;;
     *)
        echo 'skipping samba...'
-        ;;
-esac
-echo 'Installing Original songs 1-135 :'
-echo 'Note : you need to have enough free space on the disk.'
-echo '(Did you expand filesystem?)'
-read -r -p ". Do you want to install the original songs? [y/N] " response
-case $response in
-    [yY][eE][sS]|[yY]) 
-    read -r -p "Download from [w]eb ( 628Mo ) or use [L]ocal file? [w/L] " response
-case $response in
-    [wW][eE][bB]|[wW]) 
-       echo 'downloading original songs...'
-       (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/c0/iasn_E.mp3.zip)
-        ;;
-    *)
-       echo 'skipping download...'
-        ;;
-esac
-       (cd ${APACHE_ROOT}kh-live/kh-songs && unzip iasn_E.mp3.zip)
-       rm ${APACHE_ROOT}kh-live/kh-songs/iasn_E.mp3.zip
-       chown -R ${KH_USER}:${KH_GRP} ${APACHE_ROOT}kh-live/*
-        ;;
-    *)
-       echo 'skipping original songs...'
-        ;;
-esac
-echo 'Installing New songs 136-154 :'
-read -r -p "Do you want to install the new songs? [y/N] " response
-case $response in
-    [yY][eE][sS]|[yY]) 
-     read -r -p "Download from [w]eb ( 102Mo ) or use [L]ocal file? [w/L] " response
-case $response in
-    [wW][eE][bB]|[wW]) 
-       echo 'downloading new songs...'
-       (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/95/snnw_E.mp3.zip)
-        ;;
-    *)
-       echo 'skipping download...'
-        ;;
-esac
-	(cd ${APACHE_ROOT}kh-live/kh-songs && unzip snnw_E.mp3.zip)
-       rm ${APACHE_ROOT}kh-live/kh-songs/snnw_E.mp3.zip
-chown -R ${KH_USER}:${KH_GRP} ${APACHE_ROOT}kh-live/*
-        ;;
-    *)
-       echo 'skipping new songs...'
-        ;;
-esac
-echo 'Installing Orchestral songs 1-135 :'
-read -r -p "Do you want to install the orchestral songs? [y/N] " response
-case $response in
-    [yY][eE][sS]|[yY]) 
-        read -r -p "Download from [w]eb ( 619Mo ) or use [L]ocal file? [w/L] " response
-case $response in
-    [wW][eE][bB]|[wW]) 
-       echo 'downloading orchestral songs...'
-      (cd ${APACHE_ROOT}kh-live/kh-songs && wget https://download-a.akamaihd.net/files/media_music/a8/iasnm_E.mp3.zip)
-        ;;
-    *)
-       echo 'skipping download...'
-        ;;
-esac
-       (cd ${APACHE_ROOT}kh-live/kh-songs && unzip iasnm_E.mp3.zip)
-       rm ${APACHE_ROOT}kh-live/kh-songs/iasnm_E.mp3.zip
-       chown -R ${KH_USER}:${KH_GRP} ${APACHE_ROOT}kh-live/*
-        ;;
-    *)
-       echo 'skipping orchestral songs...'
-        ;;
-esac
-read -r -p "Now that we are done with songs do you want to write protect the windows share? [y/N] " response
-case $response in
-    [yY][eE][sS]|[yY]) 
-    echo 'write protecting share...'
-    sed -i 's:writeable=yes:writeable=no:' /etc/samba/smb.conf
-    killall -HUP smbd
-       ;;
-    *)
-       echo 'skipping write protect...'
         ;;
 esac
 

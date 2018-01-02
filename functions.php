@@ -185,7 +185,7 @@ $key=$api_key;
 		return '<div id="error_msg">'.$lng['error'].'</div>';
 		}
 }
-function cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $voip_type, $answer, $stream_quality, $sip_caller_ip, $cong_no="", $conf_admin="", $conf_user=""){
+function cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip, $cong_no="", $conf_admin="", $conf_user=""){
 if ($cong_no=="") $cong_no=rand(100000,999999);
 if ($conf_admin=="") $conf_admin=rand(10000,99999);
 if ($conf_user=="") $conf_user=rand(10000,99999);
