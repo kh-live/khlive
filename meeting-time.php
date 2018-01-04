@@ -169,12 +169,12 @@ if (isset($timings) AND $duration_left>0){
 $scripts.='
 killIntervals();
 window.targetTime=new Date(Date.now()+'.($duration_left*1000).');
-window.KhClock.push=setInterval(function(){countdownTarget();},100);
+window.KhClock.push(setInterval(function(){countdownTarget();},100));
 ';
 
 }else{
 $scripts.='
-window.KhClock.push=setInterval(function(){syncClock();},100);
+window.KhClock.push(setInterval(function(){syncClock();},100));
 ';
 }
 ?>
