@@ -180,7 +180,7 @@ window.KhClock.push=setInterval(function(){syncClock();},100);
 ?>
 <script type="text/javascript">
 if (typeof window.KhClock === 'undefined') {
-var window.KhClock=new Array();
+window.KhClock=new Array();
 }
 if (typeof serverTime === 'undefined') {
 var serverTime=<?PHP echo time(); ?>;
