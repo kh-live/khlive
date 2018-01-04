@@ -168,7 +168,7 @@ echo '<h1 id="hours">'.date('H', time()).'</h1>:<h1 id="minutes">'.date('i', tim
 if (isset($timings) AND $duration_left>0){
 $scripts.='
 clearInterval(window.KhClock);
-targetTime=new Date(Date.now()+'.($duration_left*1000).');
+window.targetTime=new Date(Date.now()+'.($duration_left*1000).');
 window.KhClock=setInterval(function(){countdownTarget();},100);
 ';
 
@@ -185,8 +185,8 @@ var serverTime=<?PHP echo time(); ?>;
 if (typeof window.delta === 'undefined') {
 window.delta = Date.now() - serverTime*1000;
 }
-if (typeof targetTime === 'undefined') {
-var targetTime;
+if (typeof window.targetTime === 'undefined') {
+var window.targetTime;
 }
 function syncClock(){
 if (window.testTemp!='1'){
@@ -207,7 +207,7 @@ clearInterval(window.KhClock);
 
 function countdownTarget(){
 window.testTemp='1';
-var timeLeft=(targetTime.getTime()-Date.now())/1000;
+var timeLeft=(window.targetTime.getTime()-Date.now())/1000;
 var secondes=Math.floor(timeLeft %60);
 var minutes=Math.floor((timeLeft / 60 ) %60);
 var hours=Math.floor(timeLeft / 3600);
