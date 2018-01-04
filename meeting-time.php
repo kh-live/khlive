@@ -174,6 +174,7 @@ window.KhClock.push(setInterval(function(){countdownTarget();},100));
 
 }else{
 $scripts.='
+killIntervals();
 window.KhClock.push(setInterval(function(){syncClock();},100));
 ';
 }
