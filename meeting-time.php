@@ -167,18 +167,21 @@ echo '<h1 id="hours">'.date('H', time()).'</h1>:<h1 id="minutes">'.date('i', tim
 <?PHP
 if (isset($timings) AND $duration_left>0){
 $scripts.='
-clearInterval(window.KhClock);
+killIntervals();
 window.targetTime=new Date(Date.now()+'.($duration_left*1000).');
-window.KhClock=setInterval(function(){countdownTarget();},100);
+window.KhClock.push=setInterval(function(){countdownTarget();},100);
 ';
 
 }else{
 $scripts.='
-window.KhClock=setInterval(function(){syncClock();},100);
+window.KhClock.push=setInterval(function(){syncClock();},100);
 ';
 }
 ?>
 <script type="text/javascript">
+if (typeof window.KhClock === 'undefined') {
+var window.KhClock=new Array();
+}
 if (typeof serverTime === 'undefined') {
 var serverTime=<?PHP echo time(); ?>;
 }
@@ -187,6 +190,12 @@ window.delta = Date.now() - serverTime*1000;
 }
 if (typeof window.targetTime === 'undefined') {
 var window.targetTime;
+}
+function killIntervals(){
+for (let value of window.KhClock) {
+clearInterval(value);
+}
+window.KhClock=new Array();
 }
 function syncClock(){
 if (window.testTemp!='1'){
@@ -201,7 +210,7 @@ document.getElementById("secondes").innerHTML=secondes;
 document.getElementById("minutes").innerHTML=minutes;
 document.getElementById("hours").innerHTML=hours;
 }else{
-clearInterval(window.KhClock);
+killIntervals();
 }
 }
 
@@ -215,7 +224,7 @@ if (("" + secondes).length==1) secondes= "0" + secondes;
 if (("" + minutes).length==1) minutes= "0" + minutes;
 if (("" + hours).length==1) hours= "0" + hours;
 		if(timeLeft<=0){
-		clearInterval(window.KhClock);
+		killIntervals();
 		document.getElementById("meeting_times").innerHTML="<h1 id=\"hours\">TIMEOUT!</h1>";
 		}else{
 document.getElementById("secondes").innerHTML=secondes;
