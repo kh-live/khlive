@@ -189,7 +189,7 @@ if (typeof window.delta === 'undefined') {
 window.delta = Date.now() - serverTime*1000;
 }
 if (typeof window.targetTime === 'undefined') {
-var window.targetTime;
+window.targetTime;
 }
 function killIntervals(){
 for (let value of window.KhClock) {
