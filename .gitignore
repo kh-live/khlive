@@ -1,19 +1,10 @@
 /.project
 /backup
-/index.tdl.php
-/downloads
-/kh-songs
-/z-archives
-/khlive-update.tar
-/kh-live_latest.tar
-*.tar
-z_archives/users
-*.old
-z_archives/pfcad.py
-z_archives/WHMDDNS.php
-logins/*
-bad_logins/*
-*.mp3
-style - Copy.css
+/bad_logins
 /config
 /db
+/downloads
+/kh-songs
+/logins
+/records
+/z_archives
