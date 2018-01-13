@@ -50,29 +50,26 @@ $_SESSION['server_status']="ok";
  <a href="./record">'.$lng['recordings'].'</a>';
 if ($server_beta!="master" AND @$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
-if ($_SESSION['type']=="manager" AND $server_beta!="master"){
-
+if ($_SESSION['type']=="manager"){
 echo '<a href="./meeting">'.$lng['meeting'].'</a>
-<a href="./record">'.$lng['recordings'].'</a>
-<a href="./report">'.$lng['report'].'</a>';
-	if(@$scheduler=='yes'){
-	echo '<a href="./scheduler">Scheduler</a>';
-	}
-	if(@$timing_conf=='yes'){
-echo '<a href="./timings">Timing</a>';
+<a href="./record">'.$lng['recordings'].'</a>';
+if ($server_beta!="master") {
+	echo '<a href="./report">'.$lng['report'].'</a>';
+	if(@$scheduler=='yes') 	echo '<a href="./scheduler">Scheduler</a>';
+	if(@$timing_conf=='yes') echo '<a href="./timings">Timing</a>';
+	if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
-if (@$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
 }
 if ($_SESSION['type']=="admin"){
 if ($server_beta!="master") {
 echo '<a href="./back_up">Backup/Restore</a>';
 echo '<a href="./diagnosis">Diagnosis</a>';
 echo '<a href="./download">'.$lng['file_transfer'].'</a>';
+echo '<a href="./meeting">'.$lng['meeting'].'</a>';
 }
 echo'
 <a href="./listening">'.$lng['listening'].'</a>';
 if ($server_beta!="master") {
-echo '<a href="./meeting">'.$lng['meeting'].'</a>';
 echo '<a href="./infos">Notice Board</a>';
 }
 echo '<a href="./record">'.$lng['recordings'].'</a>';
@@ -100,7 +97,9 @@ echo '<a href="./configure">Configuration</a>
 <a href="./logs">'.$lng['logs'].'</a>';
 if ($server_beta!="master") {
 echo '<a href="./song_man">Manage Songs</a>';
+}
 echo '<a href="./meeting">'.$lng['meeting'].'</a>';
+if ($server_beta!="master") {
 echo '<a href="./infos">Notice Board</a>';
 }
 echo '<a href="./record">'.$lng['recordings'].'</a>';

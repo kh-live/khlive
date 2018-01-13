@@ -50,7 +50,9 @@ $files_to_backup=array(
 './db/timings'
 );
 foreach($files_to_backup as $file){
+if (file_exists($file)){
 copy($file,$temp_dir."kh-backup/".basename($file));
+}
 }
 
 $rootPath = realpath($temp_dir."kh-backup");
@@ -84,7 +86,9 @@ foreach ($files as $name => $file)
 $zip->close();
 
 foreach($files_to_backup as $file){
+if (file_exists($file)){
 unlink($temp_dir."kh-backup/".basename($file));
+}
 }
     rmdir($temp_dir."kh-backup");
 

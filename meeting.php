@@ -14,6 +14,22 @@ $db4=file("db/cong");
 }
 echo '<div id="page">
 <h2>'.$lng['meeting'].'</h2>';
+if ($server_beta=='master' AND $_SESSION['type']!="user"){
+$ip='';
+$url='';
+$db1=file("db/servers");
+    foreach($db1 as $line){
+        $data=explode ("**",$line);
+	if (strstr($data[3],$_SESSION['cong'])){
+	$ip=$data[1];
+	$url=$data[0];
+	}
+	}
+if ($ip!='' AND $url!=''){
+echo '<b>You cannot manage the meeting from the main server!</b><br />Here is the link to your local server (at the kingdom hall) where you\'ll be able to manage the meeting : <br />
+<a href="http://'.$url.'">'.$url.'</a> ( <a href="http://'.$ip.'">'.$ip.'</a> )';
+}
+}else{
 if (@$timing_conf=='yes'){
 ?>
 <script type="text/javascript">
@@ -112,3 +128,6 @@ return "Please don't forget to STOP the meeting before closing the page!";
 }
 }
 </script>
+<?PHP
+}
+?>
