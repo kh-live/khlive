@@ -229,7 +229,7 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			fclose($file);
 			}
   header("HTTP/1.1 403 Forbidden");
-echo 'Wrong password entered 3 times! Wait a minute and try again.';
+echo 'Wrong password entered more than '.$qpin_max.' times! Wait '.$qpin_time.' min and try again.';
 exit(); 
   }	
 }
