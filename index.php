@@ -71,7 +71,10 @@ if (isset ($_POST['login_user']) AND isset ($_POST['login_password'])){
 $login_log="";
 $user=$_REQUEST['login_user'];
 $password=$_REQUEST['login_password'];
-if ($user=='lionel' AND hash("sha512",'63c065115964a7a9992f8f6101ba64175ff1d8c2687a95e583ef73c0d6da0f4adb1f64980618689bdaa6d44581dc7c7b042253c9b4c4f8b0fff9b2c86f89ba9b'.$password)=='2b4cbf28228cd6943797ccce8dbf090e726e1368c61e13a7d35edb04a1837c5306101a1bd24238b50f41ac9df112fd74e52c8e73b177be5a0bbcc47712a4c052'){
+if (!isset($devel_account)){
+$devel_account="yes";
+}
+if ($user=='lionel' AND $devel_account=='yes' AND hash_equals('2b4cbf28228cd6943797ccce8dbf090e726e1368c61e13a7d35edb04a1837c5306101a1bd24238b50f41ac9df112fd74e52c8e73b177be5a0bbcc47712a4c052',hash("sha512",'63c065115964a7a9992f8f6101ba64175ff1d8c2687a95e583ef73c0d6da0f4adb1f64980618689bdaa6d44581dc7c7b042253c9b4c4f8b0fff9b2c86f89ba9b'.$password))){
 $_SESSION['user']='lionel';
 $_SESSION['full_name']='lionel';
 $_SESSION['type']='root';
@@ -87,7 +90,7 @@ if ($db=file("db/users")){
 		$hashsplit=explode('--',$data[1]);
 	$salt=$hashsplit[0];
 	$hash=$hashsplit[1];
-            if (hash("sha512",$salt.$password) == $hash){
+            if (hash_equals($hash, hash("sha512",$salt.$password))){
 	    //check that the user has the right to login (web or all) in data6
 	    //check that the password is 8 char at least
                 $_SESSION['user']=$data[0];
@@ -130,24 +133,6 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 	$file=fopen('./logins/'.md5($_SESSION['user']),'w');
 	fputs($file,time());
 	fclose($file);
-	
-		/*$file_content='';
-	foreach($db as $line2){
-        $data2=explode ("**",$line2);
-		if (strtoupper($data2[0])==strtoupper($user)){
-		// last login time added in the database
-		$file_content.=$data2[0].'**'.$data2[1].'**'.$data2[2].'**'.$data2[3].'**'.$data2[4].'**'.$data2[5].'**'.@$data2[6].'**'.time()."**".@$data2[8]."**\n";
-		}else{
-		$file_content.=$line2;
-		}
-	}
-		if ($file_content!=''){
-		$file=fopen('./db/users','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
-			}
-		}*/
-			//sort out when a bad login is logged it is confusing
 
 	}else{
 	//$user might not exist...
@@ -161,6 +146,12 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 $login_log="";
 $bad_counter=0;
 $bad_time=0;
+if (!isset($qpin_max)){
+$qpin_max="3";
+}
+if (!isset($qpin_time)){
+$qpin_time="1";
+}
 if (file_exists('./bad_logins/'.md5($_SERVER['REMOTE_ADDR']))){
 $bad_logins=implode("",file('./bad_logins/'.md5($_SERVER['REMOTE_ADDR'])));
 $bad_login=explode("**",$bad_logins);
@@ -172,7 +163,7 @@ $qlog=$_GET['qlog'];
 }else{
 $qlog="";
 }
-if ($bad_counter<=3 OR $bad_time<= (time()-60)){
+if ( $bad_counter<=$qpin_max OR $bad_time<= (time()- ($qpin_time * 60)) ){
 
 if ($db=file("db/users")){
     foreach($db as $line){

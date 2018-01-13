@@ -980,7 +980,7 @@ echo '?>';
     $message = ob_get_clean();
 $fichier = fopen('./db/config.php', 'w');
             if (fwrite($fichier, $message)){
-            echo "<div id=\"page\"><br /><b style=\"color:green;\">Configuration saved successfully</b></div></body></html>" ;
+            echo "<div id=\"page\"><br /><b style=\"color:green;\">Configuration saved successfully! </b>Don't forget to apply the changes.</div></body></html>" ;
             
             fclose ($fichier);
 	    $tmp_skip='yes'; //this is to give time to the system to write the config so the fresh one can be loaded
@@ -1028,33 +1028,10 @@ Server_in : <br />default stream server address. Usually "localhost". Used for :
 <input class="field_login" type="text" name="server_in" value="<?PHP echo $server_in;?>" /><br />
 server_out : <br />Fully qualified Server name (must be the same as set on kh-live.co.za). This is the address at which the server is reachable from the internet.<br />
 <input class="field_login" type="text" name="server_out" value="<?PHP echo $server_out;?>" /><br />
-web_server_root : <br />root for webserver with trailing /<br />
-<input class="field_login" type="text" name="web_server_root" value="<?PHP echo $web_server_root;?>" /><br />
-temp_dir : <br />temp directory /dev/shm with trailing / <br />
-<input class="field_login" type="text" name="temp_dir" value="<?PHP echo $temp_dir;?>" /><br />
-icecast_bin : <br />icecast binary name (icecast on alpine icecast2 on debian)<br />
-<input class="field_login" type="text" name="icecast_bin" value="<?PHP echo $icecast_bin;?>" /><br />
-port :<br />icecast port <br />
-<input class="field_login" type="text" name="port" value="<?PHP echo $port;?>" /><br />
 timer : <br />used to reload  meeting page<br />
 <input class="field_login" type="text" name="timer" value="<?PHP echo $timer;?>" /><br />
 timer_listen :<br />listening timer <br />
 <input class="field_login" type="text" name="timer_listen" value="<?PHP echo $timer_listen;?>" /><br />
-asterisk_bin : <br />asterisk binary path + file_name<br />
-<input class="field_login" type="text" name="asterisk_bin" value="<?PHP echo $asterisk_bin;?>" /><br />
-asterisk_spool : <br />asterisk spool folder with trailing /<br />
-<input class="field_login" type="text" name="asterisk_spool" value="<?PHP echo $asterisk_spool;?>" /><br />
-lame_bin :<br />lame binary path + file_name<br />
-<input class="field_login" type="text" name="lame_bin" value="<?PHP echo $lame_bin;?>" /><br />
-ezstream_bin : <br />ezstream binary path + file_name<br />
-<input class="field_login" type="text" name="ezstream_bin" value="<?PHP echo $ezstream_bin;?>" /><br />
-ices_bin : <br />ices binary path + file_name<br />
-<?PHP
-if (!isset($ices_bin)){
-$ices_bin="/usr/bin/ices2";
-}
-?>
-<input class="field_login" type="text" name="ices_bin" value="<?PHP echo $ices_bin;?>" /><br />
 Auto config ppp0 :<br />keep alive ppp0 by sending ifup every 5min<br />
 <select class="field_login" name="auto_ppp" >
 <option value="no">No</option>
@@ -1284,11 +1261,77 @@ Meeting timing vmix overlay multiplier<br />1 -> normal<br />anything else -> to
 <option value="0.5" <?PHP if (@$timing_multi=="0.5") echo 'selected=selected';?>>0.5</option>
 </select><br />
 </div>
+<div class="subgroup" onclick="javascript:toogleDiv(8)">Security</div>
+<div class="subgroups" id="subgroup8">
+Enable developper's root account ? <br /> This account is used by the developper to login on your server and help you solve problems.<br />
+<select class="field_login" name="devel_account" >
+<option value="yes">yes</option>
+<option value="no" <?PHP if (@$devel_account=="no") echo 'selected=selected';?>>no</option>
+</select><br />
+<?PHP
+if (!isset($qpin_max)){
+$qpin_max="3";
+}
+?>
+Quick login pin maximum failed attempts before lock out<br />
+<select class="field_login" name="qpin_max" >
+<option value="1" <?PHP if (@$qpin_max=="1") echo 'selected=selected';?>>1</option>
+<option value="2" <?PHP if (@$qpin_max=="2") echo 'selected=selected';?>>2</option>
+<option value="3" <?PHP if (@$qpin_max=="3") echo 'selected=selected';?>>3 (default)</option>
+<option value="4" <?PHP if (@$qpin_max=="4") echo 'selected=selected';?>>4</option>
+<option value="5" <?PHP if (@$qpin_max=="5") echo 'selected=selected';?>>5</option>
+<option value="6" <?PHP if (@$qpin_max=="6") echo 'selected=selected';?>>6</option>
+<option value="7" <?PHP if (@$qpin_max=="7") echo 'selected=selected';?>>7</option>
+<option value="8" <?PHP if (@$qpin_max=="8") echo 'selected=selected';?>>8</option>
+<option value="9" <?PHP if (@$qpin_max=="9") echo 'selected=selected';?>>9</option>
+<option value="10" <?PHP if (@$qpin_max=="10") echo 'selected=selected';?>>10</option>
+</select><br />
+Quick login lock out time. <br />(How long must the user wait before being able to login again)<br />
+<select class="field_login" name="qpin_time" >
+<option value="1" <?PHP if (@$qpin_time=="1") echo 'selected=selected';?>>1 min (default)</option>
+<option value="2" <?PHP if (@$qpin_time=="2") echo 'selected=selected';?>>2 min</option>
+<option value="3" <?PHP if (@$qpin_time=="3") echo 'selected=selected';?>>3 min</option>
+<option value="4" <?PHP if (@$qpin_time=="4") echo 'selected=selected';?>>4 min</option>
+<option value="5" <?PHP if (@$qpin_time=="5") echo 'selected=selected';?>>5 min</option>
+<option value="6" <?PHP if (@$qpin_time=="6") echo 'selected=selected';?>>6 min</option>
+<option value="7" <?PHP if (@$qpin_time=="7") echo 'selected=selected';?>>7 min</option>
+<option value="8" <?PHP if (@$qpin_time=="8") echo 'selected=selected';?>>8 min</option>
+<option value="9" <?PHP if (@$qpin_time=="9") echo 'selected=selected';?>>9 min</option>
+<option value="10" <?PHP if (@$qpin_time=="10") echo 'selected=selected';?>>10 min</option>
+</select><br />
+</div>
+<div class="subgroup" onclick="javascript:toogleDiv(9)">Paths and Binaries</div>
+<div class="subgroups" id="subgroup9">
+web_server_root : <br />root for webserver with trailing /<br />
+<input class="field_login" type="text" name="web_server_root" value="<?PHP echo $web_server_root;?>" /><br />
+temp_dir : <br />temp directory /dev/shm with trailing / <br />
+<input class="field_login" type="text" name="temp_dir" value="<?PHP echo $temp_dir;?>" /><br />
+asterisk_bin : <br />asterisk binary path + file_name<br />
+<input class="field_login" type="text" name="asterisk_bin" value="<?PHP echo $asterisk_bin;?>" /><br />
+asterisk_spool : <br />asterisk spool folder with trailing /<br />
+<input class="field_login" type="text" name="asterisk_spool" value="<?PHP echo $asterisk_spool;?>" /><br />
+lame_bin :<br />lame binary path + file_name<br />
+<input class="field_login" type="text" name="lame_bin" value="<?PHP echo $lame_bin;?>" /><br />
+ezstream_bin : <br />ezstream binary path + file_name<br />
+<input class="field_login" type="text" name="ezstream_bin" value="<?PHP echo $ezstream_bin;?>" /><br />
+ices_bin : <br />ices binary path + file_name<br />
+<?PHP
+if (!isset($ices_bin)){
+$ices_bin="/usr/bin/ices2";
+}
+?>
+<input class="field_login" type="text" name="ices_bin" value="<?PHP echo $ices_bin;?>" /><br />
+icecast_bin : <br />icecast binary name (icecast on alpine icecast2 on debian)<br />
+<input class="field_login" type="text" name="icecast_bin" value="<?PHP echo $icecast_bin;?>" /><br />
+port :<br />icecast port <br />
+<input class="field_login" type="text" name="port" value="<?PHP echo $port;?>" /><br />
+</div>
+
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 <hr />
-Use this button to re-generate all the config files from db.<br />
-<input type="submit" value="Over-write config!" onclick="javascript:redoconfig()" />
+Use this button to re-generate and apply all the configuration files changes from db. Don't forget to save first!<br />
+<input type="submit" value="Apply configuration changes" onclick="javascript:redoconfig()" />
 </div>
 <script type="text/javascript">
 function toogleDiv(id){
