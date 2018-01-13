@@ -8,11 +8,13 @@ global $master_key;
 global $api_key;
 global $auto_khlive;
 		if ($rights!="0" AND $congregation!="0" AND $user!="" AND $password!="" AND strlen($password)>=8 AND $name!="" AND $pin>=9999 AND $pin<=100000){
+			if (file_exists("db/users")){
 			$db=file("db/users");
 			foreach($db as $line){
 			$data=explode ("**",$line);
 			if ($data[0]==$user) $error="ko";
 			if ($data[5]==$pin) $error="ko";
+			}
 			}
 			//remote check
 			if ($server_beta!="master" AND $api=="0" AND $auto_khlive=="yes"){
@@ -203,14 +205,15 @@ global $alsa_in;
 global $alsa_out;
 global $sound_quality;
 if ($stream_server=="") $stream_server=$server_in;
-
+		
+		if (file_exists("db/cong")){
 		$db=file("db/cong");
 			foreach($db as $line){
 			$data=explode ("**",$line);
 			if ($data[0]==$cong_name OR $data[4]==$phone_no)
 			return '<div id="error_msg">'.$lng['name_exists'].'...</div>';
 			}
-			
+		}	
 		$test=0;
 		$db=file("config/meetme.conf");
 			while ($test==0){
@@ -240,7 +243,7 @@ if ($stream_server=="") $stream_server=$server_in;
 		}else{
 			$stream_path="/stream-".$cong_name.".ogg";
 		}
-		
+	if (file_exists("db/streams")){	
 	$db=file("db/streams");
 		foreach($db as $line){
 			$data=explode ("**",$line);
@@ -248,6 +251,7 @@ if ($stream_server=="") $stream_server=$server_in;
 			return 'error stream name exists';
 			}
 		}
+	}
 	if ($stream_type!='both'){
 	$info=$stream_path.'**'.$cong_name.'**'.$stream_type."** **\n"; //sanitize input - last field was for the stream friendly name which we dont really need. remove from other pages then clear.
 		}else{
@@ -378,7 +382,7 @@ $info2="<!--mount-".$cong_name."-->
 <!--lastmount-->
 ";
 }
-
+	if (file_exists("config/icecast.xml")){	
 	$db=file("config/icecast.xml");
 			$file_content="";
 	foreach($db as $line){
@@ -394,6 +398,7 @@ $info2="<!--mount-".$cong_name."-->
 			}else{
 			return 'error saving /config/icecast.xml';
 			}
+		}
 }
 			// we need to restart icecast as it's config file changed
 			//icecast needs to run as the same user as the webserver for it to work

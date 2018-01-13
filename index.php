@@ -12,11 +12,10 @@ mkdir('./logins', 0755);
 if (!is_dir('./bad_logins')){
 mkdir('./bad_logins', 0755);
 }
+if (file_exists("db/users") AND file_exists("db/cong")){
 include "db/config.php";
 if ($server_beta==true){
 error_reporting(E_ALL);
-}else{
-/*error_reporting(E_ERROR);*/
 }
 $a = session_id();
 if ($a == ''){
@@ -414,5 +413,12 @@ document.getElementById("hide_menu").innerHTML="<svg xmlns:rdf=\"http://www.w3.o
 </body>
 </html>
 <?PHP
+}
+}else{
+header('Content-type: text/html; charset=ISO-8859-15');
+$lang="";
+include ("./lang.php");
+include ("./functions.php");
+include ("./installation.php");
 }
 ?>
