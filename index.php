@@ -9,6 +9,9 @@ exit();
 if (!is_dir('./logins')){
 mkdir('./logins', 0755);
 }
+if (!is_dir('./bad_logins')){
+mkdir('./bad_logins', 0755);
+}
 include "db/config.php";
 if ($server_beta==true){
 error_reporting(E_ALL);
@@ -148,7 +151,7 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 
 	}else{
 	//$user might not exist...
-	$info=time().'**info**bad login**'.$user.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
+	$info=time().'**warn**bad login**'.$user.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -156,11 +159,21 @@ $info=time().'**info**login successful**'.$_SESSION['user'].'**'.$_SESSION['cong
 	}
 }elseif (isset ($_GET['qlog'])){
 $login_log="";
+$bad_counter=0;
+$bad_time=0;
+if (file_exists('./bad_logins/'.md5($_SERVER['REMOTE_ADDR']))){
+$bad_logins=implode("",file('./bad_logins/'.md5($_SERVER['REMOTE_ADDR'])));
+$bad_login=explode("**",$bad_logins);
+$bad_counter+=$bad_login[1];
+$bad_time=$bad_login[2];
+}
 if (is_numeric($_GET['qlog'])){
 $qlog=$_GET['qlog'];
 }else{
 $qlog="";
 }
+if ($bad_counter<=3 OR $bad_time<= (time()-60)){
+
 if ($db=file("db/users")){
     foreach($db as $line){
         $data=explode ("**",$line);
@@ -198,35 +211,37 @@ $info=time().'**info**quick login successful**'.$_SESSION['user'].'**'.$_SESSION
 			if(fputs($file,$info)){
 			fclose($file);
 			}
-	/*
-	$file_content='';
-	foreach($db as $line2){
-        $data2=explode ("**",$line2);
-		if (strtoupper($data2[0])==strtoupper($user)){
-		// last login time added in the database
-		$file_content.=$data2[0].'**'.$data2[1].'**'.$data2[2].'**'.$data2[3].'**'.$data2[4].'**'.$data2[5].'**'.@$data2[6].'**'.time()."**".@$data2[8]."**\n";
-		}else{
-		$file_content.=$line2;
-		}
-	}
-	if ($file_content!=''){
-		$file=fopen('./db/users','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
-			}
-	}*/
+
 	$file=fopen('./logins/'.md5($_SESSION['user']),'w');
 	fputs($file,time());
 	fclose($file);	
-			//sort out when a bad login is logged it is confusing
+	
+	if (file_exists('./bad_logins/'.md5($_SERVER['REMOTE_ADDR']))){
+	unlink('./bad_logins/'.md5($_SERVER['REMOTE_ADDR']));
+	}
 
 	}else{
-	$info=time().'**info**bad login**'.$qlog.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
+	$bad_counter++;
+	$info=time().'**warn**bad login**'.$qlog.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
+	$file=fopen('./bad_logins/'.md5($_SERVER['REMOTE_ADDR']),'w');
+	fputs($file,$_SERVER['REMOTE_ADDR']."**".$bad_counter."**".time()."**");
+	fclose($file);		
 	}
+  }else{
+  //this is a quick login flooding attempt (3 bad logins within the last minute)
+  $info=time().'**warn**flooding attemp stopped**'.$qlog.'**--**'.$_SERVER['REMOTE_PORT'].'@'.$_SERVER['REMOTE_ADDR'].'**'.$_SERVER['HTTP_USER_AGENT']."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+  header("HTTP/1.1 403 Forbidden");
+echo 'Wrong password entered 3 times! Wait a minute and try again.';
+exit(); 
+  }	
 }
 if ($page=="time" OR $page=='redirect'){
 	if (@$timing_style=='testing'){
