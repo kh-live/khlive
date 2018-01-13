@@ -17,6 +17,15 @@ if(isset($_GET['date'])){
 $selected_date=$_GET['date'];
 $_SESSION['selected_date_l']=$selected_date;
 }
+if(isset($_GET['type'])){
+$selected_type=$_GET['type'];
+$_SESSION['selected_type_l']=$selected_type;
+}
+if(isset($_SESSION['selected_type_l'])) {
+$selected_type=$_SESSION['selected_type_l'];
+}else{
+$selected_type="all";
+}
 if(isset($_SESSION['selected_cong_l'])) $selected_cong=$_SESSION['selected_cong_l'];
 if(isset($_SESSION['selected_date_l'])) $selected_date=$_SESSION['selected_date_l'];
 ?>
@@ -27,6 +36,9 @@ function update_cong(url){
 }
 function update_date(url){
   window.location="./logs?date=" + url;
+}
+function update_type(url){
+  window.location="./logs?type=" + url;
 }
 </script>
 <h2><?PHP echo $lng['logs']; ?></h2>
@@ -67,7 +79,17 @@ echo 'Date: <select id="date" onchange="javascript:update_date(this.value)">';
 	$selected_cong=$selected_cong."-";
 	}
 	$file="db/logs-".strtolower($selected_cong).$selected_date;
-
+	echo 'Type : <select id="type" onchange="javascript:update_type(this.value)">
+	<option value="all">...</option><option value="debug" ';
+	if ($selected_type=='debug') echo 'selected="selected"';
+	echo '>debug</option><option value="info" ';
+	if ($selected_type=='info') echo 'selected="selected"';
+	echo '>info</option><option value="warn" ';
+	if ($selected_type=='warn') echo 'selected="selected"';
+	echo '>warn</option><option value="error" ';
+	if ($selected_type=='error') echo 'selected="selected"';
+	echo '>error</option>';
+	echo '</select><br /><br />';
 	if (!file_exists($file)){
 	echo 'There is no data for this month. Try another one...';
 	}else{
@@ -94,7 +116,9 @@ $page=0;
     foreach($db as $line){
     if($page_nb<=$i AND $i<$page_nb+$step){
         $data=explode ("**",$line);
+	if (@$data[1]==$selected_type OR $selected_type=='all'){
 	echo '<tr><td>'.date('H:i:s-d/m/Y',$data[0]).'</td><td>'.@$data[1].'</td><td>'.@$data[2].'</td><td>'.@$data[3].'</td><td>'.@$data[4].'</td><td>'.@$data[5].'</td><td>'.@$data[6].'</td></tr>';
+	}
 	}
 	$i++;
 }

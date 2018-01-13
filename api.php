@@ -5,7 +5,7 @@ include 'functions.php';
 if (isset($_GET['q'])){
 $decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($api_key), base64_decode($_GET['q']), MCRYPT_MODE_CBC, md5(md5($api_key))), "\0");
 $query=explode("**", $decrypted);
-	if ($query[0]+60>=time() OR time()>=$query[0]-60){
+	if ($query[0]+60>=time() AND time()>=$query[0]-60){
 		if ($query[1]=="status"){
 		$string=$version."@@@ok";
 		}elseif($query[1]=="fetch_users"){

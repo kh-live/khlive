@@ -33,9 +33,9 @@ $db=file("db/servers");
 	if (@$dec[1]=="ok"){
 	$status="<b style=\"color:green;\">LIVE - ".$dec[0]."</b>";
 	}elseif(@$dec[0]=="timeout"){
-	$status="<b style=\"color:orange;\">TIME OUT OF SYNC- ".$dec[1]-time()."</b>";
+	$status='<b style="color:orange;">TIME OUT OF SYNC - '.($dec[1]-time()).'</b>';
 	}else{
-	$status="<b style=\"color:red;\">ERROR-".$decrypted."-".$response."</b>";
+	$status='<b style="color:red;">ERROR - '.$decrypted.' - '.$response.'</b>';
 	}
 	}else{
 	$status="<b style=\"color:grey;\">OFFLINE</b>";

@@ -100,7 +100,8 @@ if ($_SESSION['meeting_status']=='live'){
 echo '<a class="home_widget_link" href="./listening"><b>Scheduled meetings :</b><br /> There is a <b>live meeting</b> right now! <b><br /><br />Click here to listen in...</b></a>';
 }elseif ($_SESSION['test_meeting_status']=='live'){
 echo '<a class="home_widget_link" href="./listening"><b>Scheduled meetings :</b><br /> There is a <b style="color:red;">test meeting</b> right now! <b>Click here to listen in...</b></a>';
-}elseif ($server_beta!='master'){
+}
+if ($server_beta!='master'){
 if ($scheduler=='yes'){
 echo '<div class="home_widget"><b>Scheduled meetings :</b><br />';
 if (file_exists("db/sched")){
@@ -218,6 +219,9 @@ if ($url!=""){
 $remote_db=@file_get_contents('http://'.$url.'/kh-live/info_remote.php');
 	if ($remote_db!==false){
 	$db=explode("\n",$remote_db);
+	}else{
+	echo '<div class="home_widget"><b style="color:red">ERROR</b>
+	<br />Unable to connect to your congregation\'s info. Please let your administrator know.</div>';
 	}
 }
 }
