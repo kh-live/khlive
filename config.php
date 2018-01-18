@@ -868,7 +868,7 @@ $info4 = "<ezstream>
     <svrinfosamplerate>".$sound_quality."</svrinfosamplerate>
     <svrinfopublic>0</svrinfopublic>
 </ezstream>";
-$file=fopen('./config/asterisk-ices-'.$cong_name.'.xml','w');
+$file=fopen('./config/asterisk-ezstream-'.$cong_name.'.xml','w');
 			if(fputs($file,$info4)){
 			fclose($file);
 			}else{
