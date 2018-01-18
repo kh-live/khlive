@@ -117,7 +117,7 @@ if (isset($scheduler)){
 						$bypass_time=implode("",file($temp_dir.'bypass_'.$_SESSION['cong']));
 					}
 					$time_since_bypass= time() - $bypass_time ;
-					if ($time_left <= (5*60) AND $time_since_bypass >= (10*60*60)){					
+					if ($time_since_bypass >= (10*60*60)){					
 					if (strstr($_SESSION['meeting_status'],"live") AND $_SESSION['test_meeting_status']!="live"){
 						//we include the stop file
 						$meeting_processor='scheduler';
