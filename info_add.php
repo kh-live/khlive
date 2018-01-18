@@ -13,7 +13,6 @@ if(isset($_POST['submit'])){
 			$congregation=$_POST['congregation']; //check
 			$infos=str_replace( "\n", '<br />',$_POST['infos']);
 			$link=$_POST['link'];
-			$stop_time=$_POST['stop_time'];
 			$enable=$_POST['enable'];
 			
 $adding=info_add($congregation,$infos,$link,$enable);

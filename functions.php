@@ -615,10 +615,9 @@ $db=file("config/extensions_custom.conf");
 			}else{
 			return 'error saving extensions_custom.conf';
 			}
-			
-unlink('config/asterisk-ices-'.$cong_confirmed.'.xml');
-unlink('config/asterisk-ezstream-'.$cong_confirmed.'.xml');
-unlink('config/stream_'.$cong_confirmed.'.call');
+if (file_exists('config/asterisk-ices-'.$cong_confirmed.'.xml')) unlink('config/asterisk-ices-'.$cong_confirmed.'.xml');
+if (file_exists('config/asterisk-ezstream-'.$cong_confirmed.'.xml')) unlink('config/asterisk-ezstream-'.$cong_confirmed.'.xml');
+if (file_exists('config/stream_'.$cong_confirmed.'.call')) unlink('config/stream_'.$cong_confirmed.'.call');
 include "sip-gen.php";
 include "iax-gen.php";
 //should we reload icecast and asterisk and should we regen alsa-gen?
