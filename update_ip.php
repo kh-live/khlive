@@ -26,6 +26,35 @@ if ($current_ip!=$previous_ip){
 	fputs($file,$string."--".$response."--".$decrypted."--".$key2);
 	fclose($file);
 	}
+	}elseif(@$dec[0]=="timeout"){
+	$real_time=$dec[1];
+		if (is_numeric($real_time)){
+		//we need to update the server clock
+		// it will return "date: cannot set date: Operation not permitted" if the user asterisk doesn't have the rights to do it.
+		//asterisk ALL=NOPASSWD: /bin/date must be added to /etc/sudoers
+		exec('sudo date +%s -s @'.$real_time, $date_exec);
+		if (is_array($date_exec)){
+			if (strstr(implode("", $date_exec), "Operation not permitted"){
+		$info=time().'**error**set date permission denied'."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+			}else{
+			$info=time().'**info**auto set date succesful'."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+			}
+		}else{
+		$info=time().'**error**set date error'."**\n";
+	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+		}
+		}
 	}else{
 	$file=fopen($temp_dir.'error_ip','w');
 	fputs($file,$string."--".$response."--".$decrypted."--".$key2);

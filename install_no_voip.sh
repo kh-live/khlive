@@ -137,7 +137,8 @@ sed -i 's/asterisk:asterisk/'$KH_USER':'$KH_GRP'/' ${APACHE_ROOT}kh-live/db/conf
 #(cd /root/update_dir/khlive && cp update_script_debian.sh update.sh)
 #chmod +x  /root/update_dir/khlive/update.sh
 echo 'activating reboot function'
-sed -i 's_#includedir /etc/sudoers.d_'$KH_USER' ALL=NOPASSWD: /sbin/reboot_'  /etc/sudoers
+sed -i 's_#includedir /etc/sudoers.d_'$KH_USER' ALL=NOPASSWD: /sbin/reboot
+'$KH_USER' ALL=NOPASSWD: /bin/date_'  /etc/sudoers
 #echo 'updating to latest version'
 #/root/update_dir/khlive/update.sh
 echo 'cleaning up'

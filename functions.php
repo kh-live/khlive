@@ -543,7 +543,7 @@ if ($stream_type=="ogg" OR $stream_type=="both"){
 $info4="<?xml version=\"1.0\"?>
 <ices>
     <background>0</background>
-    <logpath>/var/log/ices</logpath>
+    <logpath>/var/log/icecast2</logpath>
     <logfile>ices.log</logfile>
     <loglevel>2</loglevel>
     <consolelog>0</consolelog>
