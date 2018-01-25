@@ -34,7 +34,7 @@ if ($current_ip!=$previous_ip){
 		//asterisk ALL=NOPASSWD: /bin/date must be added to /etc/sudoers
 		exec('sudo date +%s -s @'.$real_time, $date_exec);
 		if (is_array($date_exec)){
-			if (strstr(implode("", $date_exec), "Operation not permitted"){
+			if (strstr(implode("", $date_exec), "Operation not permitted")){
 		$info=time().'**error**set date permission denied'."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
