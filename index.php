@@ -21,19 +21,19 @@ $a = session_id();
 if ($a == ''){
 session_start();
 }
-//we only enable https on live systems as others don't have certifs in place
+
 //for kh-live we can't enable ssl yet as certifs have to be installed on all server and ssl must be enabled for icecast (otherwise we get a mixed content worning)
-if (strstr($_SERVER['HTTP_HOST'],"testing.sinux.ch") /*OR strstr($_SERVER['HTTP_HOST'],"kh-live.co.za")*/){
+//we also get a mixed content warning on recordings download page
+//so we force http for now
+
 if (isset($_SERVER['HTTPS'])){
-  if($_SERVER['HTTPS']!="on"){
-     $redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+  if($_SERVER['HTTPS']=="on"){
+     $redirect= "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
      header("Location:$redirect");
+     exit();
   }
-}else{
-$redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-     header("Location:$redirect");
 }
-}
+
 header('Content-type: text/html; charset=ISO-8859-15');
 $login_error="";
 
