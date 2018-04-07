@@ -26,7 +26,6 @@ $db=file("db/servers");
 if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
-/*<iframe id="listen_frame" src="//'.$url.'/kh-live/records.php?user='.$_SESSION['user'].'"></iframe>*/
 echo '<div id="records_frame"><div id="page">
 <h2>'.$lng['recordings'].'</h2>Connecting...</div></div>';
 echo '
@@ -54,14 +53,14 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET","http://" + url + "/kh-live/records.php?user=" + user + "&date=" + dateR + "&cong=" + cong + "&tmp=" +  tstmp.getTime() , true);
 xmlhttp.send();
 }
-update_rec("'.$url.'","'.$_SESSION['user'].'","'.$_SESSION['cong'].'","" );
+update_rec("'.$url.'","'.urlencode($_SESSION['user']).'","'.urlencode($_SESSION['cong']).'","" );
 
 function update_cong(cong){
-  update_rec("'.$url.'","'.$_SESSION['user'].'", cong,"" );
+  update_rec("'.$url.'","'.urlencode($_SESSION['user']).'", cong,"" );
 }
 
 function update_date(dateR){
- update_rec("'.$url.'","'.$_SESSION['user'].'", "",dateR);
+ update_rec("'.$url.'","'.urlencode($_SESSION['user']).'", "",dateR);
 }
 </script>';
 }
@@ -83,22 +82,26 @@ if (isset($_POST['del_all'])){
 		}
 	}
 }
-// we need to set session type
 if(isset($_GET['user'])){
 /*warning doing this bypasses login*/
-$_SESSION['user']=$_GET['user'];
+//so we must destroy the session as soon as the ajax call has been done.
+//or better we musn't use the session user in the script but a local variable
+$destroy_session_at_the_end='ok';
+$record_user=urldecode($_GET['user']);
 $db=file("db/users");
     foreach($db as $line){
         $data=explode ("**",$line);
-        if (strtoupper($data[0])==strtoupper($_SESSION['user'])){
-                $_SESSION['type']=$data[4];
+        if (strtoupper($data[0])==strtoupper($record_user)){
+                //$_SESSION['type']=$data[4];
+		//we must force the remote user type to user, otherwise, this allows a remote person to login as admin without a password
+		$_SESSION['type']='user';
 		$_SESSION['cong']=$data[3];
 }
 }
 }
 
 if(isset($_GET['cong'])){
-$selected_cong=$_GET['cong'];
+$selected_cong=urldecode($_GET['cong']);
 $_SESSION['selected_cong_r']=$selected_cong;
 $_SESSION['selected_date_r']="";
 }
@@ -167,7 +170,7 @@ $tmp_results=array();
 	$cong=explode("**",$congreg);
 	$opt="";
 	if ($selected_cong==$cong[0]) $opt='selected="selected"';
-	echo '<option value="'.$cong[0].'" '.$opt.'>'.$cong[0].'</option>';
+	echo '<option value="'.urlencode($cong[0]).'" '.$opt.'>'.$cong[0].'</option>';
 	}
 	echo '</select><br /><br />';
 	}
@@ -251,5 +254,11 @@ if ($deleted!=''){
 			fclose($file);
 			}
 }
+}
+if (isset($destroy_session_at_the_end)){
+//if we call this script through ajax, we must destroy the session to prevent the remote user from connecting to the local server without the password
+    $_SESSION = array();
+    session_destroy();
+    session_start();
 }
 ?>

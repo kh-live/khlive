@@ -6,6 +6,11 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+//we need to redirect to non www site. Otherwise, the recordings ajax script won't work.
+if (substr($_SERVER['HTTP_HOST'], 0, 4) === 'www.') {
+    header('Location: http://' . substr($_SERVER['HTTP_HOST'], 4).$_SERVER['REQUEST_URI']);
+    exit;
+}
 if (!is_dir('./logins')){
 mkdir('./logins', 0755);
 }
@@ -22,12 +27,18 @@ if ($a == ''){
 session_start();
 }
 
+if (isset ($_GET['page'])){
+$page=htmlentities($_GET['page']);
+}else{
+$page="login";
+}
+
 //for kh-live we can't enable ssl yet as certifs have to be installed on all server and ssl must be enabled for icecast (otherwise we get a mixed content worning)
 //we also get a mixed content warning on recordings download page
-//so we force http for now
+//so we force http for now unless it's accessing the timing web app which needs https to work.
 
 if (isset($_SERVER['HTTPS'])){
-  if($_SERVER['HTTPS']=="on"){
+  if($_SERVER['HTTPS']=="on" AND $page!='time' AND $page!='redirect'){
      $redirect= "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
      header("Location:$redirect");
      exit();
@@ -40,11 +51,6 @@ $login_error="";
 $lang="";
 include ("./lang.php");
 
-if (isset ($_GET['page'])){
-$page=htmlentities($_GET['page']);
-}else{
-$page="login";
-}
 if ($page=="logout"){
 
 if(isset($_SESSION['user']) AND isset($_SESSION['cong'])){
