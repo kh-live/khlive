@@ -5,6 +5,7 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+
 $cong_name=$_SESSION['cong'];
 if(isset($_POST['submit']) AND $server_beta!='master'){
 	if($_POST['submit']=="Start test"){
@@ -17,10 +18,10 @@ Context: test-menu
 Extension: test_meeting_".$cong_name."
 Priority: 1
 ";
-$file=fopen('/tmp/meeting_'.$cong_name.'_admin.call','w');
+$file=fopen($temp_dir.'meeting_'.$cong_name.'_admin.call','w');
 			if(fputs($file,$info)){
 			fclose($file);
-			rename('/tmp/meeting_'.$cong_name.'_admin.call', $asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call');
+			rename($temp_dir.'meeting_'.$cong_name.'_admin.call', $asterisk_spool.'outgoing/meeting_'.$cong_name.'_admin.call');
 			}
 }elseif($server_beta=='stream'){
 $db=file("db/cong");
@@ -42,11 +43,9 @@ $db=file("db/cong");
        while (($file = readdir($dh)) !== false) {
            if (($file != '.') && ($file != '..')&& ($file != 'index.php')){ 
 	   if (strstr($file,$_SESSION['cong']) OR $_SESSION['type']=="root") {
-		if ($selected_cong!=""){
-			if(strstr($file,$selected_cong)) $tmp_results[]=$file;
-		}else{
+
 	   $tmp_results[]=$file;
-		}
+		
 	   }
 	   }
 	   }
@@ -57,21 +56,23 @@ $db=file("db/cong");
 	foreach ($tmp_results as $file){
 	if (strstr($file, "mp3")){
 	$content.=$web_server_root."kh-live/records/".$file."\n";
+	$temp_file_mp3=$file;
 	}
 	}
-$mp3_file=$web_server_root."kh-live/records/".$tmp_results[0];
-$file=fopen('/tmp/list.txt','w');
+$mp3_file=$web_server_root."kh-live/records/".$temp_file_mp3;
+echo $mp3_file;
+die();
+$file=fopen($temp_dir.'list.txt','w');
 			if(fputs($file,$content)){
 			fclose($file);
 			}
-			
-if ($stream_type=='mp3'){
+
 
 	$content="<ezstream>
     <url>http://".$server_in.":".$port."/stream-".$_SESSION['cong']."</url>
     <sourcepassword>".$voip_password."</sourcepassword>
     <format>MP3</format>
-    <filename>/tmp/list.txt</filename>
+    <filename>".$temp_dir."list.txt</filename>
     <stream_once>1</stream_once>
     <svrinfoname>My Stream</svrinfoname>
     <svrinfourl>http://".$server_out.":".$port."/stream-".$_SESSION['cong']."</svrinfourl>
@@ -80,20 +81,21 @@ if ($stream_type=='mp3'){
     <svrinfobitrate>".$bitrate."</svrinfobitrate>
     <svrinfoquality>1</svrinfoquality>
     <svrinfochannels>1</svrinfochannels>
-    <svrinfosamplerate>8000</svrinfosamplerate>
+    <svrinfosamplerate>".$sound_quality."</svrinfosamplerate>
     <svrinfopublic>0</svrinfopublic>
 </ezstream>";
-$file=fopen('/tmp/test_mp3.xml','w');
+$file=fopen($temp_dir.'test_mp3.xml','w');
 			if(fputs($file,$content)){
 			fclose($file);
 			}
-	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
+	if ($stream_type=='mp3'){
+	exec($ezstream_bin." -c ".$temp_dir."test_mp3.xml > /dev/null &");
 	}elseif ($stream_type=='ogg'){
 	exec("lame --decode -t ".$mp3_file." - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
 	}else{
 	// this is both
 	exec("lame --decode -t ".$mp3_file." - | ".$ices_bin." ".$web_server_root."/kh-live/config/asterisk-ices-".$_SESSION['cong'].".xml > /dev/null &");
-	exec($ezstream_bin." -c /tmp/test_mp3.xml > /dev/null &");
+	exec($ezstream_bin." -c ".$temp_dir."test_mp3.xml > /dev/null &");
 	}
 }
 	$file=fopen($temp_dir.'meeting_'.$_SESSION['cong'],'w');

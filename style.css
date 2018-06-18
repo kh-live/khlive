@@ -8,7 +8,10 @@ body{
 	background-color:#eee;
 	overflow-x:hidden;
 }
-
+audio {
+	width:100%;
+	box-sizing: border-box;
+}
 #please_wait{
 	display:none;
 	background-color:rgba(0,0,0,0.8);
@@ -158,14 +161,9 @@ margin-bottom:20px;
 #page a {
 	color:rgba(1,159,217,1);
 	text-decoration:none;
-
 }
 #page a:hover{
 	color:red;
-}
-#feeds{
-	position:relative;
-	padding-left:10px;
 }
 #feeds u{
 	color:red;
@@ -370,7 +368,8 @@ font-size:18px;
 #sms{
 	display:none;
 	border:1px solid grey;
-	max-width: 400px;
+	width: 100%;
+	box-sizing:border-box;
 	margin-top:30px;
 	padding:10px;
 	background-color:#eeeeee

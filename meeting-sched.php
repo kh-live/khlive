@@ -1,10 +1,10 @@
 <?PHP
 if(session_id()==""){session_start();}
 date_default_timezone_set ('Africa/Johannesburg');
+chdir(dirname(__FILE__));
 include 'db/config.php';
 if (isset($scheduler)){
 	if ($scheduler=='yes'){
-	chdir(dirname(__FILE__));
 	$db=file('./db/sched');
 		if ($db!=''){
 			foreach($db as $line){

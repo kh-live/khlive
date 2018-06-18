@@ -58,7 +58,8 @@ for (var n = 0; n < arr.length; n++) {
     }
   }
      //clearInterval(window.KhClock);
-xmlhttpTime.open("GET","./meeting-time.php", true);
+tstmp = new Date();
+xmlhttpTime.open("GET","./meeting-time.php?tmp=" +  tstmp.getTime(), true);
 xmlhttpTime.send();
 }
 </script>

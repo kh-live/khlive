@@ -27,6 +27,11 @@ body {
     margin: 0;
     overflow-x: hidden;
 }
+audio {
+	width:100%;
+	box-sizing: border-box;
+	padding: 0 10px;
+}
 #page {
     background-color: white;
     overflow-y: auto;
@@ -64,7 +69,17 @@ body {
     display: none;
     margin-top: 30px;
     padding: 10px;
-    width: 400px;
+    width: 100%;
+    box-sizing:border-box;
+}
+#p_no{
+	width:100%;
+	box-sizing: border-box;
+}
+#answer{
+	width:100%;
+	height:70px;
+	box-sizing: border-box;
 }
 @font-face{
 	font-family: test1;
@@ -125,7 +140,7 @@ echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br />Could not find yo
 }else{
 //we check if the meeting is live or not
 if ($_SESSION['meeting_status']=='live'){
-echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
 }else{
 echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><div id="feeds">'.$lng['nolive'].' :<br /><br /><u>'.$lng['not_available'].'</u><br /><br /></div>'.$lng['listen_records'].'<br /></div>';
 }
@@ -297,7 +312,6 @@ function counter (i){
 }
 </script>
 <?PHP
-echo $lng['listening_text'].'<br /><br />';
 $db0=file("db/cong");
     foreach($db0 as $line){
     $data=explode ("**",$line);
@@ -333,7 +347,8 @@ for (var n = 0; n < arr.length; n++) {
     }
   }
       //clearInterval(window.KhClock);
-xmlhttpTime.open("GET","./meeting-time.php", true);
+tstmp = new Date();
+xmlhttpTime.open("GET","./meeting-time.php?tmp=" +  tstmp.getTime(), true);
 xmlhttpTime.send();
 }
 </script>
@@ -398,6 +413,7 @@ include 'meeting-time.php';
 					}
 				}
 			}
+echo $lng['listening_text'].'<br /><br />';
 ?>
 <div id="feeds">
 <?PHP	
@@ -443,8 +459,6 @@ include 'meeting-time.php';
 ?>
 </div>
 <?PHP
-echo $lng['listen_records'].'.<br />';
-
 $db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);
@@ -475,7 +489,7 @@ if ($cong_answer=="yes" ){
 Click here if you want to answer
 </div>
 <div id="sms">
-Answer to (paragraph no / highlight) :<br /><input id="p_no" name="p_no" type="text"></input><br /><br />
+Answer to (paragraph no / gem) :<br /><input id="p_no" name="p_no" type="text"></input><br /><br />
 Your answer :<br /><textarea name="answer" id="answer"></textarea><br /><br />
 <input id="send" type="button" name="send" value="Click here to send your Answer" onclick="javascript:send_answer()" /><br />
 </div>

@@ -4,6 +4,10 @@ IMPORTANT! DO NOT MODIFY THIS FILE IF YOU WANT TO CUSTOMIZE THE TIMING.
 DO CHANGES ONLY IN TIMING-STANDALONE-TESTING.PHP
 THIS FILE IS USED TO GENERATE THE TIMINGS ON USER LISTENING PAGE AND MANAGER MEETING PAGE AS WELL
 */
+$a = session_id();
+if ($a == ''){
+session_start();
+}
 ?>
 
 <div id="meeting_time">
@@ -44,8 +48,9 @@ if ($scheduler=='yes'){
 	$stop_time=explode(':',$data[3]);
 	$start_times=($start_time[0] * 3600) + ($start_time[1] * 60);
 	$stop_times=($stop_time[0] * 3600) + ($stop_time[1] * 60);
-		if (($todays >= $start_times) AND ($todays < $stop_times)){
+		if (($todays >= $start_times) AND ($todays < $stop_times) AND $_SESSION['cong']==$data[0]){
 			$skip='yes';
+			$time_vectors=array();
 			$time_vectors[$start_times-$todays]=$line;
 			break;
 		}else{
@@ -193,8 +198,10 @@ if (typeof window.targetTime === 'undefined') {
 window.targetTime;
 }
 function killIntervals(){
-for (let value of window.KhClock) {
-clearInterval(value);
+//for (let value of window.KhClock) { this is not compatible with IE10
+var value;
+for (value in window.KhClock){
+clearInterval(window.KhClock[value]);
 }
 window.KhClock=new Array();
 }
