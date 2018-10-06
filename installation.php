@@ -100,6 +100,8 @@ $port='8000';
 <?PHP
 echo '?>';
     $message = ob_get_clean();
+//we must first check that the db folder exists
+if (!is_dir('./db')) mkdir('./db', 0750);
 $file = fopen('./db/config.php', 'w');
             if (fwrite($file, $message)){
 	               fclose ($file);

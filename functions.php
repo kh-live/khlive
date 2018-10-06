@@ -215,6 +215,7 @@ if ($stream_server=="") $stream_server=$server_in;
 			}
 		}	
 		$test=0;
+		if (file_exists("config/meetme.conf")){	
 		$db=file("config/meetme.conf");
 			while ($test==0){
 				foreach($db as $line){
@@ -229,6 +230,7 @@ if ($stream_server=="") $stream_server=$server_in;
 				$test=1;
 				}
 			}
+		}
 			
 	$info=$cong_name."**".$cong_no."**".$conf_admin."**".$conf_user."**".$phone_no."**".$voip_type."**".$stream."**".$stream_type."**".$voip_pwd."**".$trunk."**".$record."**".$answer."**".$stream_quality."**".$sip_caller_ip."**".$stream_server."**".$cong_lang."**\n";
 		$file=fopen('./db/cong','a');
