@@ -19,7 +19,7 @@ include "./style.css";
 </head>
 <body>
 <div id="titles" >
-<img id="title_img" src="./img/logo.png" alt="KH-Live! Streaming" />
+<img id="title_img" src="/img/logo.png" alt="KH-Live! Streaming" />
 </div>
 <div id="login">
 <a href="javascript:show_quick_login()">Quick Login</a> | Standard Login
