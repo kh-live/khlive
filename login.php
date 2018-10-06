@@ -32,18 +32,18 @@ include "./style.css";
 <div id="quick_login">
 Quick Login | <a href="javascript:show_normal_login()">Standard Login</a>
 <ul id="pad">
-<li class="pad_number">7</li>
-<li class="pad_number">8</li>
-<li class="pad_number">9</li>
-<li class="pad_number">4</li>
-<li class="pad_number">5</li>
-<li class="pad_number">6</li>
-<li class="pad_number">1</li>
-<li class="pad_number">2</li>
-<li class="pad_number">3</li>
-<li class="pad_number">*</li>
-<li class="pad_number">0</li>
-<li class="pad_number" id="hash">#</li>
+<li class="pad_number"> 7 </li>
+<li class="pad_number"> 8 </li>
+<li class="pad_number"> 9 </li>
+<li class="pad_number"> 4 </li>
+<li class="pad_number"> 5 </li>
+<li class="pad_number"> 6 </li>
+<li class="pad_number"> 1 </li>
+<li class="pad_number"> 2 </li>
+<li class="pad_number"> 3 </li>
+<li class="pad_number"> * </li>
+<li class="pad_number"> 0 </li>
+<li class="pad_number" id="hash"> # </li>
 </ul>
 </div>
 <div id="hint">
