@@ -5,6 +5,7 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+include './functions.php';
 
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['save']){
@@ -61,9 +62,11 @@ echo 'error : server already exists';
 	if ($data[0]==$_POST['old_server_name']){
 	$key=$data[2];
 	$string=time()."**fetch_users";
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	$decrypted = kh_decrypt($response, $key);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ok"){
 	$user_db=$dec[0];
@@ -109,9 +112,11 @@ echo 'error : server already exists';
 	if ($data[0]==$_POST['old_server_name']){
 	$key=$data[2];
 	$string=time()."**fetch_congs";
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	$decrypted = kh_decrypt($response, $key);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ok"){
 	$user_db=$dec[0];

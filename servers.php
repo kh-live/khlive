@@ -6,6 +6,7 @@ header("HTTP/1.1 404 Not Found");
 include "404.php";
 exit(); 
 }
+include ('functions.php');
 ?>
 <div id="page">
 <h2>Servers</h2>
@@ -25,10 +26,12 @@ $db=file("db/servers");
 	}else{
 	$key=$data[2];
 	$string=time()."**status";
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=@file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
 	if ($response!=""){
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	$decrypted = kh_decrypt($response, $key);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ok"){
 	$status="<b style=\"color:green;\">LIVE - ".$dec[0]."</b>";

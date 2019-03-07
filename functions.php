@@ -1,4 +1,29 @@
 <?PHP
+function kh_encrypt($string,$api_key){
+	$ivlen = openssl_cipher_iv_length($cipher="aes-256-cbc");
+	$iv = openssl_random_pseudo_bytes($ivlen);
+	$key=hash('sha512', $api_key, true);
+	$ciphertext_raw = openssl_encrypt($string, $cipher, $key, $options=OPENSSL_RAW_DATA, $iv);
+	$hmac = hash_hmac('sha512', $ciphertext_raw, $key, $as_binary=true);
+	$encrypted = base64_encode( $iv.$hmac.$ciphertext_raw );
+	return $encrypted;
+}
+function kh_decrypt($q,$api_key){
+$c = base64_decode($q);
+$ivlen = openssl_cipher_iv_length($cipher="aes-256-cbc");
+$iv = substr($c, 0, $ivlen);
+$hmac = substr($c, $ivlen, $sha2len=64);
+$ciphertext_raw = substr($c, $ivlen+$sha2len);
+$key=hash('sha512', $api_key, true);
+$decrypted = openssl_decrypt($ciphertext_raw, $cipher, $key, $options=OPENSSL_RAW_DATA, $iv);
+$calcmac = hash_hmac('sha512', $ciphertext_raw, $key, $as_binary=true);
+if (hash_equals($hmac, $calcmac)){
+return $decrypted;
+}else{
+return false;
+}
+}
+
 function kh_user_add($user,$password,$name,$congregation,$rights,$pin,$type,$last_login,$info,$encode="1",$api="0"){
 $error="ok";
 global $server_beta;
@@ -21,9 +46,11 @@ global $auto_khlive;
 			$key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_check**".$user.'###'.$congregation;
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//if upstream server fails to answer should we still add the user locally?
 	if (@$dec[1]=="ko") $error="ko";
@@ -56,9 +83,11 @@ if ($auto_khlive=="yes"){
 $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
 }	
@@ -77,9 +106,11 @@ if ($slave_url!=""){
 $key=$api_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://'.$slave_url.'/kh-live/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?
 	if (@$dec[1]=="ko") $error="ko";
@@ -147,9 +178,11 @@ if ($auto_khlive=="yes"){
 $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
 	}
@@ -168,9 +201,11 @@ if ($slave_url!=""){
 $key=$api_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://'.$slave_url.'/kh-live/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?
 	if (@$dec[1]=="ko") $error="ko";

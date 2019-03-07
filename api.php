@@ -1,9 +1,11 @@
 <?PHP
 $string="";
-include ("db/config.php");
-include 'functions.php';
+include './db/config.php';
+include './functions.php';
 if (isset($_GET['q'])){
-$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($api_key), base64_decode($_GET['q']), MCRYPT_MODE_CBC, md5(md5($api_key))), "\0");
+//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($api_key), base64_decode($_GET['q']), MCRYPT_MODE_CBC, md5(md5($api_key))), "\0");
+$decrypted=kh_decrypt($_GET['q'], $api_key);
+if ($decrypted!= false){
 $query=explode("**", $decrypted);
 	if ($query[0]+60>=time() AND time()>=$query[0]-60){
 		if ($query[1]=="status"){
@@ -247,9 +249,18 @@ $query=explode("**", $decrypted);
 			if(fputs($file,$info)){
 			fclose($file);
 	}
-		$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($api_key), $string, MCRYPT_MODE_CBC, md5(md5($api_key))));
+		//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($api_key), $string, MCRYPT_MODE_CBC, md5(md5($api_key))));
+		$encrypted=kh_encrypt($string, $api_key);
 		echo $encrypted;
 		exit;
+	}else{
+	//tere was an error during decription - the data has been tampered with
+		$info=time().'**error**API hash not equal**Query : '.$_GET['q'].'**result of decryption : '.$decrypted."**\n";
+		$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+		}
+	}
 }elseif (isset($_GET['check'])){
 	$cong=$_GET['check'];
 	if ($test=file_get_contents($temp_dir.'meeting_'.$cong)){

@@ -1,5 +1,6 @@
 <?PHP
-include ('db/config.php');
+include './db/config.php';
+include './functions.php';
 exec ('wget -q -O - http://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s/[^0-9.]//g', $resp_exec);
 $current_ip=implode("",$resp_exec);
 if (file_exists($temp_dir.'global_ip')){
@@ -11,9 +12,11 @@ if ($current_ip!=$previous_ip){
 	$key=$master_key;
 	$key2=$api_key;
 	$string=time()."**update**".$server_out;
-	$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encrypted=kh_encrypt($string,$key);
 	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$decrypted = kh_decrypt($response, $key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ok"){
 	//update succesful
