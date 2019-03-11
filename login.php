@@ -61,6 +61,7 @@ document.getElementById("login").style.display ="none";
 }
 var quick_pwd="";
 function click_button(no){
+no=no.replace(/ /g,"");
 if (no=="*"){
 quick_pwd="";
 }else if (no=="#"){
