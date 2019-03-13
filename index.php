@@ -329,8 +329,6 @@ if ($_SESSION['type']=="root"){
 	include ("./server_delete.php");
 	}elseif ($page=="song_man" AND $server_beta!="master"){
 	include ("./song_man.php");
-	}elseif ($page=="auto_update" AND $server_beta!="master"){
-	include ("./auto_update.php");
 	}
 	}
 //admin links only
@@ -357,6 +355,8 @@ if ($_SESSION['type']=="admin" OR $_SESSION['type']=="root"){
 	include ("./info_edit.php");
 	}elseif($page=="back_up"){
 	include ("./backup.php");
+	}elseif ($page=="auto_update" AND $server_beta!="master"){
+	include ("./auto_update.php");
 	}
 	}
 //manger links only
