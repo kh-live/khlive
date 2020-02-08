@@ -172,6 +172,7 @@ read -r -p "Do you want to install the USB sound card support now? [y/N] " respo
 case $response in
     [yY][eE][sS]|[yY])
        echo 'Installing sound card...'
+      apt-get install moc and moc-ffmp* -y
 usermod -a -G audio ${KH_USER}
 mkdir /home/${KH_USER}
 chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
