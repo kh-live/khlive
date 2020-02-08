@@ -2,7 +2,14 @@
 if(isset($_GET['autoup'])){
 	if($_GET['autoup']=='ok'){
 set_time_limit(300);
+if (is_file('./db/config.php')){
 include './db/config.php';
+}else{
+	//we are running from cli after a fresh install
+	$version='2.3.3-fresh';
+	$web_server_root='/var/www/html/';
+	$temp_dir='/dev/shm/';
+}
 $version_start=$version;
 $auto_update_dir=$temp_dir.'kh_auto_update';
 $auto_update_dir_git=$auto_update_dir.'/khlive';
@@ -37,10 +44,12 @@ $info= ob_get_clean();
 chmod($web_server_root.'kh-live/auto_update.sh', 0750);
 exec($web_server_root.'kh-live/auto_update.sh',$return);
 
-$tmp_file=file_get_contents('./config.php');
+
+	$tmp_file=file_get_contents($web_server_root.'kh-live/config.php');
 $tmp_file2=explode('\';//gen_version', $tmp_file);
 $tmp_file3=explode('$gen_version=\'',$tmp_file2[0]);
 $version_end=$tmp_file3[1];
+
 $info=time().'**info**auto updated '.$version_start.' to '.$version_end.'**'.serialize($return)."**\n";
 	$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){

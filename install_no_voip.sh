@@ -13,7 +13,7 @@ echo 'configuring IP address to '$IP_ADDR
 sed -i 's/#interface eth0/interface eth0\
 static ip_address='$IP_ADDR'\
 static routers='$IP_GW'\
-static domain_name_servers=8.8.8.8/' /etc/network/interfaces
+static domain_name_servers=8.8.8.8/' /etc/dhcpcd.conf
 echo 'configuring time zone'
 dpkg-reconfigure tzdata
 echo 'Change your password'
@@ -22,15 +22,16 @@ echo 'updating app database'
 apt-get update
 echo 'installing required software'
 #remember to say no when asked to configure icecast2
-apt-get install screen wget nano tar dos2unix apache2 php7.0 libapache2-mod-php7.0 php7.0-mcrypt php7.0-curl php7.0-zip alsa-base icecast2 ices2 ezstream lame unzip moc moc-ffmp* dnsutils git usbmount -y
+apt-get install screen dos2unix apache2 php7.3 php7.3-curl php7.3-zip alsa-base icecast2 ices2 ezstream lame dnsutils git usbmount -y
+
 mkdir /home/${KH_USER}
 mkdir /home/${KH_USER}/.moc
-chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
-chown ${KH_USER}:${KH_GRP} /home/${KH_USER}/.moc
 echo 'adding group to run the servers : '$KH_GRP
 groupadd $KH_GRP
 echo 'adding user to run the servers : '$KH_USER
 useradd $KH_USER -g $KH_GRP
+chown ${KH_USER}:${KH_GRP} /home/${KH_USER}
+chown ${KH_USER}:${KH_GRP} /home/${KH_USER}/.moc
 echo 'configuring apache'
 a2enmod rewrite
 #a2dismod cgi
@@ -40,7 +41,7 @@ a2enmod rewrite
 #awk '{for(i=1;i<=NF;i++){if(x<3&&$i=="AllowOverride None"){x++;sub("AllowOverride None","AllowOverride all",$i)}}}1' /etc/apache2/sites-available/default
 #sed -i 's/multiviews//' /etc/apache2/sites-available/default
 #sed -i 's/indexes//' /etc/apache2/sites-available/default
-sed -i 's:session.gc_maxlifetime = 1440:session.gc_maxlifetime = 7200:' /etc/php/7.0/apache2/php.ini
+sed -i 's:session.gc_maxlifetime = 1440:session.gc_maxlifetime = 7200:' /etc/php/7.3/apache2/php.ini
 sed -i 's:#Include conf-available/serve-cgi-bin.conf:<Directory '$APACHE_ROOT'>\
 Options -MultiViews +FollowSymLinks\
 AllowOverride all\
@@ -59,19 +60,25 @@ mkdir ${APACHE_ROOT}kh-live
 mv ${APACHE_ROOT}kh-live/index.tdl.php ${APACHE_ROOT}index.php
 rm ${APACHE_ROOT}index.html
 rm ${APACHE_ROOT}kh-live/khlive_latest.tar
-sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' ${APACHE_ROOT}kh-live/config/update.sh
-if [ $APACHE_ROOT != "/var/www/" ]
-then
-sed -i "s:web_server_root='/var/www/':web_server_root='"$APACHE_ROOT"':" ${APACHE_ROOT}kh-live/db/config.php
-fi
+#update.sh is almost empty... /bin/sh
+#sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' ${APACHE_ROOT}kh-live/config/update.sh
+#config folder is empty when we start...
+#if [ $APACHE_ROOT != "/var/www/" ]
+#then
+#sed -i "s:web_server_root='/var/www/':web_server_root='"$APACHE_ROOT"':" ${APACHE_ROOT}kh-live/db/config.php
+#fi
 echo 'configuring icecast2'
 rm /etc/icecast2/icecast.xml
 (cd /etc/icecast2 && ln -s ${APACHE_ROOT}kh-live/config/icecast.xml)
 sed -i 's/USERID=icecast2/USERID=root/' /etc/default/icecast2
-sed -i 's/GROUPID=icecast/GROUPID=root/' /etc/default/icecast2
-sed -i 's/ENABLE=false/ENABLE=true/' /etc/default/icecast2
+#enable=false is not in the file anymore
+#sed -i 's/GROUPID=icecast/GROUPID=root/' /etc/default/icecast2
+#sed -i 's/ENABLE=false/ENABLE=true/' /etc/default/icecast2
+sed -i 's/GROUPID=icecast/GROUPID=root\
+ENABLE=true/' /etc/default/icecast2
 chown -R ${KH_USER}:${KH_GRP} /var/log/icecast*
 chown -R ${KH_USER}:${KH_GRP} /usr/share/icecast*
+#
 if [ $KH_USER != "asterisk" ]
 then
 sed -i "s: <user>asterisk<: <user>"$KH_USER"<:" /etc/icecast2/icecast.xml
@@ -80,6 +87,7 @@ if [ $KH_GRP != "asterisk" ]
 then
 sed -i "s: <group>asterisk<: <group>"$KH_GRP"<:" /etc/icecast2/icecast.xml
 fi
+systemctl enable icecast2
 echo 'configuring cron'
 dos2unix -q ${APACHE_ROOT}kh-live/config/*
 dos2unix -q ${APACHE_ROOT}kh-live/*
@@ -92,17 +100,17 @@ case $response in
        echo 'Installing samba...'
 	apt-get install samba samba-common-bin -y
 	sed -i 's:#   wins support = no:wins support = yes:' /etc/samba/smb.conf
-sed -i 's:;   write list = root, @lpadmin:[khsongs]\
-comment= KH songs\
-path='$APACHE_ROOT'kh-live/kh-songs/\
-browseable=Yes\
-writeable=No\
-only guest=no\
-create mask=0777\
-directory mask=0777\
-public=yes\
-force user = '$KH_USER'\
-[khdownloads]\
+#     [khsongs]\
+# comment= KH songs\
+# path='$APACHE_ROOT'kh-live/kh-songs/\
+# browseable=Yes\
+# writeable=No\
+# only guest=no\
+# create mask=0777\
+# directory mask=0777\
+# public=yes\
+# force user = '$KH_USER'\
+sed -i 's:;   write list = root, @lpadmin:[khdownloads]\
 comment= KH downloads\
 path='$APACHE_ROOT'kh-live/downloads/\
 browseable=Yes\
@@ -131,6 +139,8 @@ esac
 echo 'Automatic update configuration'
 #mkdir /root/update_dir
 git config --global http.postbuffer "10m"
+export QUERY_STRING="autoup=ok" ;
+php -e -r 'parse_str($_SERVER["QUERY_STRING"], $_GET); include "'${APACHE_ROOT}'kh-live/auto_update.php";'
 #(cd /root/update_dir && git clone https://github.com/kh-live/khlive.git)
 #sed -i 's:/var/www/kh-live/:'${APACHE_ROOT}'kh-live/:' /root/update_dir/khlive/update_script_debian.sh
 sed -i 's/asterisk:asterisk/'$KH_USER':'$KH_GRP'/' ${APACHE_ROOT}kh-live/db/config.php

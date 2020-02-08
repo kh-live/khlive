@@ -263,6 +263,7 @@ $query=explode("**", $decrypted);
 	}
 }elseif (isset($_GET['check'])){
 	$cong=$_GET['check'];
+	if (is_file($temp_dir.'meeting_'.$cong)){
 	if ($test=file_get_contents($temp_dir.'meeting_'.$cong)){
 	if (strstr($test,"down")){
 	echo "down";
@@ -271,6 +272,9 @@ $query=explode("**", $decrypted);
 	}
 	}else{
 	echo "error";
+	}
+	}else{
+	echo "down";
 	}
 }
 //$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));

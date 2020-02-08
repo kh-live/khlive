@@ -122,7 +122,11 @@ if (@$_POST['submit']!="Yes, Stop it") {
 <body>
 <?PHP
 if ($_SESSION['type']=="root" OR $_SESSION['type']=="admin" OR $_SESSION['type']=="manager"){
+if (is_file($temp_dir.'meeting_'.$_SESSION['cong'])){
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
+}else{
+$_SESSION['meeting_status']='down';
+}
 
 	$db=file("db/cong");
     foreach($db as $line){
