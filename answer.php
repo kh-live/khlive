@@ -28,7 +28,7 @@ include_once "db/config.php";
 	$client=$_REQUEST['client'];
 	$type=@$_GET['type']; //useless... no - setwhen first answering over phone = phone_live
 	$conf=@$_GET['conf'];
-	$khuid=@$_GET['khuid'];
+	$khuid=@$_REQUEST['khuid'];
 	
 	$ij=0;
 	$db=file("db/live_users");
