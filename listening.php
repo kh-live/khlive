@@ -48,7 +48,7 @@ audio {
     color: red;
     text-decoration: none;
 }
-#number_at {
+#number_at, #multiusers {
     background-color: grey;
     color: white;
     font-size: 20px;
