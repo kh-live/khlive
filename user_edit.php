@@ -137,7 +137,7 @@ $db=file("db/cong");
 <select name="rights">
 <option value="0"><?PHP echo $lng['select'];?>...</option>
 <?PHP
-$db=array("admin","manager","user");
+$db=array("admin","manager","user","multi");
     foreach($db as $line){
     $selected="";
 	if ($line==$rights) $selected="selected=selected";

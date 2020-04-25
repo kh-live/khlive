@@ -56,6 +56,7 @@ $lng['user_admin']='Administrator';
 $lng['user_root']='Administrator';
 $lng['user_manager']='Manager';
 $lng['user_user']='User';
+$lng['user_multi']='Multi-User';
 $lng['remove_user']='Are you sure you want to remove this user?';
 $lng['edit_user']='Use the form below to edit the user.';
 $lng['type']='Type';

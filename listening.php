@@ -421,6 +421,7 @@ include 'meeting-time.php';
 				}
 			}
 echo $lng['listening_text'].'<br /><br />';
+
 ?>
 <div id="feeds">
 <?PHP	
@@ -458,12 +459,14 @@ echo $lng['listening_text'].'<br /><br />';
     $i++;
     }
     $buffer.='</audio><br /><br />';
-    
+    echo $buffer;
+	
+	if ($_SESSION['type']=='multi') include('listening-multiusers.php');
+	
     }else{
-	echo $lng['nolive'].' :<br /><br />';
-	$buffer.='<u>'.$lng['not_available'].'</u><br /><br />';
+	echo $lng['nolive'].' :<br /><br />
+	<u>'.$lng['not_available'].'</u><br /><br />';
     }
-	echo $buffer;
 ?>
 </div>
 <?PHP

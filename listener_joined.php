@@ -49,7 +49,8 @@ if (isset($cong)) unset($cong);
 			fclose($file);
 			}
 	}
-	$info=$client_id.'**'.$user.'**'.$congregation.'**'.$mount.'**'.time()."**normal****".$khuid."**\n";
+	$newname="";
+	$info=$client_id.'**'.$user.'**'.$congregation.'**'.$mount.'**'.time()."**normal****".$khuid."**".$newname."**\n";
 	$file=fopen('./db/live_users','a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -94,7 +95,7 @@ if ($_GET['action']=="phone_add"){
 			fclose($file);
 			}
 	}
-	$info=$conf_id.'**'.$client.'**'.$cong.'**'.$type.'**'.time()."**normal******\n";
+	$info=$conf_id.'**'.$client.'**'.$cong.'**'.$type.'**'.time()."**normal********\n";
 	$file=fopen('./db/live_users','a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -124,7 +125,48 @@ session_start();
 	foreach($file as $line){
 	$live_user=explode("**",$line);
 		if ($live_user[1]==$user AND $live_user[7]==$khuid){
-		$new_file.=$live_user[0]."**".$live_user[1]."**".$live_user[2]."**".$live_user[3]."**".$live_user[4]."**".$live_user[5]."**".$number."**".$live_user[7]."**\n";
+		$new_file.=$live_user[0]."**".$live_user[1]."**".$live_user[2]."**".$live_user[3]."**".$live_user[4]."**".$live_user[5]."**".$number."**".$live_user[7]."**".$live_user[8]."**\n";
+		}else{
+		$new_file.=$line;
+		}
+	}
+	$file2=fopen('./db/live_users','w');
+			if(fputs($file2,$new_file)){
+			fclose($file2);
+			echo "ok";
+			}
+	$info=time().'**info**attendance report**'.$user."**".$number."**\n";
+	$file=fopen('./db/logs-'.strtolower($cong2).'-'.date("Y",time()).'-'.date("m",time()),'a');
+			if(fputs($file,$info)){
+			fclose($file);
+			}
+	}
+  }elseif  ($_GET['action']=="update_name"){
+	// this is called by ajax script on user side
+	if (isset($_GET['newname']) AND isset($_GET['user']) AND isset($_GET['cong']) AND isset($_GET['khuid'])){
+	$newname=urldecode($_GET['newname']);
+	$user=urldecode($_GET['user']);
+	$cong=urldecode($_GET['cong']);
+	$khuid=urldecode($_GET['khuid']);
+	
+	$a = session_id();
+if ($a == ''){
+session_start();
+}
+	$_SESSION['new_name']=$newname;
+		
+		$db=file("db/cong");
+    foreach($db as $line){
+        $data=explode ("**",$line);
+	if ($data[0]==$cong) $cong2=$cong;
+	}
+	
+	$file=file('./db/live_users');
+	$new_file="";
+	foreach($file as $line){
+	$live_user=explode("**",$line);
+		if ($live_user[1]==$user AND $live_user[7]==$khuid){
+		$new_file.=$live_user[0]."**".$live_user[1]."**".$live_user[2]."**".$live_user[3]."**".$live_user[4]."**".$live_user[5]."**".$live_user[6]."**".$live_user[7]."**".$newname."**\n";
 		}else{
 		$new_file.=$line;
 		}

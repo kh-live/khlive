@@ -69,6 +69,7 @@ $db=file("db/cong");
 <option value="admin"><?PHP echo $lng['user_admin'];?></option>
 <option value="manager"><?PHP echo $lng['user_manager'];?></option>
 <option value="user"><?PHP echo $lng['user_user'];?></option>
+<option value="multi"><?PHP echo $lng['user_multi'];?></option>
 <?PHP
 if ($_SESSION['type']=='root'){
 echo '<option value="root">Root</option>';

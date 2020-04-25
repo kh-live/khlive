@@ -45,7 +45,7 @@ $_SESSION['server_status']="ok";
 </svg></div>
 <div id="menu"><a href="./login"><?PHP echo $lng['home'];?></a>
  <?PHP
- if ($_SESSION['type']=="user"){
+ if ($_SESSION['type']=="user" OR $_SESSION['type']=="multi"){
  echo '<a href="./listening">'.$lng['listening'].'</a>
  <a href="./record">'.$lng['recordings'].'</a>';
 if ($server_beta!="master" AND @$video_dowloader=='yes') echo '<a href="./video">Videos</a>';
