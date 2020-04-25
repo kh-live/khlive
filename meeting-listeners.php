@@ -96,7 +96,7 @@
 	$most_important_output.= '<div class="'.$user_class.'" id="'.$temp_user.'"><img src="./img/comp3.png" /><div class="live_user_name"><b>'.$_SESSION[$temp_user].'</b></div>
 	<div class="meeting_answer">
 	<b>ANSWER :<br />to : '.$paragraph.'</b><br />'.urldecode($answer).'<br />
-	<a href="./answer.php?ajax_meeting_page=ok&action=sms_cancel&client='.$data[1].'&cong='.$data[2].'">NOT answered</a> <a href="./answer.php?ajax_meeting_page=ok&action=sms_stop&client='.$data[1].'&khuid='.$data[7].'&cong='.$data[2].'">ANSWERED</a></div></div>';
+	<a href="./answer.php?ajax_meeting_page=ok&action=sms_cancel&client='.$data[1].'&khuid='.$data[7].'&cong='.$data[2].'">NOT answered</a> <a href="./answer.php?ajax_meeting_page=ok&action=sms_stop&client='.$data[1].'&khuid='.$data[7].'&cong='.$data[2].'">ANSWERED</a></div></div>';
 	}
 	}else{
 	//should not happen
