@@ -222,7 +222,7 @@ $key=$api_key;
 		return '<div id="error_msg">'.$lng['error'].'</div>';
 		}
 }
-function cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip, $cong_no="", $conf_admin="", $conf_user=""){
+function cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip, $cong_no="", $conf_admin="", $conf_user="", $jitsi_cong_address=""){
 if ($cong_no=="") $cong_no=rand(100000,999999);
 if ($conf_admin=="") $conf_admin=rand(10000,99999);
 if ($conf_user=="") $conf_user=rand(10000,99999);
@@ -267,7 +267,7 @@ if ($stream_server=="") $stream_server=$server_in;
 			}
 		}
 			
-	$info=$cong_name."**".$cong_no."**".$conf_admin."**".$conf_user."**".$phone_no."**".$voip_type."**".$stream."**".$stream_type."**".$voip_pwd."**".$trunk."**".$record."**".$answer."**".$stream_quality."**".$sip_caller_ip."**".$stream_server."**".$cong_lang."**\n";
+	$info=$cong_name."**".$cong_no."**".$conf_admin."**".$conf_user."**".$phone_no."**".$voip_type."**".$stream."**".$stream_type."**".$voip_pwd."**".$trunk."**".$record."**".$answer."**".$stream_quality."**".$sip_caller_ip."**".$stream_server."**".$cong_lang."**".$jitsi_cong_address."**\n";
 		$file=fopen('./db/cong','a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -846,5 +846,17 @@ if ($db!=''){
 			}
 			}
 }
+}
+function kh_fgetc_timeout($url,$timeout=1){
+$ch=curl_init();
+
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+
+$result=curl_exec($ch);
+curl_close($ch);
+return $result;
 }
 ?>

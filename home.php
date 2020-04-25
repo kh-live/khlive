@@ -13,6 +13,7 @@ if (isset($_GET['temptype'])){
 $_SESSION['type']=urldecode($_GET['temptype']);
 }
 }
+include ('functions.php');
 ?>
 <div id="homepage">
 <h2><?PHP echo $lng['home'];?></h2>
@@ -76,11 +77,11 @@ echo '<div class="home_widget"><b>Your local server</b><br />Here is the link to
 <a href="http://'.$url.'">'.$url.'</a> ( <a href="http://'.$ip.'">'.$ip.'</a> )</div>';
 }
 }
-if ($_SESSION['type']=="user"){
+if ($_SESSION['type']=="user" OR $_SESSION['type']=="multi"){
 echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; button to view the menu.<br /><br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=user_guide">Click here to view the user guide...</a></div>';
 }else{
 if ($server_beta!='master'){
-$server_version=@file_get_contents('http://kh-live.co.za/version.php');
+$server_version=kh_fgetc_timeout('http://kh-live.co.za/version.php');
 	if ($server_version!==false){
 	if ($version!=$server_version){
 	echo '<div class="home_widget"><b style="color:red;">Update available!</b><br />Your server is running an old version of kh-live software.';
@@ -130,7 +131,7 @@ $db1=file("db/servers");
 	}
 	}
 if ($url!=""){
-$remote_db=@file_get_contents('http://'.$url.'/kh-live/sched_remote.php');
+$remote_db=kh_fgetc_timeout('http://'.$url.'/kh-live/sched_remote.php', 3);
 	if ($remote_db!==false){
 	$db=explode("\n",$remote_db);
 	}else{
@@ -216,7 +217,7 @@ $db=file("db/infos");
 	}
 	}
 if ($url!=""){
-$remote_db=@file_get_contents('http://'.$url.'/kh-live/info_remote.php');
+$remote_db=kh_fgetc_timeout('http://'.$url.'/kh-live/info_remote.php', 3);
 	if ($remote_db!==false){
 	$db=explode("\n",$remote_db);
 	}else{

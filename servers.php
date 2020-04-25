@@ -28,7 +28,7 @@ $db=file("db/servers");
 	$string=time()."**status";
 	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=@file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted), 3);
 	if ($response!=""){
 	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	$decrypted = kh_decrypt($response, $key);
