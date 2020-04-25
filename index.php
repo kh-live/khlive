@@ -178,7 +178,8 @@ if ($db=file("db/users")){
                 $_SESSION['user']=$data[0];
 		$user=$data[0];
 		$_SESSION['full_name']=$data[2];
-                $_SESSION['type']="user"; //we force user mode as quick login isnt very safe
+		$_SESSION['type']="user"; //we force user mode as quick login isnt very safe
+		if ($data[4]=='multi') $_SESSION['type']='multi';
 		$_SESSION['cong']=$data[3];
 		$_SESSION['pin']=$data[5];
 		$login_error="";
