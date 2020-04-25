@@ -35,7 +35,7 @@ include_once "db/config.php";
 			$file_content="";
 	foreach($db as $line){
         $data=explode ("**",$line);
-		if (($khuid=='' AND $data[0]==$client) OR ($data[1]==$client AND $khuid==$data[7])){//client is actually the id of stream -- what if one client has 2 streams???
+		if (($khuid=='' AND $data[0]==$client) OR ($khuid==$data[7])){//client is actually the id of stream -- what if one client has 2 streams???
 		//add a check to see if the answer has been read
 			if ($_REQUEST['action']=="sms_a"){
 			$tmp=explode("--",$data[5]);
