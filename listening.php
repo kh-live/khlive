@@ -17,6 +17,7 @@ $_SESSION['user']=$_GET['user'];
 $_SESSION['cong']=$_GET['cong'];
 //khuid is a unique identifier set on the client as we can't reliably pass the edcast id back to the listener
 $_SESSION['khuid']=$_GET['khuid'];
+if (isset($_GET['multi'])) $_SESSION['type']='multi';
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 $_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
 
@@ -147,7 +148,9 @@ echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br />Could not find yo
 }else{
 //we check if the meeting is live or not
 if ($_SESSION['meeting_status']=='live'){
-echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'"></iframe></div>';
+$addparam='';
+if ($_SESSION['type']=='multi') $addparam='&multi=1';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].$addparam.'"></iframe></div>';
 }else{
 echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><div id="feeds">'.$lng['nolive'].' :<br /><br /><u>'.$lng['not_available'].'</u><br /><br /></div>'.$lng['listen_records'].'<br /></div>';
 }
