@@ -3,13 +3,17 @@
 	if ($server_beta=='true'){
 	//we generate a list of live users
 	$db=array(
-	'1**Listener 1 (over internet stream - 10 people listening together)**start_cong**stream-start_cong.ogg**'.time().'**normal**10**',
-	'2**Listener 2 (over internet stream - wanting to answer to paragraph 1)**start_cong**stream-start_cong.ogg**'.time().'**request--paragraph 1--This is a test answer by a test listener**1**',
-	'3**Listener 3 (over internet stream - answering to paragraph 2)**start_cong**stream-start_cong.ogg**'.time().'**answering--paragraph 2--This is a test answer. Click on the buttons below to close it.**1**',
-	'4**Listener 4 (over VOIP - click on the cross to disconnect user)**start_cong**phone_live**'.time().'**normal****',
-	'5**Listener 5 (over VOIP - listening to a recorded meeting)**start_cong**phone_record**'.time().'**normal****',
-	'6**Listener 6 (over VOIP - wanting to answer with voice answer - click here to open his microphone)**start_cong**phone_live**'.time().'**request****',
-	'7**Listener 7 (over VOIP - answering - click here to close his microphone)**start_cong**phone_live**'.time().'**answering****'
+	'1**Listener 1 (over internet stream - 10 people listening together)**start_cong**stream-start_cong.ogg**'.time().'**normal**10**1**',
+	'2**Listener 2 (over internet stream - wanting to answer to paragraph 1)**start_cong**stream-start_cong.ogg**'.time().'**request--paragraph 1--This is a test answer by a test listener**1**2**',
+	'3**Listener 3 (over internet stream - answering to paragraph 2)**start_cong**stream-start_cong.ogg**'.time().'**answering--paragraph 2--This is a test answer. Click on the buttons below to close it.**1**3**',
+	'4**Listener 4 (over VOIP - click on the cross to disconnect user)**start_cong**phone_live**'.time().'**normal****4**',
+	'5**Listener 5 (over VOIP - listening to a recorded meeting)**start_cong**phone_record**'.time().'**normal****5**',
+	'6**Listener 6 (over VOIP - wanting to answer with voice answer - click here to open his microphone)**start_cong**phone_live**'.time().'**request****6**',
+	'7**Listener 7 (over VOIP - answering - click here to close his microphone)**start_cong**phone_live**'.time().'**answering****7**',
+	'8**Listener (over stream - with a duplicated name)**start_cong**stream-start_cong.ogg**'.time().'**normal****8**',
+	'9**Listener (over stream - with a duplicated name)**start_cong**stream-start_cong.ogg**'.time().'**normal****9**',
+	'10**Listener (over stream - with a connection problem)**start_cong**stream-start_cong.ogg**'.time().'**normal****10**',
+	'11**Listener (over stream - with a connection problem)**start_cong**stream-start_cong.ogg**'.time().'**normal****10**'
 	);
 	}else{
 	$db=file("db/live_users");
@@ -21,18 +25,13 @@
 	$output='';
 	$important_output='';
 	$most_important_output='';
-	$user_class='live_user';
-	foreach($db as $line){
-	
-	if ($user_class=='live_user'){
 	$user_class='live_user_1';
-	}else{
-	$user_class='live_user';
-	}
+	foreach($db as $line){
 	
 	$data=explode ("**",$line);
 	$show_card='yes';
-	$temp_user=md5($data[1]);
+	//this is a mix of edcast listener and the username
+	$temp_user=md5($data[7].$data[1]);
 	if (isset($$temp_user)){
 	//this is a duplicated user
 	//we mustnt display a card for this user
@@ -44,7 +43,7 @@
 	document.getElementById("'.$temp_user.'").innerHTML+="<i style=\"color:red\">This user seems to be having connection problems</i>";
 	</script>';
 	}
-	
+	//we lookup the full name of each listener and store it in session to avoid repeated calls to user db.
 	if (!isset($_SESSION['kh_listener'.str_replace(' ','_',$data[1])])){
 	$db2=file("db/users");
 		foreach($db2 as $line2){
@@ -52,10 +51,12 @@
 		if ($data2[0]==$data[1]) $_SESSION['kh_listener'.str_replace(' ','_',$data[1])]=$data2[2];
 		}
 	}
+	//if for some reason we can't find it, we default to the name given to edcast
 	if (!isset($_SESSION['kh_listener'.str_replace(' ','_',$data[1])])) $_SESSION['kh_listener'.str_replace(' ','_',$data[1])]=$data[1];
 	
 	if($data[2]==$_SESSION['cong']){
 	if ($show_card=='yes'){
+	//we set this variable to avoid duplicated listeners in the list
 	$$temp_user='ok';
 	if($data[5]=="normal"){
 	if($data[3]=="phone_live"){

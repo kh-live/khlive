@@ -23,23 +23,25 @@ include_once "db/config.php";
 	$action="normal";
 	}
 	if(isset($action)){
+	$khuid='';
 	$cong=$_REQUEST['cong'];
 	$client=$_REQUEST['client'];
 	$type=@$_GET['type']; //useless... no - setwhen first answering over phone = phone_live
 	$conf=@$_GET['conf'];
+	$khuid=@$_GET['khuid'];
 	
 	$ij=0;
 	$db=file("db/live_users");
 			$file_content="";
 	foreach($db as $line){
         $data=explode ("**",$line);
-		if ($data[0]==$client OR $data[1]==$client){//client is actually the id of stream -- what if one client has 2 streams???
+		if (($khuid=='' AND $data[0]==$client) OR ($data[1]==$client AND $khuid==$data[7])){//client is actually the id of stream -- what if one client has 2 streams???
 		//add a check to see if the answer has been read
 			if ($_REQUEST['action']=="sms_a"){
 			$tmp=explode("--",$data[5]);
 			$action="answering--".$tmp[1]."--".$tmp[2];
 			}
-		$file_content.=$data[0].'**'.$data[1].'**'.$data[2].'**'.$data[3].'**'.$data[4].'**'.$action.'**'.$data[6]."**\n";//here is the action used to be passed to the meeting-ajax.php
+		$file_content.=$data[0].'**'.$data[1].'**'.$data[2].'**'.$data[3].'**'.$data[4].'**'.$action.'**'.$data[6]."**".$data[7]."\n";//here is the action used to be passed to the meeting-ajax.php
 		$ij++;
 		}else{
 		$file_content.=$line;
@@ -88,7 +90,7 @@ include_once "db/config.php";
 	header('Location: ./meeting-ajax.php');
 	}elseif($_REQUEST['action']=="sms"){
 	//this comes trough a javascript ajax
-	$file_content=time()."**".$cong."**".$client."**".$_POST['paragraph']."**".str_replace(array("\r\n", "\r", "\n"), "<br />", htmlentities($_POST['answer']))."**new\n";
+	$file_content=time()."**".$cong."**".$client."**".$_POST['paragraph']."**".str_replace(array("\r\n", "\r", "\n"), "<br />", htmlentities($_POST['answer']))."**new**".$khuid."**\n";
 	$file=fopen('./db/answers','a');
 			if(fputs($file,$file_content)){
 			fclose($file);
@@ -101,31 +103,31 @@ include_once "db/config.php";
 			}
 	}elseif($_REQUEST['action']=="sms_a"){
 	/*this never happens! because action is set to answering at beggining - it actually does happen... weird*/
-	$file_content=time()."**".$cong."**".$client."**read\n";
+	$file_content=time()."**".$cong."**".$client."**read**".$khuid."**\n";
 	$file=fopen('./db/answers','a');
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
 		header('Location: ./meeting-ajax.php');
 	}elseif($_REQUEST['action']=="sms_stop"){
-	$file_content=time()."**".$cong."**".$client."**done\n";
+	$file_content=time()."**".$cong."**".$client."**done**".$khuid."**\n";
 	$file=fopen('./db/answers','a');
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-			$info=time().'**info**answer stop**'.$client."**ok**\n";
+			$info=time().'**info**answer stop**'.$client."**ok**".$khuid."**\n";
 	$file=fopen('./db/logs-'.strtolower($cong).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
 		header('Location: ./meeting-ajax.php');
 	}elseif($_REQUEST['action']=="sms_cancel"){
-	$file_content=time()."**".$cong."**".$client."**canceled\n";
+	$file_content=time()."**".$cong."**".$client."**canceled**".$khuid."**\n";
 	$file=fopen('./db/answers','a');
 			if(fputs($file,$file_content)){
 			fclose($file);
 			}
-			$info=time().'**info**answer stop**'.$client."**ko**\n";
+			$info=time().'**info**answer stop**'.$client."**ko**".$khuid."**\n";
 	$file=fopen('./db/logs-'.strtolower($cong).'-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
 			fclose($file);

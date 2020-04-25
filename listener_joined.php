@@ -10,12 +10,15 @@ if (isset($cong)) unset($cong);
 	$client_id=$_POST['client']; //client id within icecast
 	$ip_address=$_POST['ip'];
 	$agent=$_POST['agent'];
+	//this is a bit of a dangerous way of getting the params. What if the order changes...
 	$query=explode("?",$mount);
 	$params=explode("&",$query[1]);
 	$user_string=explode("=",$params[0]);
 	$user=urldecode($user_string[1]);
 	$cong_string=explode("=",$params[1]);
 	$congregation=urldecode($cong_string[1]);
+	$khuid_string=explode("=",$params[2]);
+	$khuid=urldecode($khuid_string[1]);
 	$mount=$query[0]; //overwrites mount
 	
 	$db=file("db/users");
@@ -23,9 +26,6 @@ if (isset($cong)) unset($cong);
         $data=explode ("**",$line);
 	if ($data[0]==$user) {
 	$cong=$data[3];
-	/*we replace the username with full name. This breaks the answering system. It has to be done on the meeting page
-	$user=$data[2];
-	*/
 	}
 	}
 	
@@ -49,7 +49,7 @@ if (isset($cong)) unset($cong);
 			fclose($file);
 			}
 	}
-	$info=$client_id.'**'.$user.'**'.$congregation.'**'.$mount.'**'.time()."**normal****\n";
+	$info=$client_id.'**'.$user.'**'.$congregation.'**'.$mount.'**'.time()."**normal****".$khuid."**\n";
 	$file=fopen('./db/live_users','a');
 			if(fputs($file,$info)){
 			fclose($file);
@@ -94,17 +94,18 @@ if ($_GET['action']=="phone_add"){
 			fclose($file);
 			}
 	}
-	$info=$conf_id.'**'.$client.'**'.$cong.'**'.$type.'**'.time()."**normal****\n";
+	$info=$conf_id.'**'.$client.'**'.$cong.'**'.$type.'**'.time()."**normal******\n";
 	$file=fopen('./db/live_users','a');
 			if(fputs($file,$info)){
 			fclose($file);
 			}
   }elseif  ($_GET['action']=="update_at"){
 	// this is called by ajax script on user side
-	if (isset($_GET['number']) AND isset($_GET['user']) AND isset($_GET['cong'])){
+	if (isset($_GET['number']) AND isset($_GET['user']) AND isset($_GET['cong']) AND isset($_GET['khuid'])){
 	$number=urldecode($_GET['number']);
 	$user=urldecode($_GET['user']);
 	$cong=urldecode($_GET['cong']);
+	$khuid=urldecode($_GET['khuid']);
 	
 	$a = session_id();
 if ($a == ''){
@@ -122,8 +123,8 @@ session_start();
 	$new_file="";
 	foreach($file as $line){
 	$live_user=explode("**",$line);
-		if ($live_user[1]==$user){
-		$new_file.=$live_user[0]."**".$live_user[1]."**".$live_user[2]."**".$live_user[3]."**".$live_user[4]."**".$live_user[5]."**".$number."**\n";
+		if ($live_user[1]==$user AND $live_user[7]==$khuid){
+		$new_file.=$live_user[0]."**".$live_user[1]."**".$live_user[2]."**".$live_user[3]."**".$live_user[4]."**".$live_user[5]."**".$number."**".$live_user[7]."**\n";
 		}else{
 		$new_file.=$line;
 		}

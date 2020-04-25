@@ -15,6 +15,8 @@ include "lang.php";
 //in case of i frame we need to set some session variables that we get through a get arg
 $_SESSION['user']=$_GET['user'];
 $_SESSION['cong']=$_GET['cong'];
+//khuid is a unique identifier set on the client as we can't reliably pass the edcast id back to the listener
+$_SESSION['khuid']=$_GET['khuid'];
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 $_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
 
@@ -124,6 +126,11 @@ display:none;
 </head>
 <body>';
 }else{
+//we're serving the base page
+//we need to set the khuid to be able to identify who is reporting attendance and who is answering in case the same username is used by different people
+if (!isset($_SESSION['khuid'])){
+	$_SESSION['khuid']=md5(time().rand(1000,1000000000));
+}
 //if it's from the master server, we need to redirect to the slave server
 if ($server_beta=="master"){
 $print='ko';
@@ -140,7 +147,7 @@ echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br />Could not find yo
 }else{
 //we check if the meeting is live or not
 if ($_SESSION['meeting_status']=='live'){
-echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'"></iframe></div>';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'"></iframe></div>';
 }else{
 echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><div id="feeds">'.$lng['nolive'].' :<br /><br /><u>'.$lng['not_available'].'</u><br /><br /></div>'.$lng['listen_records'].'<br /></div>';
 }
@@ -176,7 +183,7 @@ xmlhttp.onreadystatechange=function()
    
     }
   }
-xmlhttp.open("GET","listener_joined.php?action=update_at&user=<?PHP echo $_SESSION['user'];?>&cong=<?PHP echo $_SESSION['cong'];?>&number=" + no, true);
+xmlhttp.open("GET","listener_joined.php?action=update_at&user=<?PHP echo $_SESSION['user'];?>&khuid=<?PHP echo $_SESSION['khuid'];?>&cong=<?PHP echo $_SESSION['cong'];?>&number=" + no, true);
 xmlhttp.send();
 }
 function cancel_answer(){
@@ -212,7 +219,7 @@ document.getElementById("sms_small").style.cursor= "auto";
    
     }
   }
-xmlhttp.open("GET","answer.php?action=sms_cancel&agent=client&client=<?PHP echo $_SESSION['user'];?>&cong=<?PHP echo $_SESSION['cong'];?>", true);
+xmlhttp.open("GET","answer.php?action=sms_cancel&agent=client&client=<?PHP echo $_SESSION['user'];?>&khuid=<?PHP echo $_SESSION['khuid'];?>&cong=<?PHP echo $_SESSION['cong'];?>", true);
 xmlhttp.send();
 }
 }
@@ -259,7 +266,7 @@ xmlhttp.onreadystatechange=function()
   }
 xmlhttp.open("POST","answer.php", true);
 xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-xmlhttp.send("action=sms&client=<?PHP echo $_SESSION['user'];?>&cong=<?PHP echo $_SESSION['cong'];?>&paragraph=" + paragraph + "&answer=" + answer);
+xmlhttp.send("action=sms&client=<?PHP echo $_SESSION['user'];?>&khuid=<?PHP echo $_SESSION['khuid'];?>&cong=<?PHP echo $_SESSION['cong'];?>&paragraph=" + paragraph + "&answer=" + answer);
 }
 }
 function trackSms(user,cong){
@@ -301,7 +308,7 @@ xmlhttp.onreadystatechange=function()
    
     }
   }
-xmlhttp.open("GET","sms_check.php?usr=<?PHP echo $_SESSION['user'];?>&cong=<?PHP echo $_SESSION['cong'];?>", true);
+xmlhttp.open("GET","sms_check.php?usr=<?PHP echo $_SESSION['user'];?>&khuid=<?PHP echo $_SESSION['khuid'];?>&cong=<?PHP echo $_SESSION['cong'];?>", true);
 xmlhttp.send();
 }
 function counter (i){
@@ -446,7 +453,8 @@ echo $lng['listening_text'].'<br /><br />';
 	$type_txt="";
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
-    $buffer.='<source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
+    //warning the order of param is important
+    $buffer.='<source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
     $i++;
     }
     $buffer.='</audio><br /><br />';
@@ -480,6 +488,16 @@ Please let us know how many people are listening on your side (yourself included
 <option value="8" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==8) echo 'selected="selected"';} ?>>8</option>
 <option value="9" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==9) echo 'selected="selected"';} ?>>9</option>
 <option value="10" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==10) echo 'selected="selected"';} ?>>10</option>
+<option value="11" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==11) echo 'selected="selected"';} ?>>11</option>
+<option value="12" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==12) echo 'selected="selected"';} ?>>12</option>
+<option value="13" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==13) echo 'selected="selected"';} ?>>13</option>
+<option value="14" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==14) echo 'selected="selected"';} ?>>14</option>
+<option value="15" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==15) echo 'selected="selected"';} ?>>15</option>
+<option value="16" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==16) echo 'selected="selected"';} ?>>16</option>
+<option value="17" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==17) echo 'selected="selected"';} ?>>17</option>
+<option value="18" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==18) echo 'selected="selected"';} ?>>18</option>
+<option value="19" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==19) echo 'selected="selected"';} ?>>19</option>
+<option value="20" <?PHP if (isset($_SESSION['number_at'])){if ($_SESSION['number_at']==20) echo 'selected="selected"';} ?>>20</option>
 </select>
 </div>
 <?PHP 

@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='2.3.7';//gen_version leave this comment it's used in auto_update
+$gen_version='2.3.8';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -1259,8 +1259,16 @@ Asterisk Direct input hw :<br />hardware for input (default)<br />
 Asterisk Direct output hw :<br />hardware for output (default)<br />
 <input class="field_login" type="text" name="alsa_out" value="<?PHP echo @$alsa_out;?>" /><br />
 </div>
-<div class="subgroup" onclick="javascript:toogleDiv(6)">vMix</div>
+
+<div class="subgroup" onclick="javascript:toogleDiv(6)">Video interface</div>
 <div class="subgroups" id="subgroup6">
+Default Jitsi videobridge address :<br />address of the server hosting the conference (meet.jit.si)<br />
+<?PHP
+if (!isset($jitsi_address)){
+$jitsi_address="meet.jit.si";
+}
+?>
+<input class="field_login" type="text" name="jitsi_address" value="<?PHP echo @$jitsi_address;?>" /><br />
 Enable vmix integration<br />yes -> the vmix control panel will be shown on meeting page <br />no -> vmix is disabled <br />
 <select class="field_login" name="vmix" >
 <option value="no">no</option>
