@@ -279,6 +279,9 @@ if (file_exists($temp_dir.'error_ip')) echo '<b>error ip file</b><br />'.file_ge
 if (file_exists($temp_dir.'global_ip')) echo '<b>global ip file</b><br />'.file_get_contents($temp_dir.'global_ip').'<br />';
 exec ('wget -q -O - http://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s/[^0-9.]//g', $resp_exec);
 echo 'kh-live/ip.php : '.implode("",$resp_exec).'<br />';
+exec ('lsusb -t', $lsusb_exec);
+echo ' <h2>LSUSB result</h2>
+<p>'.$lsusb_exec.'</p>';
 echo ' <h2>Force Update</h2>
 <p>Click <a href="./auto_update">here</a> to force updating the server</p>';
 }
