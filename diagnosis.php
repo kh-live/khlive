@@ -281,7 +281,7 @@ exec ('wget -q -O - http://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s
 echo 'kh-live/ip.php : '.implode("",$resp_exec).'<br />';
 exec ('lsusb -t', $lsusb_exec);
 echo ' <h2>LSUSB result</h2>
-<p>'.implode("",$lsusb_exec).'</p>';
+<p>'.implode("<br />",$lsusb_exec).'</p>';
 echo ' <h2>Force Update</h2>
 <p>Click <a href="./auto_update">here</a> to force updating the server</p>';
 }
