@@ -81,7 +81,7 @@ if ($_SESSION['type']=="user" OR $_SESSION['type']=="multi"){
 echo '<div class="home_widget"><b>Hint :</b><br />Click on the top left &#9776; button to view the menu.<br /><br /><a target="_blank" href="http://wiki.kh-live.co.za/doku/doku.php?id=user_guide">Click here to view the user guide...</a></div>';
 }else{
 if ($server_beta!='master'){
-$server_version=kh_fgetc_timeout('http://kh-live.co.za/version.php');
+$server_version=kh_fgetc_timeout('http://kh-live.co.za/version.php',2);
 	if ($server_version!==false){
 	if ($version!=$server_version){
 	echo '<div class="home_widget"><b style="color:red;">Update available!</b><br />Your server is running an old version of kh-live software.';
