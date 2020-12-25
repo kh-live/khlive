@@ -20,7 +20,11 @@ $_SESSION['khuid']=$_GET['khuid'];
 if (isset($_GET['multi'])) $_SESSION['type']='multi';
 $_SESSION['meeting_status']=implode("",file($temp_dir.'meeting_'.$_SESSION['cong']));
 $_SESSION['test_meeting_status']=implode("",file($temp_dir.'test_meeting_'.$_SESSION['cong']));
-
+		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS']=="on"){
+		$proto='https://';
+		}else{
+		$proto='http://';
+		}
 echo '<html><head>
 <style type="text/css">
 body {
@@ -140,7 +144,12 @@ $db=file("db/servers");
     foreach($db as $line){
         $data=explode ("**",$line);
 	if (strstr($data[3],$_SESSION['cong'])){
-	$url=$data[1];
+	$url=$data[0];
+	$ip=$data[1];
+	//we need to check if SSL is enabled and which port to use
+	$s_enable_ssl=@$data[5];
+	$s_http_port=@$data[6];
+	$s_https_port=@$data[7];
 	}
 	}
 if ($url==""){
@@ -148,9 +157,23 @@ echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br />Could not find yo
 }else{
 //we check if the meeting is live or not
 if ($_SESSION['meeting_status']=='live'){
+	if ($s_enable_ssl=='force'){
+		$url='https://'.$url.':'.$s_https_port;
+	}elseif($s_enable_ssl=='no' OR $s_enable_ssl==''){
+		if ($s_http_port!='') $s_http_port=':'.$s_http_port;
+		$url='http://'.$ip.$s_http_port;
+	}else{
+	//this is auto
+		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS']=="on"){
+		$url='https://'.$url.':'.$s_https_port;
+		}else{
+		if ($s_http_port!='') $s_http_port=':'.$s_http_port;
+		$url='http://'.$ip.$s_http_port;
+		}
+	}
 $addparam='';
 if ($_SESSION['type']=='multi') $addparam='&multi=1';
-echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="http://'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].$addparam.'"></iframe></div>';
+echo '<div id="page"><h2>'.$lng['listening'].'</h2><iframe id="listen_frame" src="'.$url.'/kh-live/listening.php?user='.$_SESSION['user'].'&cong='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].$addparam.'"></iframe></div>';
 }else{
 echo '<div id="page"><h2>'.$lng['listening'].'</h2><br /><br /><div id="feeds">'.$lng['nolive'].' :<br /><br /><u>'.$lng['not_available'].'</u><br /><br /></div>'.$lng['listen_records'].'<br /></div>';
 }
@@ -446,9 +469,8 @@ echo $lng['listening_text'].'<br /><br />';
     
     if (strstr($_SERVER['HTTP_HOST'],'192.168.')){
     $server_out=$_SERVER['HTTP_HOST'];
-    }elseif (file_exists($temp_dir.'global_ip')){
-    $server_out=file_get_contents($temp_dir.'global_ip');
     }
+    if ($proto=='https://') $port=$icecast_ssl_port;
 
     $buffer.='<audio controls autoplay>';
     $i=0;
@@ -458,7 +480,7 @@ echo $lng['listening_text'].'<br /><br />';
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
     //warning the order of param is important
-    $buffer.='<source src="http://'.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
+    $buffer.='<source src="'.$proto.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
     $i++;
     }
     $buffer.='</audio><br /><br />';

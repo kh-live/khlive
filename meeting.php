@@ -10,10 +10,14 @@ $db4=file("db/cong");
     $data=explode ("**",$line);
 	if ($data[0]==$_SESSION['cong']){
 	$meeting_type=$data[5];
+	$jitsi_cong_address=@$data[16];
 }
 }
 echo '<div id="page">
 <h2>'.$lng['meeting'].'</h2>';
+if ($meeting_type=='jitsi'){
+include 'meeting-jitsi.php';
+}else{
 if ($server_beta=='master' AND $_SESSION['type']!="user"){
 $ip='';
 $url='';
@@ -130,5 +134,6 @@ return "Please don't forget to STOP the meeting before closing the page!";
 }
 </script>
 <?PHP
+}
 }
 ?>

@@ -43,9 +43,12 @@ if(isset($_POST['submit'])){
 			$server_url=$_POST['server_url'];
 			$server_api=$_POST['server_api'];
 			$congs=$_POST['congs'];
+			$s_enable_ssl=$_POST['s_enable_ssl'];
+			$http_port=$_POST['http_port'];
+			$https_port=$_POST['https_port'];
 			$localip=$_POST['localip'];
 			
-			$info=$server_name."**".$server_url."**".$server_api."**".$congs."**".$localip."**\n";
+			$info=$server_name."**".$server_url."**".$server_api."**".$congs."**".$localip."**".$s_enable_ssl."**".$http_port."**".$https_port."**\n";
 
 			$file=fopen('./db/servers','a');
 			if(fputs($file,$info)){
@@ -168,6 +171,9 @@ $db=file("db/servers");
 	$key=$data[2];
 	$congs=@$data[3];
 	$localip=@$data[4];
+	$s_enable_ssl=@$data[5];
+	$http_port=@$data[6];
+	$https_port=@$data[7];
 	}
 	}
 ?>
@@ -192,6 +198,19 @@ Edit server<br /><br />
 <input class="field_login" type="text" name="localip" value="<?PHP echo @$localip; ?>" />
 <br /><br />
 <input type="hidden" name="old_server_name" value="<?PHP echo @$server; ?>" />
+<b>Enable SSL for this server</b><br />
+<select class="field_login" name="s_enable_ssl" >
+<option value="no" <?PHP if (@$s_enable_ssl=="no") echo 'selected=selected';?>>no (default)</option>
+<option value="force" <?PHP if (@$s_enable_ssl=="force") echo 'selected=selected';?>>force</option>
+<option value="auto" <?PHP if (@$s_enable_ssl=="auto") echo 'selected=selected';?>>auto</option>
+</select>
+<br /><br />
+<b>server http port (default 80)</b><br />
+<input class="field_login" type="text" name="http_port" />
+<br /><br />
+<b>server https port (default 443)</b><br />
+<input class="field_login" type="text" name="https_port" />
+<br /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 <input name="submit" type="submit" value="<?PHP echo 'Fetch user db';?>" /><input name="submit" type="submit" value="<?PHP echo 'Fetch cong db';?>" />
 </form>

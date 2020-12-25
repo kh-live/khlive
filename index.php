@@ -37,12 +37,42 @@ $page="login";
 //we also get a mixed content warning on recordings download page
 //so we force http for now unless it's accessing the timing web app which needs https to work.
 
-if (isset($_SERVER['HTTPS'])){
-  if($_SERVER['HTTPS']=="on" AND $page!='time' AND $page!='redirect'){
-     $redirect= "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-     header("Location:$redirect");
-     exit();
-  }
+
+if (isset($enable_ssl)){
+	//from version 3 it is now possible!
+	if ($enable_ssl=='force'){
+		if (!(isset($_SERVER['HTTPS']) AND ($_SERVER['HTTPS'] == 'on' OR $_SERVER['HTTPS'] == 1) OR isset($_SERVER['HTTP_X_FORWARDED_PROTO']) AND $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')){
+		$redirect= "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		     header("Location:$redirect");
+		     exit();
+		}else{
+		$proto='https://';
+		}
+	}elseif($enable_ssl=='no' OR $enable_ssl=='' ){
+		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS']=="on" AND $page!='time' AND $page!='redirect'){
+		     $redirect= "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		     header("Location:$redirect");
+		     exit();
+		}else{
+		$proto='http://';
+		}
+	}else{
+		//this is auto, so we don't do anything. If the user typed https then ssl will be enabled. If not it uses unencrypted connection.
+		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS']=="on"){
+		$proto='https://';
+		}else{
+		$proto='http://';
+		}
+	}
+}else{
+$proto='http://';
+	if (isset($_SERVER['HTTPS'])){
+	  if($_SERVER['HTTPS']=="on" AND $page!='time' AND $page!='redirect'){
+	     $redirect= "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+	     header("Location:$redirect");
+	     exit();
+	  }
+	}
 }
 
 header('Content-type: text/html; charset=ISO-8859-15');

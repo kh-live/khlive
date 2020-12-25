@@ -20,9 +20,12 @@ if(isset($_POST['submit'])){
 			$server_url=$_POST['server_url'];
 			$server_api=$_POST['server_api'];
 			$congs=$_POST['congs'];
+			$s_enable_ssl=$_POST['s_enable_ssl'];
+			$http_port=$_POST['http_port'];
+			$https_port=$_POST['https_port'];
 			$localip=$_POST['localip'];
 			
-			$info=$server_name."**".$server_url."**".$server_api."**".$congs."**".$localip."**\n";
+			$info=$server_name."**".$server_url."**".$server_api."**".$congs."**".$localip."**".$s_enable_ssl."**".$http_port."**".$https_port."**\n";
 
 			$file=fopen('./db/servers','a');
 			if(fputs($file,$info)){
@@ -60,6 +63,19 @@ Add anew server<br /><br />
 <br /><br />
 <b>server local ip address (192.168.1.123 or similar)</b><br />
 <input class="field_login" type="text" name="localip" />
+<br /><br />
+<b>Enable SSL for this server</b><br />
+<select class="field_login" name="s_enable_ssl" >
+<option value="no" >no (default)</option>
+<option value="force" >force</option>
+<option value="auto" >auto</option>
+</select>
+<br /><br />
+<b>server http port (default 80)</b><br />
+<input class="field_login" type="text" name="http_port" />
+<br /><br />
+<b>server https port (default 443)</b><br />
+<input class="field_login" type="text" name="https_port" />
 <br /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>

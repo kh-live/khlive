@@ -13,7 +13,7 @@ include ('functions.php');
 <a href="./server_add">add new server</a><br /><br />
 <table>
 <?PHP
-echo '<tr><td><b>server name</td><td><b>url</b></td><td><b>api</b></td><td><b>status</b></td><td><b>congregations</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
+echo '<tr><td><b>server name</td><td><b>url</b></td><td><b>api</b></td><td><b>status</b></td><td><b>congregations</b></td><td><b>SSL status</b></td><td><b>'.$lng['actions'].'</b></td></tr>';
 $db=file("db/servers");
     foreach($db as $line){
     $data=explode ("**",$line);
@@ -45,7 +45,7 @@ $db=file("db/servers");
 	}
 	$_SESSION['server_'.str_replace(".","",$data[1])]=$status.' (cached)';
 	}
-	echo '<tr><td>'.$data[0].'</td><td>'.$data[1].'</td><td>'.$data[2].'</td><td>'.$status.'</td><td>'.@$data[3].'</td><td><a href="./server_edit?server='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./server_delete?server='.urlencode($data[0]).'">'.$lng['delete'].'</a></td></tr>
+	echo '<tr><td>'.$data[0].'</td><td>'.$data[1].'</td><td>'.$data[2].'</td><td>'.$status.'</td><td>'.@$data[3].'</td><td>'.@$data[5].'</td><td><a href="./server_edit?server='.urlencode($data[0]).'">'.$lng['edit'].'</a> - <a href="./server_delete?server='.urlencode($data[0]).'">'.$lng['delete'].'</a></td></tr>
 	';
 	}
 	}

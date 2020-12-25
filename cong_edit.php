@@ -30,8 +30,9 @@ if ($deleting=='ok'){
 			$answer=$_POST['answer'];
 			$stream_quality=$_POST['stream_quality'];
 			$sip_caller_ip=$_POST['sip_caller_ip'];
+			$jitsi_cong_address=$_POST['jitsi_cong_address'];
 
-$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip, $cong_no, $conf_admin, $conf_user);
+$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip, $cong_no, $conf_admin, $conf_user, $jitsi_cong_address);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 $info=time().'**info**local cong edit successful**'.$cong_name."**\n";
@@ -82,6 +83,7 @@ $db=file("db/cong");
 	$stream_quality=@$data[12];
 	$sip_caller_ip=@$data[13];
 	$stream_server=@$data[14];
+	$jitsi_cong_address=@$data[16];
 	}
 	}
 	if ($voip_pwd==""){
@@ -109,8 +111,10 @@ SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate.<br />
 Direct input : Use the sound input/output on the server. this requires USB stack to be limited to 1.1<br />
 Direct stream : Use the sound input/output on the server only if voip is disabled.<br />
+Jitsi : Enables video conferencing through jitsi-meet api (experimental)<br />
 <select name="voip_type">
 <option value="none" <?PHP if ($voip_type=="none") echo 'selected=selected';?>>none</option>
+<option value="jitsi" <?PHP if ($voip_type=="jitsi") echo 'selected=selected';?>>Jitsi</option>
 <?PHP
 if ($server_beta!='stream'){
 ?>
@@ -288,6 +292,9 @@ Allows access with a landline or cellphone. The trunk needs to be configured sep
 <option value="yes" <?PHP if ($answer=="yes") echo 'selected=selected';?>>yes</option>
 <option value="no" <?PHP if ($answer=="no") echo 'selected=selected';?>>no</option>
 </select><br /><br />
+<b>Jitsi custom server address</b><br /> (leave blank to use default : <?PHP echo $jitsi_address;?>)<br />
+<input class="field_login" type="text" name="jitsi_cong_address" value="<?PHP echo @$jitsi_cong_address;?>" />
+<br />
 <input type="hidden" name="cong_confirmed" value="<?PHP echo $cong_name;?>">
 <a href="./congregations"><?PHP echo $lng['cancel'];?></a> <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>

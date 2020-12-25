@@ -23,8 +23,9 @@ if(isset($_POST['submit'])){
 			$answer=$_POST['answer'];
 			$stream_quality=$_POST['stream_quality'];
 			$sip_caller_ip=$_POST['sip_caller_ip'];
+			$jitsi_cong_address=$_POST['jitsi_cong_address'];
 			
-$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip);
+$adding=cong_add($cong_name, $cong_lang, $phone_no, $voip_type, $stream, $stream_server, $stream_type, $voip_pwd, $trunk, $record, $answer, $stream_quality, $sip_caller_ip, $jitsi_cong_address);
 if ($adding=='ok'){
 echo '<div id="ok_msg">'.$lng['op_ok'].'...</div>';
 $info=time().'**info**local cong add successful**'.$cong_name."**\n";
@@ -68,8 +69,10 @@ SIP : the congregation connects to the server with Jitsy.<br />
 IAX : the congregation connects to the server with Yate (currently not working).<br />
 Direct input : Use the sound input/output on the server. this requires USB stack to be limited to 1.1<br />
 Direct stream : Use the sound input/output on the server only if voip is disabled.<br />
+Jitsi : Enables video conferencing through jitsi-meet api (experimental)<br />
 <select name="voip_type">
 <option value="none">none</option>
+<option value="jitsi">jitsy</option>
 <?PHP
 if ($server_beta!='stream'){
 ?>
@@ -239,6 +242,9 @@ Allows access with a landline or cellphone. The trunk needs to be configured sep
 <option value="yes">yes</option>
 <option value="no">no</option>
 </select><br /><br />
+<b>Jitsi custom server address</b><br /> (leave blank to use default : <?PHP echo $jitsi_address;?>)<br />
+<input class="field_login" type="text" name="jitsi_cong_address" value="<?PHP echo @$jitsi_cong_address;?>" />
+<br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 </form>
 </div>

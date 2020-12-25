@@ -20,12 +20,31 @@ $db=file("db/servers");
     foreach($db as $line){
         $data=explode ("**",$line);
 	if (strstr($data[3],$_SESSION['cong'])){
-	$url=$data[1];
+	$url=$data[0];
+	$ip=$data[1];
+	//we need to check if SSL is enabled and which port to use
+	$s_enable_ssl=@$data[5];
+	$s_http_port=@$data[6];
+	$s_https_port=@$data[7];
 	}
 	}
 if ($url==""){
 echo 'Could not find your congregations server...';
 }else{
+	if ($s_enable_ssl=='force'){
+		$url='https://'.$url.':'.$s_https_port;
+	}elseif($s_enable_ssl=='no' OR $s_enable_ssl==''){
+		if ($s_http_port!='') $s_http_port=':'.$s_http_port;
+		$url='http://'.$ip.$s_http_port;
+	}else{
+	//this is auto
+		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS']=="on"){
+		$url='https://'.$url.':'.$s_https_port;
+		}else{
+		if ($s_http_port!='') $s_http_port=':'.$s_http_port;
+		$url='http://'.$ip.$s_http_port;
+		}
+	}
 echo '<div id="records_frame"><div id="page">
 <h2>'.$lng['recordings'].'</h2>Connecting...</div></div>';
 echo '
@@ -50,7 +69,7 @@ xmlhttp.onreadystatechange=function()
     }
   }
   tstmp = new Date();
-xmlhttp.open("GET","http://" + url + "/kh-live/records.php?user=" + user + "&date=" + dateR + "&cong=" + cong + "&tmp=" +  tstmp.getTime() , true);
+xmlhttp.open("GET", url + "/kh-live/records.php?user=" + user + "&date=" + dateR + "&cong=" + cong + "&tmp=" +  tstmp.getTime() , true);
 xmlhttp.send();
 }
 update_rec("'.$url.'","'.urlencode($_SESSION['user']).'","'.urlencode($_SESSION['cong']).'","" );
@@ -158,8 +177,10 @@ $tmp_results=array();
 	$dates=array();
 	foreach ($tmp_results as $file){
 	$parts=explode("-",$file);
+	if (isset($parts[1])){
 	$date=substr($parts[1],0,6);
 	$dates[$date]="ok";
+	}
 	}
 	ksort($dates);
 	if ($_SESSION['type']=="root"){
