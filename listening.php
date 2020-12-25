@@ -480,7 +480,7 @@ echo $lng['listening_text'].'<br /><br />';
     if ($type=="mp3") $type_txt="audio/mpeg";
     if ($type=="ogg") $type_txt="audio/ogg";
     //warning the order of param is important
-    $buffer.='<source src="'.$proto.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="http://'.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
+    $buffer.='<source src="'.$proto.$server_out.':'.$port.$feed.'?user='.$_SESSION['user'].'&pass='.$_SESSION['cong'].'&khuid='.$_SESSION['khuid'].'&tmp='.time().'" type="'.$type_txt.'" ><a href="'.$proto.$server_out.':'.$port.$feed.'.m3u">'.$lng['click2listen'].'</a>';
     $i++;
     }
     $buffer.='</audio><br /><br />';
