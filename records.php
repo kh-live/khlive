@@ -7,7 +7,11 @@ if (strstr($test, ".php")){
 $a = session_id();
 if ($a == ''){
 session_start();
+if (strstr($_SERVER['HTTP_ORIGIN'], 'https')){
+header('Access-Control-Allow-Origin: https://kh-live.co.za');
+}else{
 header('Access-Control-Allow-Origin: http://kh-live.co.za');
+}
 }
 include "db/config.php";
 include "lang.php";
