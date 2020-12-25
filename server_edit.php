@@ -206,10 +206,10 @@ Edit server<br /><br />
 </select>
 <br /><br />
 <b>server http port (default 80)</b><br />
-<input class="field_login" type="text" name="http_port" />
+<input class="field_login" type="text" name="http_port" value="<?PHP echo @$http_port; ?>" />
 <br /><br />
 <b>server https port (default 443)</b><br />
-<input class="field_login" type="text" name="https_port" />
+<input class="field_login" type="text" name="https_port" value="<?PHP echo @$https_port; ?>" />
 <br /><br />
 <input name="submit" type="submit" value="<?PHP echo $lng['save'];?>" />
 <input name="submit" type="submit" value="<?PHP echo 'Fetch user db';?>" /><input name="submit" type="submit" value="<?PHP echo 'Fetch cong db';?>" />
