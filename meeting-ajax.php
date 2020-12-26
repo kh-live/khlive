@@ -409,6 +409,9 @@ include 'meeting-listeners.php';
 			}
 			$_SESSION['meeting_just_started']='';
 			echo '<b style="color:red;">The meeting failed to start!</b><br />';
+			echo 'Here is the last 10 lines of the error log : <br />';
+			exec('tail -10 /var/log/apache2/error.log', $output);
+			echo implode('<br />',$output);
 			}
 		}
 		//otherwise  we do prechecks before we show the form to start meeting
