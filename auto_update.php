@@ -31,6 +31,7 @@ cp <?PHP echo $auto_update_dir_git; ?>/img/*.png <?PHP echo $web_server_root; ?>
 dos2unix <?PHP echo $web_server_root; ?>kh-live/* > /dev/null 2>&1
 find <?PHP echo $web_server_root; ?>kh-live/ -type f -printf '"%p"\n' | xargs chmod 640 
 chown -R asterisk:asterisk <?PHP echo $web_server_root; ?>kh-live/*
+chown -R asterisk:asterisk /var/log/icecast2
 chmod +x <?PHP echo $web_server_root; ?>kh-live/config/update.sh
 chmod +x <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
 echo "done"

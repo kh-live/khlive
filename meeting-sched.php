@@ -5,6 +5,7 @@ chdir(dirname(__FILE__));
 include 'db/config.php';
 if (isset($scheduler)){
 	if ($scheduler=='yes'){
+	if (is_file('./db/sched')){
 	$db=file('./db/sched');
 		if ($db!=''){
 			foreach($db as $line){
@@ -146,5 +147,6 @@ if (isset($scheduler)){
 		}
 	
 	}
+}
 }
 ?>

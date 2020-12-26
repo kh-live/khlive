@@ -12,6 +12,7 @@ if ($test_time!==FALSE){
 			//we display when the next schedulded meeting is going to take palce
 			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings for today (automatic start and stop) :<br />';
 			$smeetings='';
+			if (is_file('./db/sched')){
 			$db0=file('./db/sched');
 			if ($db0!=''){
 			foreach($db0 as $line){
@@ -25,6 +26,7 @@ if ($test_time!==FALSE){
 					$smeetings.= '- <b>'.$cong.'</b> meeting from '.sprintf('%02d:%02d', $start_time[0],$start_time[1]).' to '.sprintf('%02d:%02d', $stop_time[0],$stop_time[1]).' </br>';
 				}
 				}
+			}
 			}
 			if ($smeetings!=''){
 			echo $smeetings;
