@@ -52,6 +52,9 @@ sed -i 's/export APACHE_RUN_USER=www-data/export APACHE_RUN_USER='$KH_USER'/' /e
 sed -i 's/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP='$KH_GRP'/' /etc/apache2/envvars
 chown ${KH_USER}:${KH_GRP} /var/lock/apache2/
 chown -R ${KH_USER}:${KH_GRP} /var/lib/php*
+#we need to change permissions to error log to display it in case meeting fails to start
+chmod go+rX /var/log/apache2
+chmod go+r /var/log/apache2/error.log
 
 echo 'Downloading and installing kh-live software'
 mkdir ${APACHE_ROOT}kh-live

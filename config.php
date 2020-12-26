@@ -94,8 +94,12 @@ if ($enable_ssl=="no" OR $enable_ssl=="" ){
         <port><?PHP echo $port; ?></port>
     </listen-socket>
 <?PHP
-}elseif ($enable_ssl="force"){
+}elseif ($enable_ssl=="force"){
+//we still need to have both ports open as locally ices or ezstream use port 8000
 ?>
+    <listen-socket>
+        <port><?PHP echo $port; ?></port>
+    </listen-socket>
     <listen-socket>
         <port><?PHP echo $icecast_ssl_port; ?></port>
 	<ssl>1</ssl>
