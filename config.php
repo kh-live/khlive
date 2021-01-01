@@ -851,11 +851,12 @@ port :<br />icecast port <br />
 </div>
 <div class="subgroup" onclick="javascript:toogleDiv(10)">SSL</div>
 <div class="subgroups" id="subgroup10">
-<i style="color:red;">Before enabling SSL, you need to have a valid certificate installed (see installation procedure <a href="http://wiki.kh-live.co.za/doku/doku.php?id=ssl" target="_blank">here</a> )</i><br /><br />
+
 <?PHP
 exec ('which certbot', $test_exec);
 if (strstr(implode('',$test_exec), 'certbot')){
 ?>
+<i style="color:green;">It seems SSL is installed, you can try to enable it below.</i><br /><br />
 Enable SSL:<br />no=will redirect https requests to http <br />force=will redirect http requests to https <br />auto=lets the user decide which protocol to use<br />
 <select class="field_login" name="enable_ssl" >
 <option value="no" <?PHP if (@$enable_ssl=="no") echo 'selected=selected';?>>no (default)</option>
@@ -865,6 +866,7 @@ Enable SSL:<br />no=will redirect https requests to http <br />force=will redire
 <?PHP
 }else{
 ?>
+<i style="color:red;">Before enabling SSL, you need to have a valid certificate installed (see installation procedure <a href="http://wiki.kh-live.co.za/doku/doku.php?id=ssl" target="_blank">here</a> )</i><br /><br />
 Auto setup SSL:<br />no=will do nothing <br />setup= will try to auto install SSL<br />
 <select class="field_login" name="enable_ssl" >
 <option value="no" <?PHP if (@$enable_ssl=="no") echo 'selected=selected';?>>no (default)</option>

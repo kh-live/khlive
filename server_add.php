@@ -71,6 +71,7 @@ Add anew server<br /><br />
 <option value="auto" >auto</option>
 </select>
 <br /><br />
+<i style="color:red;">If you decide to use a non standard port, the SSL certificate won't renew automatically!</i><br /><br />
 <b>server http port (default 80)</b><br />
 <input class="field_login" type="text" name="http_port" />
 <br /><br />
