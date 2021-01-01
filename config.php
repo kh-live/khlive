@@ -70,7 +70,6 @@ service icecast2 restart
 fi
 
 <?PHP }
-}
 	          $message = ob_get_clean();
 $fichier = fopen('./config/update.sh', 'w');
             if (fwrite($fichier, $message)){
