@@ -69,11 +69,11 @@ echo 'error : server already exists';
 	$encrypted=kh_encrypt($string,$key);
 	$q_proto='http://';
 	$q_port=':80';
-	if ($data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
-	if ($data[5]=='auto' OR $data[5]=='force'){
+	if (@$data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
+	if (@$data[5]=='auto' OR @$data[5]=='force'){
 		$q_proto='https://';
 		$q_port=':443';
-		if ($data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
+		if (@$data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
 	}
 	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted), 10);
 	//$response=file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
@@ -128,11 +128,11 @@ echo 'error : server already exists';
 	$encrypted=kh_encrypt($string,$key);
 	$q_proto='http://';
 	$q_port=':80';
-	if ($data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
-	if ($data[5]=='auto' OR $data[5]=='force'){
+	if (@$data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
+	if (@$data[5]=='auto' OR @$data[5]=='force'){
 		$q_proto='https://';
 		$q_port=':443';
-		if ($data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
+		if (@$data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
 	}
 	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted), 10);
 	//$response=file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));

@@ -96,31 +96,32 @@ At least 8 characters. Tip : use a sentence!<br />
 <input class="field_login" type="text" name="pin" value="<?PHP echo rand(10000,99999) ;?>">#<br /><br />
 <?PHP
 if ($auto_khlive=='yes' OR $server_beta=='master'){
-$context = stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
-//$ch = curl_init();
 	if ($server_beta=='master'){
 		$url="";
 		$db=file("db/servers");
 		foreach($db as $line){
 			$data=explode ("**",$line);
 			if (strstr($data[3],$_SESSION['cong'])){
-				$url=$data[1];
+				$url=$data[0];
+				$q_proto='http://';
+				$q_port=':80';
+				if ($data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
+				if ($data[5]=='auto' OR $data[5]=='force'){
+					$q_proto='https://';
+					$q_port=':443';
+					if ($data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
+				}
 			}
 		}
 		if ($url==""){
-		//curl_setopt($ch, CURLOPT_URL, 'http://impossible.kh-live.co.za/time.php');
-		$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php',false,$context);
 		echo 'Could not find your congregations server...';
 		}else{
-		//curl_setopt($ch, CURLOPT_URL, 'http://'.$url.'/kh-live/time.php');
-		$test_time=@file_get_contents('http://'.$url.'/kh-live/time.php',false,$context);
+		$test_time=kh_fgetc_timeout($q_proto.$url.$q_port.'/kh-live/time.php');
 		}
 	}else{
-		//curl_setopt($ch, CURLOPT_URL, 'http://kh-live.co.za/time.php');
-		$test_time=@file_get_contents('http://kh-live.co.za/time.php',false,$context);
+		$test_time=kh_fgetc_timeout('https://kh-live.co.za/time.php');
 	}
-	//curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	//$test_time = curl_exec($ch);
+
 if ($test_time!==FALSE){
 	if (is_numeric($test_time)){
 		$now=time();

@@ -46,10 +46,8 @@ global $auto_khlive;
 			$key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_check**".$user.'###'.$congregation;
-	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$response=kh_fgetc_timeout('https://kh-live.co.za/api.php?q='.urlencode($encrypted));
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//if upstream server fails to answer should we still add the user locally?
@@ -83,10 +81,8 @@ if ($auto_khlive=="yes"){
 $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
-	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$response=kh_fgetc_timeout('https://kh-live.co.za/api.php?q='.urlencode($encrypted));
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
@@ -99,17 +95,23 @@ $db=file("./db/servers");
         $data=explode ("**",$line);
 	if (strstr($data[3],$congregation)){
 	$api_key=$data[2];
-	$slave_url=$data[1];
+	$slave_url=$data[0];
+	$q_proto='http://';
+	$q_port=':80';
+	if (@$data[6]!='' AND is_numeric(@$data[6])) $q_port=':'.$data[6];
+	if (@$data[5]=='auto' OR @$data[5]=='force'){
+		$q_proto='https://';
+		$q_port=':443';
+		if (@$data[7]!='' AND is_numeric(@$data[7])) $q_port=':'.$data[7];
+	}
 	}
 	}
 if ($slave_url!=""){
 $key=$api_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
-	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=file_get_contents('http://'.$slave_url.'/kh-live/api.php?q='.urlencode($encrypted));
-	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$response=kh_fgetc_timeout($q_proto.$slave_url.$q_port.'/kh-live/api.php?q='.urlencode($encrypted));
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?
@@ -178,10 +180,8 @@ if ($auto_khlive=="yes"){
 $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
-	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=file_get_contents('http://kh-live.co.za/api.php?q='.urlencode($encrypted));
-	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$response=kh_fgetc_timeout('https://kh-live.co.za/api.php?q='.urlencode($encrypted));
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
@@ -194,17 +194,23 @@ $db=file("./db/servers");
         $data=explode ("**",$line);
 	if (strstr($data[3],$congregation)){
 	$api_key=$data[2];
-	$slave_url=$data[1];
+	$slave_url=$data[0];
+				$q_proto='http://';
+				$q_port=':80';
+				if ($data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
+				if ($data[5]=='auto' OR $data[5]=='force'){
+					$q_proto='https://';
+					$q_port=':443';
+					if ($data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
+				}
 	}
 	}
 if ($slave_url!=""){
 $key=$api_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
-	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=file_get_contents('http://'.$slave_url.'/kh-live/api.php?q='.urlencode($encrypted));
-	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
+	$response=kh_fgetc_timeout($q_proto.$slave_url.$q_port.'/kh-live/api.php?q='.urlencode($encrypted));
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?

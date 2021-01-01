@@ -251,12 +251,11 @@ $query=explode("**", $decrypted);
 			if(fputs($file,$info)){
 			fclose($file);
 	}
-		//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($api_key), $string, MCRYPT_MODE_CBC, md5(md5($api_key))));
 		$encrypted=kh_encrypt($string, $api_key);
 		echo $encrypted;
 		exit;
 	}else{
-	//tere was an error during decription - the data has been tampered with
+	//tere was an error during decryption - the data has been tampered with
 		$info=time().'**error**API hash not equal**Query : '.$_GET['q'].'**result of decryption : '.$decrypted."**\n";
 		$file=fopen('./db/logs-'.date("Y",time()).'-'.date("m",time()),'a');
 			if(fputs($file,$info)){
@@ -279,6 +278,4 @@ $query=explode("**", $decrypted);
 	echo "down";
 	}
 }
-//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
-//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($encrypted), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 ?>

@@ -182,16 +182,23 @@ $context = stream_context_create(array('http' => array('header'=>'Connection: cl
 			$data=explode ("**",$line);
 			if (strstr($data[3],$_SESSION['cong'])){
 				$url=$data[1];
+				$q_proto='http://';
+				$q_port=':80';
+				if ($data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
+				if ($data[5]=='auto' OR $data[5]=='force'){
+					$q_proto='https://';
+					$q_port=':443';
+					if ($data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
+				}
 			}
 		}
 		if ($url==""){
-		$test_time=@file_get_contents('http://impossible.kh-live.co.za/time.php',false,$context);
 		echo 'Could not find your congregations server...';
 		}else{
-		$test_time=@file_get_contents('http://'.$url.'/kh-live/time.php',false,$context);
+		$test_time=kh_fgetc_timeout($q_proto.$url.$q_port.'/kh-live/time.php');
 		}
 	}else{
-		$test_time=@file_get_contents('http://kh-live.co.za/time.php',false,$context);
+		$test_time=kh_fgetc_timeout('https://kh-live.co.za/time.php');
 	}
 if ($test_time!==FALSE){
 	if (is_numeric($test_time)){
