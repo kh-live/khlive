@@ -174,14 +174,13 @@ Leave blank if no change. At least 8 characters. Tip : use a sentence!<br />
 <a href="./users"><?PHP echo $lng['cancel'];?></a> 
 <?PHP
 if ($auto_khlive=='yes' OR $server_beta=='master'){
-$context = stream_context_create(array('http' => array('header'=>'Connection: close\r\n')));
 	if ($server_beta=='master'){
 		$url="";
 		$db=file("db/servers");
 		foreach($db as $line){
 			$data=explode ("**",$line);
 			if (strstr($data[3],$_SESSION['cong'])){
-				$url=$data[1];
+				$url=$data[0];
 				$q_proto='http://';
 				$q_port=':80';
 				if ($data[6]!='' AND is_numeric($data[6])) $q_port=':'.$data[6];
