@@ -851,7 +851,7 @@ port :<br />icecast port <br />
 </div>
 <div class="subgroup" onclick="javascript:toogleDiv(10)">SSL</div>
 <div class="subgroups" id="subgroup10">
-<b style="color:red;">Before enabling SSL, you need to have a valid certificate installed (see installation procedure <a href="http://wiki.kh-live.co.za/doku/doku.php?id=ssl" target="_blank">here</a> )</b><br /><br />
+<i style="color:red;">Before enabling SSL, you need to have a valid certificate installed (see installation procedure <a href="http://wiki.kh-live.co.za/doku/doku.php?id=ssl" target="_blank">here</a> )</i><br /><br />
 <?PHP
 exec ('which certbot', $test_exec);
 if (strstr(implode('',$test_exec), 'certbot')){
@@ -882,6 +882,7 @@ $apache_ssl_port="443";
 Icecast SSL port :<br />default 8443 <br />
 <input class="field_login" type="text" name="icecast_ssl_port" value="<?PHP echo $icecast_ssl_port;?>" /><br />
 Apache SSL port :<br />default 443 - this doesn't change the port in apache configuration, but is used to generate the correct links<br />
+<i style="color:red;">If you decide to use a non standard port, the SSL certificate won't renew automatically!</i><br /><br />
 <input class="field_login" type="text" name="apache_ssl_port" value="<?PHP echo $apache_ssl_port;?>" /><br />
 </div>
 

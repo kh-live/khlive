@@ -223,6 +223,7 @@ Edit server<br /><br />
 <option value="auto" <?PHP if (@$s_enable_ssl=="auto") echo 'selected=selected';?>>auto</option>
 </select>
 <br /><br />
+<i style="color:red;">If you decide to use a non standard ports, the SSL certificate won't renew automatically!</i><br /><br />
 <b>server http port (default 80)</b><br />
 <input class="field_login" type="text" name="http_port" value="<?PHP echo @$http_port; ?>" />
 <br /><br />
