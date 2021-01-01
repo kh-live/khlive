@@ -1,7 +1,7 @@
 <?PHP
 include './db/config.php';
 include './functions.php';
-exec ('wget -q -O - http://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s/[^0-9.]//g', $resp_exec);
+exec ('wget -q -O - https://kh-live.co.za/ip.php?tmp='.rand(10000,100000).'|sed s/[^0-9.]//g', $resp_exec);
 $current_ip=implode("",$resp_exec);
 if (file_exists($temp_dir.'global_ip')){
 $previous_ip=implode("",file($temp_dir.'global_ip'));

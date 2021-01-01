@@ -33,7 +33,7 @@ DOMAIN="<?PHP echo $moo_adr ; ?>"
 
 registered=$(nslookup $DOMAIN|tail -n2|grep A|sed s/[^0-9.]//g)
 
-  current=$(wget -q -O - http://kh-live.co.za/ip.php|sed s/[^0-9.]//g)
+  current=$(wget -q -O - https://kh-live.co.za/ip.php|sed s/[^0-9.]//g)
        [ "$current" != "$registered" ] && {
 wget -q -O /dev/null $UPDATEURL
            }
@@ -42,6 +42,35 @@ wget -q -O /dev/null $UPDATEURL
 if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-live/update_ip.php'; ?>
 
 <?PHP
+//this is where we can auto setup ssl-certificate
+if ($enable_ssl=="setup"){
+?>
+CERTBOT=$(which certbot)
+if ["${#CERTBOT}"==0]
+then
+apt-get update
+apt-get install python-certbot-apache -y
+certbot certonly --noninteractive --apache --agree-tos --no-redirect --register-unsafely-without-email -d <?PHP echo $server_out ; ?>
+cat /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/privkey.pem > /etc/icecast2/bundle.pem
+chown asterisk:asterisk /etc/icecast2/bundle.pem
+sed -i -e '$apost_hook = cat /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/privkey.pem > /etc/icecast2/bundle.pem && service icecast2 restart' /etc/letsencrypt/renewal/<?PHP echo $server_out ; ?>.conf
+
+apt-get install git gcc build-essential -y
+apt-get install libcurl4-openssl-dev libxslt1-dev libxml2-dev libogg-dev libvorbis-dev libflac-dev libtheora-dev libssl-dev -y
+(cd /home/pi && mkdir src)
+(cd /home/pi/src && wget http://downloads.xiph.org/releases/icecast/icecast-2.4.4.tar.gz)
+(cd /home/pi/src && tar xvf  ./icecast-2.4.4.tar.gz)
+(cd /home/pi/src/icecast-2.4.4 && ./configure --with-curl --with-openssl)
+(cd /home/pi/src/icecast-2.4.4 && make)
+mv /usr/bin/icecast2 /usr/bin/icecast2nossl
+cp /home/pi/src/icecast-2.4.4/src/icecast /usr/bin/icecast2
+cp /home/pi/src/icecast-2.4.4/src/icecast <?PHP echo $web_server_root; ?>/icecast
+chown asterisk:asterisk <?PHP echo $web_server_root; ?>/icecast
+service icecast2 restart
+fi
+
+<?PHP }
+}
 	          $message = ob_get_clean();
 $fichier = fopen('./config/update.sh', 'w');
             if (fwrite($fichier, $message)){
@@ -231,6 +260,7 @@ if ($stream_type=='both'){
 $fichier = fopen('./config/icecast.xml', 'w');
             if (fwrite($fichier, $message)){
             echo "File saved successfully<br />" ;
+	    //this doesnt work... asterisk user doesn't have the rights to kill...
 	    exec("kill -s HUP $(pidof ".$icecast_bin.")");
 	fclose ($fichier);
 	    }else{
@@ -823,6 +853,10 @@ port :<br />icecast port <br />
 <div class="subgroup" onclick="javascript:toogleDiv(10)">SSL</div>
 <div class="subgroups" id="subgroup10">
 <b style="color:red;">Before enabling SSL, you need to have a valid certificate installed (see installation procedure <a href="http://wiki.kh-live.co.za/doku/doku.php?id=ssl" target="_blank">here</a> )</b><br /><br />
+<?PHP
+exec ('which certbot', $test_exec);
+if (strstr(implode('',$test_exec), 'certbot'){
+?>
 Enable SSL:<br />no=will redirect https requests to http <br />force=will redirect http requests to https <br />auto=lets the user decide which protocol to use<br />
 <select class="field_login" name="enable_ssl" >
 <option value="no" <?PHP if (@$enable_ssl=="no") echo 'selected=selected';?>>no (default)</option>
@@ -830,6 +864,15 @@ Enable SSL:<br />no=will redirect https requests to http <br />force=will redire
 <option value="auto" <?PHP if (@$enable_ssl=="auto") echo 'selected=selected';?>>auto</option>
 </select><br />
 <?PHP
+}else{
+?>
+Auto setup SSL:<br />no=will do nothing <br />setup= will try to auto install SSL<br />
+<select class="field_login" name="enable_ssl" >
+<option value="no" <?PHP if (@$enable_ssl=="no") echo 'selected=selected';?>>no (default)</option>
+<option value="setup" <?PHP if (@$enable_ssl=="setup") echo 'selected=selected';?>>setup</option>
+</select><br />
+<?PHP
+}
 if (!isset($icecast_ssl_port)){
 $icecast_ssl_port="8443";
 }

@@ -9,7 +9,8 @@ if ($decrypted!= false){
 $query=explode("**", $decrypted);
 	if ($query[0]+60>=time() AND time()>=$query[0]-60){
 		if ($query[1]=="status"){
-		$string=$version.'-'.@$enable_ssl."@@@ok";
+		exec("uname -m",$uname);
+		$string=$version.'-'.@$enable_ssl."-".implode('',$uname)."@@@ok";
 		}elseif($query[1]=="fetch_users"){
 		$db=file('db/users');
 			foreach($db as $line){
@@ -31,14 +32,15 @@ $query=explode("**", $decrypted);
     foreach($db as $line){
         $data=explode ("**",$line);
 	if ($data[0]==$server_name){
-	$api_key=$data[2];
-	$ip_addr='';
-	if ($data[4]!='' AND $data[4]!="\n") $ip_addr=$data[4];
-		$content.=$server_name."**".$new_ip."**".$api_key."**".$data[3]."**".$ip_addr."**\n";
-		}else{
+		$api_key=$data[2];
+		$ip_addr='';
+		if ($data[4]!='' AND $data[4]!="\n") $ip_addr=$data[4];
+		if (@data[5]=="\n") $data[5]='';
+		$content.=$server_name."**".$new_ip."**".$api_key."**".$data[3]."**".$ip_addr."**".@$data[5]."**".@$data[6]."**".@$data[7]."**\n";
+	}else{
 		$content.=$line;
-		}
-		}
+	}
+}
 		if ($content!=''){
 		$file=fopen("./db/servers",'w');
 	if (fputs($file,$content)){

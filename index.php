@@ -48,7 +48,7 @@ if (isset($enable_ssl)){
 		}else{
 		$proto='https://';
 		}
-	}elseif($enable_ssl=='no' OR $enable_ssl=='' ){
+	}elseif($enable_ssl=='no' OR $enable_ssl=='' OR $enable_ssl=='setup' ){
 		if (isset($_SERVER['HTTPS']) AND $_SERVER['HTTPS']=="on" AND $page!='time' AND $page!='redirect'){
 		     $redirect= "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 		     header("Location:$redirect");
