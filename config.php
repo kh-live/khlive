@@ -855,7 +855,7 @@ port :<br />icecast port <br />
 <b style="color:red;">Before enabling SSL, you need to have a valid certificate installed (see installation procedure <a href="http://wiki.kh-live.co.za/doku/doku.php?id=ssl" target="_blank">here</a> )</b><br /><br />
 <?PHP
 exec ('which certbot', $test_exec);
-if (strstr(implode('',$test_exec), 'certbot'){
+if (strstr(implode('',$test_exec), 'certbot')){
 ?>
 Enable SSL:<br />no=will redirect https requests to http <br />force=will redirect http requests to https <br />auto=lets the user decide which protocol to use<br />
 <select class="field_login" name="enable_ssl" >
