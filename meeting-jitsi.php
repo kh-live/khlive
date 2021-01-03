@@ -45,7 +45,7 @@ xhttp.open("POST", "stream_start.php", true);
 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhttp.send("action=mount_add&mount=/stream-<?PHP echo urlencode($_SESSION['cong']); ?>.ogg&server=<?PHP echo urlencode($jitsi_url); ?>&port=Kh-Live-<?PHP echo urlencode($_SESSION['cong']); ?>-<?PHP echo date("Ymd",time()) ?>"); 
 button.innerHTML="Stop";
-button.removeEventListener('click');
+button.removeEventListener('click', khInitiateJitsi);
 button.addEventListener('click', khMeetingStop );
 }
 function khMeetingStop(){
