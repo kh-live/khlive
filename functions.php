@@ -638,6 +638,8 @@ return 'ok';
 
 function cong_del($cong_confirmed,$edit){
 global $asterisk_bin;
+global $server_beta;
+
 $db=file("db/cong");
 			$file_content="";
 	foreach($db as $line){
@@ -680,21 +682,6 @@ $db=file("db/streams");
 			}
 		}
 			
-$db=file("config/meetme.conf");
-			$file_content="";
-	foreach($db as $line){
-		if (strstr($line,$cong_no)){
-		}else{
-		$file_content.=$line;
-		}
-	}
-			$file=fopen('config/meetme.conf','w');
-			if(fputs($file,$file_content)){
-			fclose($file);
-			}else{
-			return 'error saving meetme.conf';
-			}
-			
 $db=file("config/icecast.xml");
 			$file_content="";
 			$skip='';
@@ -715,6 +702,21 @@ $db=file("config/icecast.xml");
 			fclose($file);
 			}else{
 			return 'error saving icecast.xml';
+			}
+if ($server_beta=="false"){			
+$db=file("config/meetme.conf");
+			$file_content="";
+	foreach($db as $line){
+		if (strstr($line,$cong_no)){
+		}else{
+		$file_content.=$line;
+		}
+	}
+			$file=fopen('config/meetme.conf','w');
+			if(fputs($file,$file_content)){
+			fclose($file);
+			}else{
+			return 'error saving meetme.conf';
 			}
 			
 $db=file("config/extensions_custom.conf");
@@ -746,8 +748,11 @@ include "iax-gen.php";
 //we must still remove the old recordings if we don't do an edit
 //we must also remove the logs if it's not an edit
 //we must check that users are not left orphan if it's not an edit
+}
 return 'ok';
 }
+
+
 function sched_add($congregation, $day, $time_start, $time_stop, $enable, $timing){
 $file_content=$congregation.'**'.$day.'**'.$time_start.'**'.$time_stop.'**'.$enable.'**'.$timing."**\n";
 $file=fopen('db/sched','a');
