@@ -446,6 +446,10 @@ include 'meeting-time.php';
 					}
 				}
 			}
+if ($meeting_type=='jitsi'){
+	include('listening-jitsi.php');
+}else{
+			
 echo $lng['listening_text'].'<br /><br />';
 
 ?>
@@ -495,6 +499,8 @@ echo $lng['listening_text'].'<br /><br />';
 ?>
 </div>
 <?PHP
+}
+
 $db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);

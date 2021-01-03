@@ -49,7 +49,7 @@ if (isset($cong)) unset($cong);
         $data=explode ("**",$line);
 	if ($data[0]==$cong) $type=$data[5];
 	}
-		if ($type=="none" OR $type=='direct-stream'){
+		if ($type=="none" OR $type=='direct-stream' OR $type=='jitsi'){
 		$file=fopen($temp_dir.'meeting_'.$cong,'w');
 			fputs($file,"live");
 		fclose($file);
