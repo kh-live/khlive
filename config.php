@@ -46,7 +46,7 @@ if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-liv
 if ($enable_ssl=="setup"){
 ?>
 CERTBOT=$(which certbot)
-if ["${#CERTBOT}"==0]
+if [ "${#CERTBOT}"==0 ]
 then
 apt-get update
 apt-get install python-certbot-apache -y
