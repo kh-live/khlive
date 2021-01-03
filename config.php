@@ -54,17 +54,12 @@ certbot --noninteractive --apache --agree-tos --no-redirect --register-unsafely-
 cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem
 sed -i -e '$apost_hook = cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem && service icecast2 restart' /etc/letsencrypt/renewal/<?PHP echo $server_out; ?>.conf
 
-apt-get install git gcc build-essential -y
-apt-get install libcurl4-openssl-dev libxslt1-dev libxml2-dev libogg-dev libvorbis-dev libflac-dev libtheora-dev libssl-dev -y
-(cd /home/pi && mkdir src)
-(cd /home/pi/src && wget http://downloads.xiph.org/releases/icecast/icecast-2.4.4.tar.gz)
-(cd /home/pi/src && tar xvf  ./icecast-2.4.4.tar.gz)
-(cd /home/pi/src/icecast-2.4.4 && ./configure --with-curl --with-openssl)
-(cd /home/pi/src/icecast-2.4.4 && make)
+(cd /home/pi && wget https://kh-live.co.za/downloads/icecast2-armv7.zip)
+(cd /home/pi && unzip icecast2-armv7.zip)
 mv /usr/bin/icecast2 /usr/bin/icecast2nossl
-cp /home/pi/src/icecast-2.4.4/src/icecast /usr/bin/icecast2
-cp /home/pi/src/icecast-2.4.4/src/icecast <?PHP echo $web_server_root; ?>/icecast
-chown asterisk:asterisk <?PHP echo $web_server_root; ?>/icecast
+mv /home/pi/icecast2 /usr/bin/icecast2
+chmod +x /usr/bin/icecast2
+rm /home/pi/icecast2-armv7.zip
 reboot
 fi
 
