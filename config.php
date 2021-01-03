@@ -61,7 +61,7 @@ mv /usr/bin/icecast2 /usr/bin/icecast2nossl
 mv /home/pi/icecast2 /usr/bin/icecast2
 chmod +x /usr/bin/icecast2
 rm /home/pi/icecast2-armv7.zip
-reboot
+/sbin/reboot
 fi
 
 <?PHP }
