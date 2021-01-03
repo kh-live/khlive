@@ -17,7 +17,8 @@ if (isset($jitsi_cong_address)){
 <script>
 var button = document.querySelector('#start');
 var api = null;
-button.addEventListener('click', () => {
+button.addEventListener('click', khInitiateJitsi );
+function khInitiateJitsi(){
 	var domain = '<?PHP echo $jitsi_url; ?>';
 	var options = {
 		roomName: 'Kh-Live-<?PHP echo $_SESSION['cong']; ?>-<?PHP echo date("Ymd",time()) ?>',
@@ -29,10 +30,8 @@ button.addEventListener('click', () => {
 	    }
 	};
 	api = new JitsiMeetExternalAPI(domain, options);
-	api.addEventListeners({
-		readyToClose:khMeetingStop
-	});
-});
+	khMeetingStart();
+}
 function khMeetingStart(){
 //ajax call to stream_start.php
 //POST 
@@ -43,6 +42,9 @@ function khMeetingStart(){
 xhttp.open("POST", "stream_start.php", true);
 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhttp.send("action=mount_add&mount=/stream-<?PHP echo urlencode($_SESSION['cong']); ?>.ogg&server=<?PHP echo urlencode($jitsi_url); ?>&port=Kh-Live-<?PHP echo urlencode($_SESSION['cong']); ?>-<?PHP echo date("Ymd",time()) ?>"); 
+button.innerHTML='Stop';
+button.removeEventListener('click');
+button.addEventListener('click', khMeetingStop );
 }
 function khMeetingStop(){
 //ajax call to stream_end.php

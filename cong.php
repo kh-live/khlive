@@ -39,6 +39,7 @@ $db=file("db/streams");
 <table>
 <?PHP
 echo '<tr><td><b>'.$lng['stream'].'</b></td><td><b>'.$lng['date_started'].'</b></td></tr>';
+if (is_file('db/live_streams')){
 $db=file("db/live_streams");
 	if (count($db)==0){
 	echo '<tr><td>'.$lng['no_live_streams'].'</td><td></td>';
@@ -48,6 +49,7 @@ $db=file("db/live_streams");
 	echo '<tr><td>'.$data[0].'</td><td>'.date('H:i:s-d/m/Y',$data[1]).'</td>';
 	}
 	}
+}
 	?>
 </table>
 </div>

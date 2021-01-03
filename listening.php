@@ -395,6 +395,7 @@ include 'meeting-time.php';
 			//we display when the next schedulded meeting is going to take palce
 			echo '<br /><i style="background-color:rgba(0,0,0,0.3);display:block;">Scheduled meetings :<br />';
 			$smeetings='';
+			if (is_file('./db/sched')){
 			$db0=file('./db/sched');
 			if ($db0!=''){
 			foreach($db0 as $line){
@@ -410,6 +411,7 @@ include 'meeting-time.php';
 					$smeetings.= '- Meeting from '.$data[2].' to '.$data[3].' </br>';
 				}
 				}
+			}
 			}
 			if ($smeetings!=''){
 			echo $smeetings;
