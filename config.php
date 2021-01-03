@@ -50,7 +50,8 @@ if [ "${#CERTBOT}"==0 ]
 then
 apt-get update
 apt-get install python-certbot-apache -y
-certbot --noninteractive --apache --agree-tos --no-redirect --register-unsafely-without-email -d <?PHP echo $server_out; ?>
+certbot --noninteractive --apache --agree-tos --no-redirect --register-unsafely-without-email -d <?PHP echo $server_out; //leave next line empty otherwise carriage return doesn work ?>
+
 cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem
 sed -i -e '$apost_hook = cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem && service icecast2 restart' /etc/letsencrypt/renewal/<?PHP echo $server_out; ?>.conf
 
@@ -848,7 +849,7 @@ port :<br />icecast port <br />
 
 <?PHP
 exec ('which certbot', $test_exec);
-if (strstr(implode('',$test_exec), 'certbot')){
+if (strstr(implode('',$test_exec), 'certbot') OR $server_beta=="master"){
 ?>
 <i style="color:green;">It seems SSL is installed, you can try to enable it below.</i><br /><br />
 Enable SSL:<br />no=will redirect https requests to http <br />force=will redirect http requests to https <br />auto=lets the user decide which protocol to use<br />
