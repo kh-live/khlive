@@ -55,12 +55,16 @@ function khMeetingStop(){
 //$mount=$_POST['mount']; used to define cong
 //	$server=$_POST['server'];
 //	$port
+var button = document.querySelector('#start');
 var xhttp = new XMLHttpRequest();
 xhttp.open("POST", "stream_end.php", true);
 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhttp.send("action=mount_remove&mount=/stream-<?PHP echo urlencode($_SESSION['cong']); ?>.ogg&server=<?PHP echo urlencode($jitsi_url); ?>&port=Kh-Live-<?PHP echo urlencode($_SESSION['cong']); ?>-<?PHP echo date("Ymd",time()) ?>"); 
 
 api.dispose();
+button.innerHTML="Re-Start";
+button.removeEventListener('click', khMeetingStop );
+button.addEventListener('click', khInitiateJitsi );
 }
 
 </script>

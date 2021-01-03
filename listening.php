@@ -448,9 +448,7 @@ include 'meeting-time.php';
 					}
 				}
 			}
-if ($meeting_type=='jitsi'){
-	include('listening-jitsi.php');
-}else{
+
 			
 echo $lng['listening_text'].'<br /><br />';
 
@@ -472,6 +470,10 @@ echo $lng['listening_text'].'<br /><br />';
 
 	if(strstr($_SESSION['meeting_status'],"live") OR $server_beta=='true'){
 	echo $lng['yeslive'].' :<br /><br />';
+	
+	if ($meeting_type=='jitsi'){
+	include('listening-jitsi.php');
+	}else{
     
     if (strstr($_SERVER['HTTP_HOST'],'192.168.')){
     $server_out=$_SERVER['HTTP_HOST'];
@@ -491,7 +493,7 @@ echo $lng['listening_text'].'<br /><br />';
     }
     $buffer.='</audio><br /><br />';
     echo $buffer;
-	
+	}
 	if ($_SESSION['type']=='multi') include('listening-multiusers.php');
 	
     }else{
@@ -501,8 +503,6 @@ echo $lng['listening_text'].'<br /><br />';
 ?>
 </div>
 <?PHP
-}
-
 $db=file("db/cong");
     foreach($db as $line){
         $data=explode ("**",$line);

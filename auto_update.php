@@ -32,7 +32,9 @@ dos2unix <?PHP echo $web_server_root; ?>kh-live/* > /dev/null 2>&1
 find <?PHP echo $web_server_root; ?>kh-live/ -type f -printf '"%p"\n' | xargs chmod 640 
 chown -R asterisk:asterisk <?PHP echo $web_server_root; ?>kh-live/*
 chmod +x <?PHP echo $web_server_root; ?>kh-live/config/update.sh
+if [ -f "<?PHP echo $web_server_root; ?>kh-live/config/downloader.sh" ]; then
 chmod +x <?PHP echo $web_server_root; ?>kh-live/config/downloader.sh
+fi
 echo "done"
 <?PHP
 $info= ob_get_clean();
