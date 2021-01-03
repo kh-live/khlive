@@ -50,10 +50,9 @@ if [ "${#CERTBOT}"==0 ]
 then
 apt-get update
 apt-get install python-certbot-apache -y
-certbot certonly --noninteractive --apache --agree-tos --no-redirect --register-unsafely-without-email -d <?PHP echo $server_out ; ?>
-cat /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/privkey.pem > /etc/icecast2/bundle.pem
-chown asterisk:asterisk /etc/icecast2/bundle.pem
-sed -i -e '$apost_hook = cat /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out ; ?>/privkey.pem > /etc/icecast2/bundle.pem && service icecast2 restart' /etc/letsencrypt/renewal/<?PHP echo $server_out ; ?>.conf
+certbot --noninteractive --apache --agree-tos --no-redirect --register-unsafely-without-email -d <?PHP echo $server_out; ?>
+cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem
+sed -i -e '$apost_hook = cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem && service icecast2 restart' /etc/letsencrypt/renewal/<?PHP echo $server_out; ?>.conf
 
 apt-get install git gcc build-essential -y
 apt-get install libcurl4-openssl-dev libxslt1-dev libxml2-dev libogg-dev libvorbis-dev libflac-dev libtheora-dev libssl-dev -y
@@ -66,7 +65,7 @@ mv /usr/bin/icecast2 /usr/bin/icecast2nossl
 cp /home/pi/src/icecast-2.4.4/src/icecast /usr/bin/icecast2
 cp /home/pi/src/icecast-2.4.4/src/icecast <?PHP echo $web_server_root; ?>/icecast
 chown asterisk:asterisk <?PHP echo $web_server_root; ?>/icecast
-service icecast2 restart
+reboot
 fi
 
 <?PHP }
