@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='3.0.0';//gen_version leave this comment it's used in auto_update
+$gen_version='3.0.1';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -598,6 +598,11 @@ api_key : <br />api key for link up with main server<br />
 <input class="field_login" type="text" name="api_key" value="<?PHP echo @$api_key;?>" /><br />
 master_key : <br />key for ip synch with main server and pwd for icecast admin<br />
 <input class="field_login" type="text" name="master_key" value="<?PHP echo @$master_key;?>" /><br />
+connect using https://<br />only use http if you're php version is less than 7.1<br />php version : <?PHP echo phpversion(); ?><br />
+<select class="field_login" name="https" >
+<option value="https">https://</option>
+<option value="http" <?PHP if (@$https=="http") echo 'selected=selected';?>>http://</option>
+</select><br />
 </div>
 
 <div class="subgroup" onclick="javascript:toogleDiv(4)">Diagnosis</div>

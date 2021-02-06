@@ -24,7 +24,7 @@ if (isset($cong)) unset($cong);
 	$string=time()."**stop**".$cong;
 	//$encrypted=base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))));
 	$encrypted=kh_encrypt($string,$key);
-	$response=kh_fgetc_timeout('https://kh-live.co.za/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted));
 	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key2), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key2))), "\0");
 	$decrypted = kh_decrypt($response, $key2);
 	$dec=explode("@@@", $decrypted);

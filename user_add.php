@@ -119,7 +119,7 @@ if ($auto_khlive=='yes' OR $server_beta=='master'){
 		$test_time=kh_fgetc_timeout($q_proto.$url.$q_port.'/kh-live/time.php');
 		}
 	}else{
-		$test_time=kh_fgetc_timeout('https://kh-live.co.za/time.php');
+		$test_time=kh_fgetc_timeout($https.'://kh-live.co.za/time.php');
 	}
 
 if ($test_time!==FALSE){
