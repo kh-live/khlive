@@ -10,7 +10,7 @@ $query=explode("**", $decrypted);
 	if ($query[0]+60>=time() AND time()>=$query[0]-60){
 		if ($query[1]=="status"){
 		exec("uname -m",$uname);
-		$string=$version.'-'.@$enable_ssl."-".implode('',$uname)."@@@ok";
+		$string=$version.'-'.@$enable_ssl."-".implode('',$uname)."-".phpversion()."@@@ok";
 		}elseif($query[1]=="fetch_users"){
 		$db=file('db/users');
 			foreach($db as $line){
