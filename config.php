@@ -46,6 +46,7 @@ if ($auto_khlive=="yes") echo 'wget -q -O /dev/null http://'.$server_in.'/kh-liv
 if ($enable_ssl=="setup"){
 ?>
 CERTBOT=$(which certbot)
+PROCVER=$(uname -m)
 if [ "${#CERTBOT}"==0 ]
 then
 apt-get update
@@ -55,12 +56,22 @@ certbot --noninteractive --apache --agree-tos --no-redirect --register-unsafely-
 cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem
 sed -i -e '$apost_hook = cat /etc/letsencrypt/live/<?PHP echo $server_out; ?>/fullchain.pem /etc/letsencrypt/live/<?PHP echo $server_out; ?>/privkey.pem > /etc/icecast2/bundle.pem && service icecast2 restart' /etc/letsencrypt/renewal/<?PHP echo $server_out; ?>.conf
 
+if [ $PROCVER = "armv6l" ]
+then
+(cd /home/pi && wget https://kh-live.co.za/downloads/icecast2-armv6.zip)
+(cd /home/pi && unzip icecast2-armv6.zip)
+rm /home/pi/icecast2-armv6.zip
+elif [ $PROCVER = "armv7l" ]
+then
 (cd /home/pi && wget https://kh-live.co.za/downloads/icecast2-armv7.zip)
 (cd /home/pi && unzip icecast2-armv7.zip)
+rm /home/pi/icecast2-armv7.zip
+else
+#build from source
+fi
 mv /usr/bin/icecast2 /usr/bin/icecast2nossl
 mv /home/pi/icecast2 /usr/bin/icecast2
 chmod +x /usr/bin/icecast2
-rm /home/pi/icecast2-armv7.zip
 /sbin/reboot
 fi
 
