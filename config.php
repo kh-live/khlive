@@ -473,6 +473,7 @@ ob_start();
 $version=\''.$gen_version.'\';
 $max_song_no=\''.$max_song_no.'\';
 ' ;
+//FIXIT - this is a mass assignment vulnerability
 	foreach ($_POST as $key=>$value){
 if ($key!="submit"){
 	if (get_magic_quotes_gpc()) {

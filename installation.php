@@ -6,6 +6,7 @@ exit();
 }
 $gen_version='2.3.3';
 $max_song_no=154;
+$ttl_back='5';
 ?>
 <!DOCTYPE html>
 <head>
