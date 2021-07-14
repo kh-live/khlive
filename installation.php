@@ -97,6 +97,8 @@ $ezstream_bin='/usr/bin/ezstream';
 $ices_bin='/usr/bin/ices2';
 $icecast_bin='icecast2';
 $port='8000';
+$ttl_back='5';
+$ttl_front='3';
 <?PHP
 echo '?>';
     $message = ob_get_clean();

@@ -36,7 +36,7 @@ $db=file("db/servers");
 		$q_port=':443';
 		if (@$data[7]!='' AND is_numeric(@$data[7])) $q_port=':'.$data[7];
 	}
-	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted), 1);
+	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted), $ttl_front);
 	if ($response!=""){
 	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	$decrypted = kh_decrypt($response, $key);

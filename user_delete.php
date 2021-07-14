@@ -68,10 +68,10 @@ if ($auto_khlive=='yes' OR $server_beta=='master'){
 		if ($url==""){
 		echo 'Could not find your congregations server...';
 		}else{
-		$test_time=kh_fgetc_timeout($q_proto.$url.$q_port.'/kh-live/time.php');
+		$test_time=kh_fgetc_timeout($q_proto.$url.$q_port.'/kh-live/time.php', $ttl_back);
 		}
 	}else{
-		$test_time=kh_fgetc_timeout($https.'://kh-live.co.za/time.php');
+		$test_time=kh_fgetc_timeout($https.'://kh-live.co.za/time.php', $ttl_back);
 	}
 if ($test_time!==FALSE){
 	if (is_numeric($test_time)){
@@ -94,7 +94,8 @@ if ($test_time!==FALSE){
 	Check the following : <br />
 	1. Your databundle is not finished<br />
 	2. Reboot the router<br />
-	3. Ask your administrator to reboot the server</b><br />';
+	3. Ask your administrator to reboot the server</b><br />
+	4. Set the TTL higher in config>kh-live>TTL default (currently set to '.$ttl_back.'sec)<br />';
 	}
 }else{
 ?>

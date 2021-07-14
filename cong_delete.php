@@ -8,7 +8,7 @@ exit();
 include 'functions.php';
 if(isset($_POST['submit'])){
 	if($_POST['submit']==$lng['delete']){
-		if ($_POST['cong_confirmed']!=""){
+		if (isset($_POST['cong_confirmed'])){
 			$cong_confirmed=urldecode($_POST['cong_confirmed']);//sanitize
 		$deleting=cong_del($cong_confirmed, "del");
 if ($deleting=='ok'){

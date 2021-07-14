@@ -75,7 +75,7 @@ echo 'error : server already exists';
 		$q_port=':443';
 		if (@$data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
 	}
-	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted), 10);
+	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted));
 	//$response=file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
 	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	$decrypted = kh_decrypt($response, $key);
@@ -134,7 +134,7 @@ echo 'error : server already exists';
 		$q_port=':443';
 		if (@$data[7]!='' AND is_numeric($data[7])) $q_port=':'.$data[7];
 	}
-	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted), 10);
+	$response=kh_fgetc_timeout($q_proto.$data[0].$q_port.'/kh-live/api.php?q='.urlencode($encrypted));
 	//$response=file_get_contents('http://'.$data[1].'/kh-live/api.php?q='.urlencode($encrypted));
 	//$decrypted = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($response), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	$decrypted = kh_decrypt($response, $key);

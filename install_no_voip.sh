@@ -73,10 +73,12 @@ rm ${APACHE_ROOT}kh-live/khlive_latest.tar
 echo 'configuring icecast2'
 rm /etc/icecast2/icecast.xml
 (cd /etc/icecast2 && ln -s ${APACHE_ROOT}kh-live/config/icecast.xml)
+#first we replace the userid to root to be able to downgrade using config script
 sed -i 's/USERID=icecast2/USERID=root/' /etc/default/icecast2
 #enable=false is not in the file anymore
 #sed -i 's/GROUPID=icecast/GROUPID=root/' /etc/default/icecast2
 #sed -i 's/ENABLE=false/ENABLE=true/' /etc/default/icecast2
+#then we also change the group id
 sed -i 's/GROUPID=icecast/GROUPID=root\
 ENABLE=true/' /etc/default/icecast2
 chown -R ${KH_USER}:${KH_GRP} /var/log/icecast*

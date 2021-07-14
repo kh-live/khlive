@@ -33,6 +33,7 @@ global $master_key;
 global $api_key;
 global $auto_khlive;
 global $https;
+global $ttl_back;
 		if ($rights!="0" AND $congregation!="0" AND $user!="" AND $password!="" AND strlen($password)>=8 AND $name!="" AND $pin>=9999 AND $pin<=100000){
 			if (file_exists("db/users")){
 			$db=file("db/users");
@@ -48,7 +49,7 @@ global $https;
 	$key2=$api_key;
 	$string=time()."**user_check**".$user.'###'.$congregation;
 	$encrypted=kh_encrypt($string,$key);
-	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted), $ttl_back);
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//if upstream server fails to answer should we still add the user locally?
@@ -83,7 +84,7 @@ $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
 	$encrypted=kh_encrypt($string,$key);
-	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted), $ttl_back);
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
@@ -112,7 +113,7 @@ $key=$api_key;
 	$key2=$api_key;
 	$string=time()."**user_add**".$user.'###'.$password.'###'.$name.'###'.$congregation.'###'.$rights.'###'.$pin.'###'.$type."###".$info."**";
 	$encrypted=kh_encrypt($string,$key);
-	$response=kh_fgetc_timeout($q_proto.$slave_url.$q_port.'/kh-live/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout($q_proto.$slave_url.$q_port.'/kh-live/api.php?q='.urlencode($encrypted), $ttl_back);
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?
@@ -142,6 +143,7 @@ global $master_key;
 global $api_key;
 global $auto_khlive;
 global $https;
+global $ttl_back;
 $skip=0;
 $error='ok';
 			$db=file("db/users");
@@ -183,7 +185,7 @@ $key=$master_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
 	$encrypted=kh_encrypt($string,$key);
-	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout($https.'://kh-live.co.za/api.php?q='.urlencode($encrypted), $ttl_back);
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	if (@$dec[1]=="ko") $error="ko";
@@ -212,7 +214,7 @@ $key=$api_key;
 	$key2=$api_key;
 	$string=time()."**user_del**".$user_confirmed.'###'.$congregation.'###'.$pin;
 	$encrypted=kh_encrypt($string,$key);
-	$response=kh_fgetc_timeout($q_proto.$slave_url.$q_port.'/kh-live/api.php?q='.urlencode($encrypted));
+	$response=kh_fgetc_timeout($q_proto.$slave_url.$q_port.'/kh-live/api.php?q='.urlencode($encrypted), $ttl_back);
 	$decrypted = kh_decrypt($response,$key2);
 	$dec=explode("@@@", $decrypted);
 	//what happens if the server is not reachable? the error doesnt become ko so the function still returns ok... is it what we want?
@@ -248,7 +250,9 @@ global $alsa_in;
 global $alsa_out;
 global $sound_quality;
 if ($stream_server=="") $stream_server=$server_in;
-		
+		if (strstr($cong_name, ' ')){
+		return 'error space not allowed in cong name';
+		}
 		if (file_exists("db/cong")){
 		$db=file("db/cong");
 			foreach($db as $line){
@@ -860,7 +864,7 @@ if ($db!=''){
 			}
 }
 }
-function kh_fgetc_timeout($url,$timeout=1){
+function kh_fgetc_timeout($url,$timeout=10){
 $ch=curl_init();
 
 curl_setopt($ch, CURLOPT_URL, $url);

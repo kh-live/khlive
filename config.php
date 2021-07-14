@@ -1,6 +1,6 @@
 <?PHP
 $tmp_skip='no';
-$gen_version='3.0.2';//gen_version leave this comment it's used in auto_update
+$gen_version='3.0.3';//gen_version leave this comment it's used in auto_update
 $max_song_no=154;
 $test=$_SERVER['REQUEST_URI'];
 if (strstr($test, ".php")){
@@ -613,6 +613,44 @@ connect using https://<br />only use http if you're php version is less than 7.1
 <select class="field_login" name="https" >
 <option value="https">https://</option>
 <option value="http" <?PHP if (@$https=="http") echo 'selected=selected';?>>http://</option>
+</select><br />
+TTL default<br />default timetolive in seconds for backend connection<br />
+<?PHP
+if (!isset($ttl_back)){
+$ttl_back="5";
+}
+?>
+<select class="field_login" name="ttl_back" >
+<option value="0">no ttl</option>
+<option value="1" <?PHP if (@$ttl_back=="1") echo 'selected=selected';?>>1</option>
+<option value="2" <?PHP if (@$ttl_back=="2") echo 'selected=selected';?>>2</option>
+<option value="3" <?PHP if (@$ttl_back=="3") echo 'selected=selected';?>>3</option>
+<option value="4" <?PHP if (@$ttl_back=="4") echo 'selected=selected';?>>4</option>
+<option value="5" <?PHP if (@$ttl_back=="5") echo 'selected=selected';?>>5</option>
+<option value="6" <?PHP if (@$ttl_back=="6") echo 'selected=selected';?>>6</option>
+<option value="7" <?PHP if (@$ttl_back=="7") echo 'selected=selected';?>>7</option>
+<option value="8" <?PHP if (@$ttl_back=="8") echo 'selected=selected';?>>8</option>
+<option value="9" <?PHP if (@$ttl_back=="9") echo 'selected=selected';?>>9</option>
+<option value="10" <?PHP if (@$ttl_back=="10") echo 'selected=selected';?>>10</option>
+</select><br />
+TTL homepage<br />default timetolive in seconds for frontend connection<br />
+<?PHP
+if (!isset($ttl_front)){
+$ttl_front="3";
+}
+?>
+<select class="field_login" name="ttl_front" >
+<option value="0">no ttl</option>
+<option value="1" <?PHP if (@$ttl_front=="1") echo 'selected=selected';?>>1</option>
+<option value="2" <?PHP if (@$ttl_front=="2") echo 'selected=selected';?>>2</option>
+<option value="3" <?PHP if (@$ttl_front=="3") echo 'selected=selected';?>>3</option>
+<option value="4" <?PHP if (@$ttl_front=="4") echo 'selected=selected';?>>4</option>
+<option value="5" <?PHP if (@$ttl_front=="5") echo 'selected=selected';?>>5</option>
+<option value="6" <?PHP if (@$ttl_front=="6") echo 'selected=selected';?>>6</option>
+<option value="7" <?PHP if (@$ttl_front=="7") echo 'selected=selected';?>>7</option>
+<option value="8" <?PHP if (@$ttl_front=="8") echo 'selected=selected';?>>8</option>
+<option value="9" <?PHP if (@$ttl_front=="9") echo 'selected=selected';?>>9</option>
+<option value="10" <?PHP if (@$ttl_front=="10") echo 'selected=selected';?>>10</option>
 </select><br />
 </div>
 
