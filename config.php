@@ -66,7 +66,7 @@ then
 (cd /home/pi && wget https://kh-live.co.za/downloads/icecast2-armv7.zip)
 (cd /home/pi && unzip icecast2-armv7.zip)
 rm /home/pi/icecast2-armv7.zip
-else
+#else
 #build from source
 fi
 mv /usr/bin/icecast2 /usr/bin/icecast2nossl

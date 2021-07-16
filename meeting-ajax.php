@@ -409,6 +409,7 @@ include 'meeting-listeners.php';
 			}
 			$_SESSION['meeting_just_started']='';
 			echo '<b style="color:red;">The meeting failed to start!</b><br />';
+			//we need to set special access rights to the file for this to work
 			echo 'Here is the last 10 lines of the error log : <br />';
 			exec('tail -10 /var/log/apache2/error.log', $output);
 			echo implode('<br />',$output);
