@@ -1,6 +1,12 @@
 Options +FollowSymlinks
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+	#this prevents loading the php file without extension in url
+    </IfModule>
 RewriteEngine on
 RewriteRule ^([^/.]+)/?$ index.php?page=$1 [QSA]
+</IfModule>
 
 <FilesMatch "\.(mp3)$">
   ForceType application/octet-stream
